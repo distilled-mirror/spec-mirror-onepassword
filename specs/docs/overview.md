@@ -13,7 +13,7 @@ export const Link = ({to, className = "", children}) => {
   const classes = className.split(" ");
   const buttonClass = classes.find(c => c.startsWith("button--"));
   const otherClasses = classes.filter(c => !c.startsWith("button"));
-  const appliedStyles = buttonClass ? `${baseStyles} ${buttonStyles[buttonClass] || ""} ${otherClasses.join(" ")}` : `${baseStyles} text-white ${className}`;
+  const appliedStyles = [baseStyles, buttonClass ? buttonStyles[buttonClass] : "text-white", buttonClass ? otherClasses.join(" ") : className].filter(Boolean).join(" ");
   const link = <a href={to} className={appliedStyles}>
       {children}
     </a>;
