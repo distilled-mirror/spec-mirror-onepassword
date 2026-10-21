@@ -4,13 +4,9 @@
 
 # 1Password Connect Server API reference
 
-export const Small = ({children}) => {
-  return <small>{children}</small>;
-};
-
-<Note>
-  If you're new to 1Password Secrets Automation and 1Password Connect Server, [learn how to get started with a Secrets Automation workflow](/connect/get-started/).
-</Note>
+> [!NOTE]
+>
+> If you're new to 1Password Secrets Automation and 1Password Connect Server, [learn how to get started with a Secrets Automation workflow](/connect/get-started/).
 
 You can use the Connect API to work with the vaults and items in your account, and to list API activity on a Connect server:
 
@@ -69,15 +65,13 @@ No path parameters
 
   <tbody>
     <tr>
-      <th><code>filter</code></th>
+      <th>`filter`</th>
       <td>string</td>
 
       <td>
-        Filter the vault collection using <a href="https://bookstack.soffid.com/books/scim/page/scim-query-syntax">SCIM-style filters</a>. Vaults can only be filtered by <code>name</code>. <em>Optional.</em>
+        Filter the vault collection using [SCIM-style filters](https://bookstack.soffid.com/books/scim/page/scim-query-syntax). Vaults can only be filtered by `name`. *Optional.*
 
-        <br />
-
-        <Small>For example: <code>name eq "Demo Vault"</code></Small>
+        For example: `name eq "Demo Vault"`
       </td>
     </tr>
   </tbody>
@@ -111,7 +105,7 @@ GET /v1/vaults/{vaultUUID}
 
   <tbody>
     <tr>
-      <th><code>vaultUUID</code></th>
+      <th>`vaultUUID`</th>
       <td>string</td>
       <td>The UUID of the vault to retrieve items from.</td>
     </tr>
@@ -126,7 +120,7 @@ No query parameters.
 
 <dl>
   <dt>200</dt>
-  <dd>Returns a <a href="#vault-object">Vault object</a></dd>
+  <dd>Returns a [Vault object](#vault-object)</dd>
   <dt>401</dt>
   <dd>Invalid or missing token</dd>
   <dt>403</dt>
@@ -154,7 +148,7 @@ GET /v1/vaults/{vaultUUID}/items
 
   <tbody>
     <tr>
-      <th><code>vaultUUID</code></th>
+      <th>`vaultUUID`</th>
       <td>string</td>
       <td>The UUID of the vault to get the details of.</td>
     </tr>
@@ -174,15 +168,13 @@ GET /v1/vaults/{vaultUUID}/items
 
   <tbody>
     <tr>
-      <th><code>filter</code></th>
+      <th>`filter`</th>
       <td>string</td>
 
       <td>
-        Filter the item collection using <a href="https://bookstack.soffid.com/books/scim/page/scim-query-syntax">SCIM-style filters </a>. Items can only be filtered by <code>title</code> or <code>tag</code>. <em>Optional.</em>
+        Filter the item collection using [SCIM-style filters ](https://bookstack.soffid.com/books/scim/page/scim-query-syntax). Items can only be filtered by `title` or `tag`. *Optional.*
 
-        <br />
-
-        <Small>For example: <code>title eq "Example Item"</code> or <code>tag eq "banking"</code></Small>
+        For example: `title eq "Example Item"` or `tag eq "banking"`
       </td>
     </tr>
   </tbody>
@@ -192,7 +184,7 @@ GET /v1/vaults/{vaultUUID}/items
 
 <dl>
   <dt>200</dt>
-  <dd>Returns an array of <a href="#item-object">Item objects</a> that don't include sections and fields</dd>
+  <dd>Returns an array of [Item objects](#item-object) that don't include sections and fields</dd>
   <dt>401</dt>
   <dd>Invalid or missing token</dd>
   <dt>404</dt>
@@ -277,81 +269,79 @@ The request must include a FullItem object, containing the information to create
 
   <tbody>
     <tr>
-      <th><code>title</code></th>
+      <th>`title`</th>
       <td>string</td>
       <td>The title of the item.</td>
     </tr>
 
     <tr>
-      <th><code>vault</code></th>
+      <th>`vault`</th>
       <td>object</td>
-      <td>An object containing an <code>id</code> property whose value is the UUID of the vault the item is in.</td>
+      <td>An object containing an `id` property whose value is the UUID of the vault the item is in.</td>
     </tr>
 
     <tr>
-      <th><code>category</code></th>
+      <th>`category`</th>
       <td>string</td>
 
       <td>
         The category of the item. One of:
 
-        <section>
-          <ul>
-            <li><code>"LOGIN"</code></li>
-            <li><code>"PASSWORD"</code></li>
-            <li><code>"API\_CREDENTIAL"</code></li>
-            <li><code>"SERVER"</code></li>
-            <li><code>"DATABASE"</code></li>
-            <li><code>"CREDIT\_CARD"</code></li>
-            <li><code>"MEMBERSHIP"</code></li>
-            <li><code>"PASSPORT"</code></li>
-            <li><code>"SOFTWARE\_LICENSE"</code></li>
-            <li><code>"OUTDOOR\_LICENSE"</code></li>
-            <li><code>"SECURE\_NOTE"</code></li>
-            <li><code>"WIRELESS\_ROUTER"</code></li>
-            <li><code>"BANK\_ACCOUNT"</code></li>
-            <li><code>"DRIVER\_LICENSE"</code></li>
-            <li><code>"IDENTITY"</code></li>
-            <li><code>"REWARD\_PROGRAM"</code></li>
-            <li><code>"EMAIL\_ACCOUNT"</code></li>
-            <li><code>"SOCIAL\_SECURITY\_NUMBER"</code></li>
-            <li><code>"MEDICAL\_RECORD"</code></li>
-            <li><code>"SSH\_KEY"</code></li>
-          </ul>
-        </section>
+        <ul>
+          <li>`"LOGIN"`</li>
+          <li>`"PASSWORD"`</li>
+          <li>`"API_CREDENTIAL"`</li>
+          <li>`"SERVER"`</li>
+          <li>`"DATABASE"`</li>
+          <li>`"CREDIT_CARD"`</li>
+          <li>`"MEMBERSHIP"`</li>
+          <li>`"PASSPORT"`</li>
+          <li>`"SOFTWARE_LICENSE"`</li>
+          <li>`"OUTDOOR_LICENSE"`</li>
+          <li>`"SECURE_NOTE"`</li>
+          <li>`"WIRELESS_ROUTER"`</li>
+          <li>`"BANK_ACCOUNT"`</li>
+          <li>`"DRIVER_LICENSE"`</li>
+          <li>`"IDENTITY"`</li>
+          <li>`"REWARD_PROGRAM"`</li>
+          <li>`"EMAIL_ACCOUNT"`</li>
+          <li>`"SOCIAL_SECURITY_NUMBER"`</li>
+          <li>`"MEDICAL_RECORD"`</li>
+          <li>`"SSH_KEY"`</li>
+        </ul>
 
-        <p className="note">You can't create items using the "CUSTOM" or "DOCUMENT" categories.</p>
+        You can't create items using the "CUSTOM" or "DOCUMENT" categories.
       </td>
     </tr>
 
     <tr>
-      <th><code>urls</code></th>
+      <th>`urls`</th>
       <td>array</td>
-      <td>Array of <a href="#item-url-object">URL objects</a> containing URLs for the item.</td>
+      <td>Array of [URL objects](#item-url-object) containing URLs for the item.</td>
     </tr>
 
     <tr>
-      <th><code>favorite</code></th>
+      <th>`favorite`</th>
       <td>boolean</td>
       <td>Mark the item as a favorite.</td>
     </tr>
 
     <tr>
-      <th><code>tags</code></th>
+      <th>`tags`</th>
       <td>string</td>
       <td>An array of strings of the tags assigned to the item.</td>
     </tr>
 
     <tr>
-      <th><code>fields</code></th>
+      <th>`fields`</th>
       <td>array</td>
-      <td>An array of <a href="#item-field-object">Field objects</a> of the fields to include with the item.</td>
+      <td>An array of [Field objects](#item-field-object) of the fields to include with the item.</td>
     </tr>
 
     <tr>
-      <th><code>sections</code></th>
+      <th>`sections`</th>
       <td>array</td>
-      <td>An array of <a href="#item-section-object">Section objects</a> of the sections to include with the item.</td>
+      <td>An array of [Section objects](#item-section-object) of the sections to include with the item.</td>
     </tr>
   </tbody>
 </table>
@@ -369,7 +359,7 @@ The request must include a FullItem object, containing the information to create
 
   <tbody>
     <tr>
-      <th><code>vaultUUID</code></th>
+      <th>`vaultUUID`</th>
       <td>string</td>
       <td>The UUID of the vault to create an item in.</td>
     </tr>
@@ -384,7 +374,7 @@ No query parameters.
 
 <dl>
   <dt>200</dt>
-  <dd>Returns <a href="#item-object">Item object</a> containing the new item</dd>
+  <dd>Returns [Item object](#item-object) containing the new item</dd>
   <dt>400</dt>
   <dd>Unable to create item due to invalid input</dd>
   <dt>401</dt>
@@ -414,13 +404,13 @@ GET /v1/vaults/{vaultUUID}/items/{itemUUID}
 
   <tbody>
     <tr>
-      <th><code>vaultUUID</code></th>
+      <th>`vaultUUID`</th>
       <td>string</td>
       <td>The UUID of the vault to retrieve the item from.</td>
     </tr>
 
     <tr>
-      <th><code>itemUUID</code></th>
+      <th>`itemUUID`</th>
       <td>string</td>
       <td>The UUID of the item to retrieve.</td>
     </tr>
@@ -435,7 +425,7 @@ No query parameters.
 
 <dl>
   <dt>200</dt>
-  <dd>Returns an <a href="#item-object">Item object</a></dd>
+  <dd>Returns an [Item object](#item-object)</dd>
   <dt>401</dt>
   <dd>Invalid or missing token</dd>
   <dt>403</dt>
@@ -463,13 +453,13 @@ PUT /v1/vaults/{vaultUUID}/items/{itemUUID}
 
   <tbody>
     <tr>
-      <th><code>vaultUUID</code></th>
+      <th>`vaultUUID`</th>
       <td>string</td>
       <td>The UUID of the vault to retrieve the item from.</td>
     </tr>
 
     <tr>
-      <th><code>itemUUID</code></th>
+      <th>`itemUUID`</th>
       <td>string</td>
       <td>The UUID of the item to replace.</td>
     </tr>
@@ -484,7 +474,7 @@ No query parameters.
 
 <dl>
   <dt>200</dt>
-  <dd>Returns an <a href="#item-object">Item object</a></dd>
+  <dd>Returns an [Item object](#item-object)</dd>
   <dt>400</dt>
   <dd>Unable to create item due to invalid input</dd>
   <dt>401</dt>
@@ -514,13 +504,13 @@ DELETE /v1/vaults/{vaultUUID}/items/{itemUUID}
 
   <tbody>
     <tr>
-      <th><code>vaultUUID</code></th>
+      <th>`vaultUUID`</th>
       <td>string</td>
       <td>The UUID of the vault to retrieve the item from.</td>
     </tr>
 
     <tr>
-      <th><code>itemUUID</code></th>
+      <th>`itemUUID`</th>
       <td>string</td>
       <td>The UUID of the item to delete.</td>
     </tr>
@@ -563,28 +553,28 @@ Applies an `add`, `remove`, or `replace` operation on an item or the fields of a
 
   <tbody>
     <tr>
-      <th><code>op</code></th>
+      <th>`op`</th>
       <td>string</td>
 
       <td>
         The kind of operation to perform. One of:
 
         <ul>
-          <li><code>add</code></li>
-          <li><code>remove</code></li>
-          <li><code>replace</code></li>
+          <li>`add`</li>
+          <li>`remove`</li>
+          <li>`replace`</li>
         </ul>
       </td>
     </tr>
 
     <tr>
-      <th><code>path</code></th>
+      <th>`path`</th>
       <td>string</td>
-      <td>An RFC6901 JSON Pointer to the item, an item attribute, an item field by field ID, or an item field attribute. For example: <code>"/fields/vy09gd8EXAMPLE/label"</code></td>
+      <td>An RFC6901 JSON Pointer to the item, an item attribute, an item field by field ID, or an item field attribute. For example: `"/fields/vy09gd8EXAMPLE/label"`</td>
     </tr>
 
     <tr>
-      <th><code>value</code></th>
+      <th>`value`</th>
       <td>any</td>
       <td>The new value to apply at the path.</td>
     </tr>
@@ -604,13 +594,13 @@ Applies an `add`, `remove`, or `replace` operation on an item or the fields of a
 
   <tbody>
     <tr>
-      <th><code>vaultUUID</code></th>
+      <th>`vaultUUID`</th>
       <td>string</td>
       <td>The UUID of the vault the item is in.</td>
     </tr>
 
     <tr>
-      <th><code>itemUUID</code></th>
+      <th>`itemUUID`</th>
       <td>string</td>
       <td>The UUID of the item to update.</td>
     </tr>
@@ -625,7 +615,7 @@ No query parameters.
 
 <dl>
   <dt>200</dt>
-  <dd>Returns an <a href="#item-object">Item object</a> of the updated item.</dd>
+  <dd>Returns an [Item object](#item-object) of the updated item.</dd>
   <dt>401</dt>
   <dd>Invalid or missing token</dd>
   <dt>403</dt>
@@ -653,13 +643,13 @@ GET /v1/vaults/{vaultUUID}/items/{itemUUID}/files
 
   <tbody>
     <tr>
-      <th><code>vaultUUID</code></th>
+      <th>`vaultUUID`</th>
       <td>string</td>
       <td>The UUID of the vault to get the details of.</td>
     </tr>
 
     <tr>
-      <th><code>itemUUID</code></th>
+      <th>`itemUUID`</th>
       <td>string</td>
       <td>The UUID of the item to retrieve.</td>
     </tr>
@@ -679,9 +669,9 @@ GET /v1/vaults/{vaultUUID}/items/{itemUUID}/files
 
   <tbody>
     <tr>
-      <th><code>inline\_content</code></th>
+      <th>`inline_content`</th>
       <td>boolean</td>
-      <td>Whether to return the Base-64 encoded file content. The file size must be less than <code>OP\_MAX\_INLINE\_FILE\_SIZE\_KB</code>, or 100 kilobytes if the file size isn't defined. <em>Optional.</em></td>
+      <td>Whether to return the Base-64 encoded file content. The file size must be less than `OP_MAX_INLINE_FILE_SIZE_KB`, or 100 kilobytes if the file size isn't defined. *Optional.*</td>
     </tr>
   </tbody>
 </table>
@@ -690,7 +680,7 @@ GET /v1/vaults/{vaultUUID}/items/{itemUUID}/files
 
 <dl>
   <dt>200</dt>
-  <dd>Returns an array of <a href="#item-file-object">File objects</a></dd>
+  <dd>Returns an array of [File objects](#item-file-object)</dd>
   <dt>401</dt>
   <dd>Invalid or missing token</dd>
   <dt>404</dt>
@@ -718,19 +708,19 @@ GET /v1/vaults/{vaultUUID}/items/{itemUUID}/files/{fileUUID}
 
   <tbody>
     <tr>
-      <th><code>vaultUUID</code></th>
+      <th>`vaultUUID`</th>
       <td>string</td>
       <td>The UUID of the vault to retrieve the item from.</td>
     </tr>
 
     <tr>
-      <th><code>itemUUID</code></th>
+      <th>`itemUUID`</th>
       <td>string</td>
       <td>The UUID of the item to retrieve the file from.</td>
     </tr>
 
     <tr>
-      <th><code>fileUUID</code></th>
+      <th>`fileUUID`</th>
       <td>string</td>
       <td>The UUID of the file to retrieve.</td>
     </tr>
@@ -750,9 +740,9 @@ GET /v1/vaults/{vaultUUID}/items/{itemUUID}/files/{fileUUID}
 
   <tbody>
     <tr>
-      <th><code>inline\_content</code></th>
+      <th>`inline_content`</th>
       <td>boolean</td>
-      <td>Whether to return the Base-64 encoded file content. The file size must be less than <code>OP\_MAX\_INLINE\_FILE\_SIZE\_KB</code>, or 100 kilobytes if the file size isn't defined. <em>Optional.</em></td>
+      <td>Whether to return the Base-64 encoded file content. The file size must be less than `OP_MAX_INLINE_FILE_SIZE_KB`, or 100 kilobytes if the file size isn't defined. *Optional.*</td>
     </tr>
   </tbody>
 </table>
@@ -761,7 +751,7 @@ GET /v1/vaults/{vaultUUID}/items/{itemUUID}/files/{fileUUID}
 
 <dl>
   <dt>200</dt>
-  <dd>Returns a <a href="#item-file-object">File object</a></dd>
+  <dd>Returns a [File object](#item-file-object)</dd>
   <dt>401</dt>
   <dd>Invalid or missing token</dd>
   <dt>403</dt>
@@ -791,19 +781,19 @@ GET /v1/vaults/{vaultUUID}/items/{itemUUID}/files/{fileUUID}/content
 
   <tbody>
     <tr>
-      <th><code>vaultUUID</code></th>
+      <th>`vaultUUID`</th>
       <td>string</td>
       <td>The UUID of the vault to retrieve the item from.</td>
     </tr>
 
     <tr>
-      <th><code>itemUUID</code></th>
+      <th>`itemUUID`</th>
       <td>string</td>
       <td>The UUID of the item to retrieve the file from.</td>
     </tr>
 
     <tr>
-      <th><code>fileUUID</code></th>
+      <th>`fileUUID`</th>
       <td>string</td>
       <td>The UUID of the file to retrieve.</td>
     </tr>
@@ -848,15 +838,15 @@ Retrieve a list of API Requests that have been made.
 
   <tbody>
     <tr>
-      <th><code>limit</code></th>
+      <th>`limit`</th>
       <td>integer</td>
-      <td>How many API Events should be retrieved in a single request. <em>Optional.</em></td>
+      <td>How many API Events should be retrieved in a single request. *Optional.*</td>
     </tr>
 
     <tr>
-      <th><code>offset</code></th>
+      <th>`offset`</th>
       <td>integer</td>
-      <td>How far into the collection of API Events should the response start. <em>Optional.</em></td>
+      <td>How far into the collection of API Events should the response start. *Optional.*</td>
     </tr>
   </tbody>
 </table>
@@ -896,7 +886,7 @@ No query parameters.
 
 <dl>
   <dt>200</dt>
-  <dd>Returns a <a href="#server-health-object">Server Health object</a></dd>
+  <dd>Returns a [Server Health object](#server-health-object)</dd>
 </dl>
 
 ## Metrics
@@ -915,7 +905,7 @@ No query parameters.
 
 <dl>
   <dt>200</dt>
-  <dd>Returns a plaintext list of Prometheus metrics. See the <a href="https://prometheus.io/docs/instrumenting/exposition_formats/#text-based-format">Prometheus documentation </a> for specifics.</dd>
+  <dd>Returns a plaintext list of Prometheus metrics. See the [Prometheus documentation ](https://prometheus.io/docs/instrumenting/exposition_formats/#text-based-format) for specifics.</dd>
 </dl>
 
 ## Response object models
@@ -933,57 +923,57 @@ No query parameters.
 
   <tbody>
     <tr>
-      <th><code>requestID</code></th>
+      <th>`requestID`</th>
       <td>string</td>
       <td>The UUID for the request.</td>
     </tr>
 
     <tr>
-      <th><code>timestamp</code></th>
+      <th>`timestamp`</th>
       <td>dateTime</td>
       <td>Date and time of the request.</td>
     </tr>
 
     <tr>
-      <th><code>action</code></th>
+      <th>`action`</th>
       <td>string</td>
 
       <td>
         The action taken. One of:
 
         <ul>
-          <li><code>"READ"</code></li>
-          <li><code>"CREATE"</code></li>
-          <li><code>"UPDATE"</code></li>
-          <li><code>"DELETE"</code></li>
+          <li>`"READ"`</li>
+          <li>`"CREATE"`</li>
+          <li>`"UPDATE"`</li>
+          <li>`"DELETE"`</li>
         </ul>
       </td>
     </tr>
 
     <tr>
-      <th><code>result</code></th>
+      <th>`result`</th>
       <td>string</td>
 
       <td>
         The result of the action. One of:
 
         <ul>
-          <li><code>"SUCCESS"</code></li>
-          <li><code>"DENY"</code></li>
+          <li>`"SUCCESS"`</li>
+          <li>`"DENY"`</li>
         </ul>
       </td>
     </tr>
 
     <tr>
-      <th><code>actor</code></th>
+      <th>`actor`</th>
       <td>object</td>
-      <td>An <a href="#apirequest-actor-object">Actor object</a>.</td>
+      <td>An [Actor object](#apirequest-actor-object).</td>
     </tr>
 
     <tr>
-      <th><code>resource</code></th>
+      <th>`resource`</th>
       <td>object</td>
-      <td>A <a href="#apirequest-resource-object">Resource object</a>.</td>
+      <td>A [Resource object](#apirequest-resource-object).</td>
     </tr>
   </tbody>
 </table>
@@ -1001,31 +991,31 @@ No query parameters.
 
   <tbody>
     <tr>
-      <th><code>id</code></th>
+      <th>`id`</th>
       <td>string</td>
       <td>The UUID of the Connect server that made the request.</td>
     </tr>
 
     <tr>
-      <th><code>account</code></th>
+      <th>`account`</th>
       <td>string</td>
       <td>The UUID of the 1Password account the request went to.</td>
     </tr>
 
     <tr>
-      <th><code>jti</code></th>
+      <th>`jti`</th>
       <td>string</td>
       <td>The UUID of the access token used to authenticate the request.</td>
     </tr>
 
     <tr>
-      <th><code>userAgent</code></th>
+      <th>`userAgent`</th>
       <td>string</td>
       <td>The user agent string specified in the request.</td>
     </tr>
 
     <tr>
-      <th><code>ip</code></th>
+      <th>`ip`</th>
       <td>string</td>
       <td>The IP address the request originated from.</td>
     </tr>
@@ -1045,33 +1035,33 @@ No query parameters.
 
   <tbody>
     <tr>
-      <th><code>type</code></th>
+      <th>`type`</th>
       <td>string</td>
 
       <td>
         The resource requested. One of:
 
         <ul>
-          <li><code>"ITEM"</code></li>
-          <li><code>"VAULT"</code></li>
+          <li>`"ITEM"`</li>
+          <li>`"VAULT"`</li>
         </ul>
       </td>
     </tr>
 
     <tr>
-      <th><code>vault</code></th>
+      <th>`vault`</th>
       <td>object</td>
-      <td>An object containing an <code>id</code> property with the value of the UUID of the vault requested.</td>
+      <td>An object containing an `id` property with the value of the UUID of the vault requested.</td>
     </tr>
 
     <tr>
-      <th><code>item</code></th>
+      <th>`item`</th>
       <td>object</td>
-      <td>An object containing an <code>id</code> property with the value of the UUID of the item requested.</td>
+      <td>An object containing an `id` property with the value of the UUID of the item requested.</td>
     </tr>
 
     <tr>
-      <th><code>itemVersion</code></th>
+      <th>`itemVersion`</th>
       <td>integer</td>
       <td>The version of the item.</td>
     </tr>
@@ -1098,13 +1088,13 @@ No query parameters.
 
   <tbody>
     <tr>
-      <th><code>status</code></th>
+      <th>`status`</th>
       <td>integer</td>
       <td>The HTTP status code.</td>
     </tr>
 
     <tr>
-      <th><code>message</code></th>
+      <th>`message`</th>
       <td>string</td>
       <td>A message detailing the error.</td>
     </tr>
@@ -1137,64 +1127,64 @@ No query parameters.
 
   <tbody>
     <tr>
-      <th><code>id</code></th>
+      <th>`id`</th>
       <td>string</td>
       <td>The UUID of the vault.</td>
     </tr>
 
     <tr>
-      <th><code>name</code></th>
+      <th>`name`</th>
       <td>string</td>
       <td>The name of the vault.</td>
     </tr>
 
     <tr>
-      <th><code>description</code></th>
+      <th>`description`</th>
       <td>string</td>
       <td>The description for the vault.</td>
     </tr>
 
     <tr>
-      <th><code>attributeVersion</code></th>
+      <th>`attributeVersion`</th>
       <td>integer</td>
       <td>The version of the vault metadata.</td>
     </tr>
 
     <tr>
-      <th><code>contentVersion</code></th>
+      <th>`contentVersion`</th>
       <td>integer</td>
       <td>The version of the vault contents.</td>
     </tr>
 
     <tr>
-      <th><code>items</code></th>
+      <th>`items`</th>
       <td>integer</td>
       <td>Number of active items in the vault.</td>
     </tr>
 
     <tr>
-      <th><code>type</code></th>
+      <th>`type`</th>
       <td>string</td>
 
       <td>
         The type of vault. One of:
 
         <ul>
-          <li><code>"EVERYONE"</code>: The team Shared vault.</li>
-          <li><code>"PERSONAL"</code>: The Private vault for the Connect server.</li>
-          <li><code>"USER\_CREATED"</code>: A vault created by a user.</li>
+          <li>`"EVERYONE"`: The team Shared vault.</li>
+          <li>`"PERSONAL"`: The Private vault for the Connect server.</li>
+          <li>`"USER_CREATED"`: A vault created by a user.</li>
         </ul>
       </td>
     </tr>
 
     <tr>
-      <th><code>createdAt</code></th>
+      <th>`createdAt`</th>
       <td>dateTime</td>
       <td>Date and time when the vault was created.</td>
     </tr>
 
     <tr>
-      <th><code>updatedAt</code></th>
+      <th>`updatedAt`</th>
       <td>dateTime</td>
       <td>Date and time when the vault or its contents were last changed.</td>
     </tr>
@@ -1307,98 +1297,96 @@ No query parameters.
 
   <tbody>
     <tr>
-      <th><code>id</code></th>
+      <th>`id`</th>
       <td>string</td>
       <td>The UUID of the item.</td>
     </tr>
 
     <tr>
-      <th><code>title</code></th>
+      <th>`title`</th>
       <td>string</td>
       <td>The title of the item.</td>
     </tr>
 
     <tr>
-      <th><code>vault</code></th>
+      <th>`vault`</th>
       <td>object</td>
-      <td>An object containing an <code>id</code> property whose value is the UUID of the vault the item is in.</td>
+      <td>An object containing an `id` property whose value is the UUID of the vault the item is in.</td>
     </tr>
 
     <tr>
-      <th><code>category</code></th>
+      <th>`category`</th>
       <td>string</td>
 
       <td>
         The category of the item. One of:
 
-        <section>
-          <ul>
-            <li><code>"LOGIN"</code></li>
-            <li><code>"PASSWORD"</code></li>
-            <li><code>"API\_CREDENTIAL"</code></li>
-            <li><code>"SERVER"</code></li>
-            <li><code>"DATABASE"</code></li>
-            <li><code>"CREDIT\_CARD"</code></li>
-            <li><code>"MEMBERSHIP"</code></li>
-            <li><code>"PASSPORT"</code></li>
-            <li><code>"SOFTWARE\_LICENSE"</code></li>
-            <li><code>"OUTDOOR\_LICENSE"</code></li>
-            <li><code>"SECURE\_NOTE"</code></li>
-            <li><code>"WIRELESS\_ROUTER"</code></li>
-            <li><code>"BANK\_ACCOUNT"</code></li>
-            <li><code>"DRIVER\_LICENSE"</code></li>
-            <li><code>"IDENTITY"</code></li>
-            <li><code>"REWARD\_PROGRAM"</code></li>
-            <li><code>"DOCUMENT"</code></li>
-            <li><code>"EMAIL\_ACCOUNT"</code></li>
-            <li><code>"SOCIAL\_SECURITY\_NUMBER"</code></li>
-            <li><code>"MEDICAL\_RECORD"</code></li>
-            <li><code>"SSH\_KEY"</code></li>
-          </ul>
-        </section>
+        <ul>
+          <li>`"LOGIN"`</li>
+          <li>`"PASSWORD"`</li>
+          <li>`"API_CREDENTIAL"`</li>
+          <li>`"SERVER"`</li>
+          <li>`"DATABASE"`</li>
+          <li>`"CREDIT_CARD"`</li>
+          <li>`"MEMBERSHIP"`</li>
+          <li>`"PASSPORT"`</li>
+          <li>`"SOFTWARE_LICENSE"`</li>
+          <li>`"OUTDOOR_LICENSE"`</li>
+          <li>`"SECURE_NOTE"`</li>
+          <li>`"WIRELESS_ROUTER"`</li>
+          <li>`"BANK_ACCOUNT"`</li>
+          <li>`"DRIVER_LICENSE"`</li>
+          <li>`"IDENTITY"`</li>
+          <li>`"REWARD_PROGRAM"`</li>
+          <li>`"DOCUMENT"`</li>
+          <li>`"EMAIL_ACCOUNT"`</li>
+          <li>`"SOCIAL_SECURITY_NUMBER"`</li>
+          <li>`"MEDICAL_RECORD"`</li>
+          <li>`"SSH_KEY"`</li>
+        </ul>
 
-        <p className="note">You can't create items using the "CUSTOM" or "DOCUMENT" categories.</p>
+        You can't create items using the "CUSTOM" or "DOCUMENT" categories.
       </td>
     </tr>
 
     <tr>
-      <th><code>urls</code></th>
+      <th>`urls`</th>
       <td>array</td>
-      <td>Array of <a href="#item-url-object">URL objects</a> containing URLs for the item.</td>
+      <td>Array of [URL objects](#item-url-object) containing URLs for the item.</td>
     </tr>
 
     <tr>
-      <th><code>favorite</code></th>
+      <th>`favorite`</th>
       <td>boolean</td>
       <td>Whether the item is marked as a favorite.</td>
     </tr>
 
     <tr>
-      <th><code>tags</code></th>
+      <th>`tags`</th>
       <td>array</td>
       <td>An array of strings of the tags assigned to the item.</td>
     </tr>
 
     <tr>
-      <th><code>version</code></th>
+      <th>`version`</th>
       <td>integer</td>
       <td>The version of the item.</td>
     </tr>
 
     <tr>
-      <th><code>createdAt</code></th>
+      <th>`createdAt`</th>
       <td>dateTime</td>
       <td>Date and time when the item was created.</td>
     </tr>
 
     <tr>
-      <th><code>updatedAt</code></th>
+      <th>`updatedAt`</th>
       <td>dateTime</td>
       <td>Date and time when the vault or its contents were last changed.</td>
     </tr>
 
     <tr>
-      <th><code>lastEditedBy</code></th>
+      <th>`lastEditedBy`</th>
       <td>string</td>
       <td>UUID of the account that last changed the item.</td>
     </tr>
@@ -1429,58 +1417,54 @@ No query parameters.
 
   <tbody>
     <tr>
-      <th><code>purpose</code> or <code>type</code></th>
+      <th>`purpose` or `type`</th>
       <td>string</td>
 
       <td>
-        Use <code>purpose</code> for the username, password, and notes fields. Possible values:
+        Use `purpose` for the username, password, and notes fields. Possible values:
 
-        <section>
-          <ul>
-            <li><code>"USERNAME"</code></li>
-            <li><code>"PASSWORD"</code></li>
-            <li><code>"NOTES"</code></li>
-          </ul>
-        </section>
+        <ul>
+          <li>`"USERNAME"`</li>
+          <li>`"PASSWORD"`</li>
+          <li>`"NOTES"`</li>
+        </ul>
 
-        Use <code>type</code> for all other fields. Possible values are:
+        Use `type` for all other fields. Possible values are:
 
-        <section>
-          <ul>
-            <li><code>"STRING"</code></li>
-            <li><code>"EMAIL"</code></li>
-            <li><code>"CONCEALED"</code></li>
-            <li><code>"URL"</code></li>
-            <li><code>"OTP"</code> (format: <code>otpauth://</code>)</li>
-            <li><code>"DATE"</code> (format: <code>YYYY-MM-DD</code>)</li>
-            <li><code>"MONTH\_YEAR"</code> (format: <code>YYYYMM</code> or <code>YYYY/MM</code>)</li>
-            <li><code>"MENU"</code></li>
-          </ul>
-        </section>
+        <ul>
+          <li>`"STRING"`</li>
+          <li>`"EMAIL"`</li>
+          <li>`"CONCEALED"`</li>
+          <li>`"URL"`</li>
+          <li>`"OTP"` (format: `otpauth://`)</li>
+          <li>`"DATE"` (format: `YYYY-MM-DD`)</li>
+          <li>`"MONTH_YEAR"` (format: `YYYYMM` or `YYYY/MM`)</li>
+          <li>`"MENU"`</li>
+        </ul>
       </td>
     </tr>
 
     <tr>
-      <th><code>value</code></th>
+      <th>`value`</th>
       <td>string</td>
       <td>The value to save for the field.
-      <p className="note">You can specify a <code>generate</code> field instead of <code>value</code> to create a password or other random information for the value.</p></td>
+      You can specify a `generate` field instead of `value` to create a password or other random information for the value.</td>
     </tr>
 
     <tr>
-      <th><code>generate</code></th>
+      <th>`generate`</th>
       <td>boolean</td>
-      <td>Generate a password and save in the value for the field. By default, the password is a 32-characters long, made up of letters, numbers, and symbols. To customize the password, include a <code>recipe</code> field.</td>
+      <td>Generate a password and save in the value for the field. By default, the password is a 32-characters long, made up of letters, numbers, and symbols. To customize the password, include a `recipe` field.</td>
     </tr>
 
     <tr>
-      <th><code>recipe</code></th>
+      <th>`recipe`</th>
       <td>object</td>
-      <td>A <a href="#item-generatorrecipe-object">GeneratorRecipe object</a>.</td>
+      <td>A [GeneratorRecipe object](#item-generatorrecipe-object).</td>
     </tr>
 
     <tr>
-      <th><code>section</code></th>
+      <th>`section`</th>
       <td>object</td>
       <td>An object containing the UUID of a section in the item.</td>
     </tr>
@@ -1513,37 +1497,37 @@ No query parameters.
 
   <tbody>
     <tr>
-      <th><code>id</code></th>
+      <th>`id`</th>
       <td>string</td>
       <td>The UUID of the file.</td>
     </tr>
 
     <tr>
-      <th><code>name</code></th>
+      <th>`name`</th>
       <td>string</td>
       <td>The name of the file.</td>
     </tr>
 
     <tr>
-      <th><code>size</code></th>
+      <th>`size`</th>
       <td>integer</td>
       <td>The size of the file in bytes.</td>
     </tr>
 
     <tr>
-      <th><code>content\_path</code></th>
+      <th>`content_path`</th>
       <td>string</td>
       <td>The path to download the contents of the file.</td>
     </tr>
 
     <tr>
-      <th><code>content</code></th>
+      <th>`content`</th>
       <td>string</td>
-      <td>The Base64-encoded contents of the file, if <code>inline\_files</code> is set to <code>true</code>.</td>
+      <td>The Base64-encoded contents of the file, if `inline_files` is set to `true`.</td>
     </tr>
 
     <tr>
-      <th><code>section</code></th>
+      <th>`section`</th>
       <td>object</td>
       <td>An object containing the UUID of a section in the item.</td>
     </tr>
@@ -1575,30 +1559,30 @@ The recipe is used in conjunction with the "generate" property to set the charac
 
   <tbody>
     <tr>
-      <th><code>length</code></th>
+      <th>`length`</th>
       <td>integer</td>
-      <td>The length of the password to generate. <em>Optional.</em></td>
+      <td>The length of the password to generate. *Optional.*</td>
     </tr>
 
     <tr>
-      <th><code>characterSets</code></th>
+      <th>`characterSets`</th>
       <td>array</td>
 
       <td>
-        An array containing of the kinds of characters to include. <em>Optional.</em> Possible values:
+        An array containing of the kinds of characters to include. *Optional.* Possible values:
 
         <ul>
-          <li><code>"LETTERS"</code></li>
-          <li><code>"DIGITS"</code></li>
-          <li><code>"SYMBOLS"</code></li>
+          <li>`"LETTERS"`</li>
+          <li>`"DIGITS"`</li>
+          <li>`"SYMBOLS"`</li>
         </ul>
       </td>
     </tr>
 
     <tr>
-      <th><code>excludeCharacters</code></th>
+      <th>`excludeCharacters`</th>
       <td>string</td>
-      <td> A list of all characters that should be excluded from generated passwords. <em>Optional.</em></td>
+      <td> A list of all characters that should be excluded from generated passwords. *Optional.*</td>
     </tr>
   </tbody>
 </table>
@@ -1628,38 +1612,38 @@ The recipe is used in conjunction with the "generate" property to set the charac
 
   <tbody>
     <tr>
-      <th><code>entropy</code></th>
+      <th>`entropy`</th>
       <td>integer</td>
       <td>The unpredictability of the password, measured in bits.</td>
     </tr>
 
     <tr>
-      <th><code>generated</code></th>
+      <th>`generated`</th>
       <td>boolean</td>
       <td>Whether the password was generated using the password generator.</td>
     </tr>
 
     <tr>
-      <th><code>strength</code></th>
+      <th>`strength`</th>
       <td>string</td>
 
       <td>
         The strength of the password. One of:
 
         <ul>
-          <li><code>"TERRIBLE"</code></li>
-          <li><code>"WEAK"</code></li>
-          <li><code>"FAIR"</code></li>
-          <li><code>"GOOD"</code></li>
-          <li><code>"VERY\_GOOD"</code></li>
-          <li><code>"EXCELLENT"</code></li>
-          <li><code>"FANTASTIC"</code></li>
+          <li>`"TERRIBLE"`</li>
+          <li>`"WEAK"`</li>
+          <li>`"FAIR"`</li>
+          <li>`"GOOD"`</li>
+          <li>`"VERY_GOOD"`</li>
+          <li>`"EXCELLENT"`</li>
+          <li>`"FANTASTIC"`</li>
         </ul>
       </td>
     </tr>
 
     <tr>
-      <th><code>history</code></th>
+      <th>`history`</th>
       <td>array</td>
       <td>An array of strings containing the previous passwords of the item.</td>
     </tr>
@@ -1686,13 +1670,13 @@ The recipe is used in conjunction with the "generate" property to set the charac
 
   <tbody>
     <tr>
-      <th><code>id</code></th>
+      <th>`id`</th>
       <td>string</td>
       <td>A unique identifier for the section.</td>
     </tr>
 
     <tr>
-      <th><code>label</code></th>
+      <th>`label`</th>
       <td>string</td>
       <td>The label for the section.</td>
     </tr>
@@ -1720,19 +1704,19 @@ The recipe is used in conjunction with the "generate" property to set the charac
 
   <tbody>
     <tr>
-      <th><code>label</code></th>
+      <th>`label`</th>
       <td>string</td>
       <td>The label for the URL.</td>
     </tr>
 
     <tr>
-      <th><code>primary</code></th>
+      <th>`primary`</th>
       <td>boolean</td>
       <td>Whether this is the primary URL for the item.</td>
     </tr>
 
     <tr>
-      <th><code>href</code></th>
+      <th>`href`</th>
       <td>string</td>
       <td>The address.</td>
     </tr>
@@ -1770,21 +1754,21 @@ The recipe is used in conjunction with the "generate" property to set the charac
 
   <tbody>
     <tr>
-      <th><code>name</code></th>
+      <th>`name`</th>
       <td>string</td>
       <td>Name of the server</td>
     </tr>
 
     <tr>
-      <th><code>version</code></th>
+      <th>`version`</th>
       <td>string</td>
       <td>Version info of the Connect server</td>
     </tr>
 
     <tr>
-      <th><code>dependencies</code></th>
+      <th>`dependencies`</th>
       <td>array</td>
-      <td>An array of <a href="#server-health-dependency-object">Service Dependencies</a>.</td>
+      <td>An array of [Service Dependencies](#server-health-dependency-object).</td>
     </tr>
   </tbody>
 </table>
@@ -1802,21 +1786,21 @@ The recipe is used in conjunction with the "generate" property to set the charac
 
   <tbody>
     <tr>
-      <th><code>service</code></th>
+      <th>`service`</th>
       <td>string</td>
       <td>Name of the dependency</td>
     </tr>
 
     <tr>
-      <th><code>status</code></th>
+      <th>`status`</th>
       <td>string</td>
       <td>The service's reported status</td>
     </tr>
 
     <tr>
-      <th><code>message</code></th>
+      <th>`message`</th>
       <td>string</td>
-      <td>Extra information about the dependency's status. <em>Optional.</em></td>
+      <td>Extra information about the dependency's status. *Optional.*</td>
     </tr>
   </tbody>
 </table>
