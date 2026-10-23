@@ -6,7 +6,7 @@
 
 > [!NOTE]
 >
-> If you're new to 1Password Secrets Automation and 1Password Connect Server, [learn how to get started with a Secrets Automation workflow](/connect/get-started/).
+> If you're new to 1Password Secrets Automation and 1Password Connect Server, [learn how to get started with a Secrets Automation workflow](/connect/get-started.md).
 
 You can use the Connect API to work with the vaults and items in your account, and to list API activity on a Connect server:
 
@@ -30,12 +30,12 @@ To view the API in another tool, download the [1Password Connect API specificati
 Before you can use the 1Password Connect Server API, you'll need to:
 
 * [Sign up for 1Password.](https://1password.com/pricing/password-manager)
-* [Set up a Secrets Automation workflow.](/connect/get-started/#step-1).
-* [Deploy 1Password Connect](/connect/get-started/#step-2-deploy-1password-connect-server) in your infrastructure.
+* [Set up a Secrets Automation workflow.](/connect/get-started.md#step-1).
+* [Deploy 1Password Connect](/connect/get-started.md#step-2-deploy-1password-connect-server) in your infrastructure.
 
 ## Request headers
 
-Each request to the API has to be authenticated with an [access token](/connect/manage-connect/#manage-access-tokens). Provide it and specify the content type:
+Each request to the API has to be authenticated with an [access token](/connect/manage-connect.md#manage-access-tokens). Provide it and specify the content type:
 
 ```
 Authorization: Bearer <access_token>

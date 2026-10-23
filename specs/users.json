@@ -1,0 +1,669 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "1Password Users API",
+    "version": "v1",
+    "description": "The 1Password Users API lets you list users, retrieve a single user, and\nsuspend or reactivate users in a 1Password Enterprise Password Manager\n(1Password Business tier) account. Use it to connect your 1Password account\nto a security automation platform so that events flagged by your security\ntools can trigger access remediation actions in 1Password.\n\nRequests are authorized with an OAuth 2.0 access token obtained through the\nclient credentials flow. The conventions for endpoint paths, pagination,\nfiltering, and errors apply across the whole API.\n\nThe error response format (`code` and `message`) is provisional and may\nchange in a future release.",
+    "contact": {
+      "name": "1Password",
+      "url": "https://1password.com/contact-us"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.1password.com",
+      "description": "1Password.com (United States)"
+    },
+    {
+      "url": "https://api.1password.ca",
+      "description": "1Password.ca (Canada)"
+    },
+    {
+      "url": "https://api.1password.eu",
+      "description": "1Password.eu (Europe)"
+    },
+    {
+      "url": "https://api.ent.1password.com",
+      "description": "ent.1password.com"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Users",
+      "description": "List, retrieve, suspend, and reactivate users in a 1Password account.",
+      "x-group": "Users"
+    }
+  ],
+  "paths": {
+    "/v1/accounts/{account}/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "List users",
+        "description": "Retrieve a list of users in a 1Password account. Optionally filter the results by user state.",
+        "x-original-description": "List users in an account.",
+        "operationId": "listUsers",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Account"
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filter users by state. Supported values (case-sensitive): `user.isActive()` or `user.isSuspended()`.\nOmit or leave empty to return both active and suspended users. Any other value returns `400 Bad Request` with an `invalid_argument` error.",
+            "x-original-description": "Filter value: \"user.isActive()\" or \"user.isSuspended()\".\n Omit or leave empty for both. Invalid values result in InvalidArgument.",
+            "required": false,
+            "example": "user.isSuspended()",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "max_page_size",
+            "in": "query",
+            "description": "The maximum number of users to return per page. Defaults to 100 when omitted or set to 0. The maximum is 1000; values greater than 1000 are limited to 1000, and negative values return `400 Bad Request`. Ignored when `page_token` is provided.",
+            "x-original-description": "The maximum number of users to return per page.",
+            "required": false,
+            "example": 100,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0,
+              "maximum": 1000,
+              "default": 100
+            }
+          },
+          {
+            "name": "page_token",
+            "in": "query",
+            "description": "The pagination token that identifies the page of results to return. Use the `next_page_token` value from a previous response, and send the same `filter` value as the original request. Tokens are opaque and don't expire.",
+            "x-original-description": "A page token from a previous ListUsers call.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/UserAgent"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A paginated list of users in the account.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user.v1.ListUsersResponse"
+                },
+                "example": {
+                  "results": [
+                    {
+                      "id": "IR7VJHJ36JHINBFAD7V2T5MP3E",
+                      "email": "wendy_appleseed@agilebits.com",
+                      "display_name": "Wendy Appleseed",
+                      "state": "ACTIVE",
+                      "create_time": "2024-01-15T10:30:00Z",
+                      "path": "accounts/WX52YXL2MVEPBK43P3R4XMWKXI/users/IR7VJHJ36JHINBFAD7V2T5MP3E"
+                    },
+                    {
+                      "id": "56YE2TYN2VFYRLNSHKPW5NVT5E",
+                      "email": "riley_smith@example.com",
+                      "display_name": "Riley Smith",
+                      "state": "SUSPENDED",
+                      "create_time": "2024-03-20T09:15:00Z",
+                      "path": "accounts/WX52YXL2MVEPBK43P3R4XMWKXI/users/56YE2TYN2VFYRLNSHKPW5NVT5E"
+                    }
+                  ],
+                  "next_page_token": "CAIQAg"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/PermissionDenied"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/Internal"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/accounts/{account}/users/{user}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get a user",
+        "description": "Retrieve a single user in a 1Password account by their unique identifier.",
+        "x-original-description": "Get a user by ID.",
+        "operationId": "getUser",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Account"
+          },
+          {
+            "$ref": "#/components/parameters/User"
+          },
+          {
+            "$ref": "#/components/parameters/UserAgent"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user.v1.User"
+                },
+                "example": {
+                  "id": "IR7VJHJ36JHINBFAD7V2T5MP3E",
+                  "email": "wendy_appleseed@agilebits.com",
+                  "display_name": "Wendy Appleseed",
+                  "state": "ACTIVE",
+                  "create_time": "2024-01-15T10:30:00Z",
+                  "path": "accounts/WX52YXL2MVEPBK43P3R4XMWKXI/users/IR7VJHJ36JHINBFAD7V2T5MP3E"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/PermissionDenied"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/Internal"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/accounts/{account}/users/{user}:suspend": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Suspend a user",
+        "description": "Suspend a user in a 1Password account. Transitions the user's state from `ACTIVE` to `SUSPENDED` and removes their access to the account.",
+        "x-original-description": "Transitions the user's state from ACTIVE to SUSPENDED.\n Returns FAILED_PRECONDITION if the user is not in the ACTIVE state.",
+        "operationId": "suspendUser",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Account"
+          },
+          {
+            "$ref": "#/components/parameters/User"
+          },
+          {
+            "$ref": "#/components/parameters/UserAgent"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The updated user, with state `SUSPENDED`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user.v1.User"
+                },
+                "example": {
+                  "id": "IR7VJHJ36JHINBFAD7V2T5MP3E",
+                  "email": "wendy_appleseed@agilebits.com",
+                  "display_name": "Wendy Appleseed",
+                  "state": "SUSPENDED",
+                  "create_time": "2024-01-15T10:30:00Z",
+                  "path": "accounts/WX52YXL2MVEPBK43P3R4XMWKXI/users/IR7VJHJ36JHINBFAD7V2T5MP3E"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestAction"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/PermissionDenied"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/Internal"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/accounts/{account}/users/{user}:reactivate": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Reactivate a user",
+        "description": "Reactivate a suspended user in a 1Password account. Transitions the user's state from `SUSPENDED` to `ACTIVE` and restores their access to the account.",
+        "x-original-description": "Transitions the user's state from SUSPENDED to ACTIVE.\n Returns FAILED_PRECONDITION if the user is not in the SUSPENDED state.",
+        "operationId": "reactivateUser",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Account"
+          },
+          {
+            "$ref": "#/components/parameters/User"
+          },
+          {
+            "$ref": "#/components/parameters/UserAgent"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The updated user, with state `ACTIVE`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user.v1.User"
+                },
+                "example": {
+                  "id": "IR7VJHJ36JHINBFAD7V2T5MP3E",
+                  "email": "wendy_appleseed@agilebits.com",
+                  "display_name": "Wendy Appleseed",
+                  "state": "ACTIVE",
+                  "create_time": "2024-01-15T10:30:00Z",
+                  "path": "accounts/WX52YXL2MVEPBK43P3R4XMWKXI/users/IR7VJHJ36JHINBFAD7V2T5MP3E"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestAction"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/PermissionDenied"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/Internal"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "OAuth 2.0 access token authentication. Request an access token from the OAuth token endpoint using the client credentials for the OAuth application in your 1Password account, then include it in the Authorization header of every request as `Bearer <token>`. Access tokens expire after 15 minutes (900 seconds)."
+      }
+    },
+    "parameters": {
+      "Account": {
+        "name": "account",
+        "in": "path",
+        "description": "The unique identifier of the 1Password account, a 26-character uppercase ID. A malformed ID returns `400 Bad Request`.",
+        "x-original-description": "The account id.",
+        "required": true,
+        "example": "WX52YXL2MVEPBK43P3R4XMWKXI",
+        "schema": {
+          "type": "string",
+          "minLength": 26,
+          "maxLength": 26
+        }
+      },
+      "User": {
+        "name": "user",
+        "in": "path",
+        "description": "The unique identifier of the user, a 26-character uppercase ID. A malformed ID returns `400 Bad Request`.",
+        "x-original-description": "The user id.",
+        "required": true,
+        "example": "IR7VJHJ36JHINBFAD7V2T5MP3E",
+        "schema": {
+          "type": "string",
+          "minLength": 26,
+          "maxLength": 26
+        }
+      },
+      "UserAgent": {
+        "name": "User-Agent",
+        "in": "header",
+        "description": "An identifiable user agent for your integration, in the format `<CompanyOrProductName>/<version>`, so requests can be attributed to a specific integration for support, troubleshooting, and usage analytics.",
+        "required": false,
+        "example": "AcmeSOAR/1.0.0",
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Bad Request - A request parameter is invalid, for example an unsupported `filter` value, an unsupported query parameter, an invalid `page_token`, a negative `max_page_size`, or a malformed account or user ID. Also returned when the `Authorization` header is malformed.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "invalid_argument": {
+                "summary": "Unsupported filter value",
+                "value": {
+                  "code": "invalid_argument",
+                  "message": "invalid filter \"user.isDeleted()\": must be \"user.isActive()\" or \"user.isSuspended()\""
+                }
+              },
+              "malformed_authorization": {
+                "summary": "Malformed Authorization header",
+                "value": {
+                  "code": "invalid_argument",
+                  "message": "malformed authorization header"
+                }
+              }
+            }
+          }
+        }
+      },
+      "BadRequestAction": {
+        "description": "Bad Request - A path parameter or the `Authorization` header is malformed (`invalid_argument`), or the user can't be transitioned from their current state, for example because they're pending confirmation (`failed_precondition`).",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "invalid_argument": {
+                "summary": "Malformed user ID",
+                "value": {
+                  "code": "invalid_argument",
+                  "message": "invalid user UUID"
+                }
+              },
+              "malformed_authorization": {
+                "summary": "Malformed Authorization header",
+                "value": {
+                  "code": "invalid_argument",
+                  "message": "malformed authorization header"
+                }
+              },
+              "failed_precondition": {
+                "summary": "User isn't in a state that allows the action",
+                "value": {
+                  "code": "failed_precondition",
+                  "message": "user_not_suspendable"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Unauthenticated": {
+        "description": "Unauthorized - The request doesn't include a valid access token. The `Authorization` header is missing, or the bearer token is invalid, expired, or revoked. Also returned for tokens that weren't issued by the OAuth API, such as tokens from the legacy OAuth service. Request a new access token.",
+        "headers": {
+          "WWW-Authenticate": {
+            "description": "The Bearer authentication challenge (RFC 6750). Includes `error=\"invalid_token\"` when a token was sent but isn't valid.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "Bearer realm=\"1Password\", error=\"invalid_token\", error_description=\"invalid access token\""
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "missing_token": {
+                "summary": "Authorization header is missing",
+                "value": {
+                  "code": "unauthenticated",
+                  "message": "authentication required"
+                }
+              },
+              "invalid_token": {
+                "summary": "Token is invalid, expired, or revoked",
+                "value": {
+                  "code": "unauthenticated",
+                  "message": "invalid access token"
+                }
+              },
+              "legacy_token": {
+                "summary": "Token wasn't issued by the OAuth API",
+                "value": {
+                  "code": "unauthenticated",
+                  "message": "Token is inactive or expired: inactive_token"
+                }
+              }
+            }
+          }
+        }
+      },
+      "PermissionDenied": {
+        "description": "Forbidden - The token doesn't include the scope required for this endpoint, the account in the path doesn't belong to the OAuth application's account, or the action isn't allowed for the target user.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "missing_scope": {
+                "summary": "Token lacks the required scope",
+                "value": {
+                  "code": "permission_denied",
+                  "message": "Permission denied: permission_denied"
+                }
+              },
+              "account_mismatch": {
+                "summary": "Account in the path doesn't match the token",
+                "value": {
+                  "code": "permission_denied",
+                  "message": "Account UUID does not match token: account_uuid_mismatch"
+                }
+              }
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Not Found - The user doesn't exist.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "code": "not_found",
+              "message": "no_user_exists"
+            }
+          }
+        }
+      },
+      "TooManyRequests": {
+        "description": "Too Many Requests - The rate limit of 100 requests per minute or 6,000 requests per hour for this endpoint was exceeded.",
+        "headers": {
+          "Retry-After": {
+            "description": "How long to wait before retrying, in seconds.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          "RateLimit-Limit": {
+            "description": "The request limit for the current window.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          "RateLimit-Remaining": {
+            "description": "The number of requests remaining in the current window.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          "RateLimit-Reset": {
+            "description": "When the current window resets, as a Unix timestamp in seconds.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "code": "resource_exhausted",
+              "message": "rate limit exceeded"
+            }
+          }
+        }
+      },
+      "Internal": {
+        "description": "Internal Server Error - An unexpected error occurred. Retry the request later."
+      },
+      "Unavailable": {
+        "description": "Service Unavailable - The service is temporarily unavailable. Retry the request later."
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "description": "An error response with a machine-readable `code` and a human-readable `message`. This format is provisional and may change in a future release.",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "A machine-readable error code, for example `invalid_argument`, `failed_precondition`, `unauthenticated`, `permission_denied`, `not_found`, `resource_exhausted`, `internal`, or `unavailable`.",
+            "example": "invalid_argument"
+          },
+          "message": {
+            "type": "string",
+            "description": "A human-readable description of the error."
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ]
+      },
+      "user.v1.ListUsersResponse": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/user.v1.User"
+            },
+            "description": "The list of users returned for this page. Only active and suspended users are included."
+          },
+          "next_page_token": {
+            "type": "string",
+            "description": "An opaque token to retrieve the next page of results. Pass it in the `page_token` query parameter of the next request. Omitted when there are no more results. A page with no results is returned as an empty object (`{}`)."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The paginated list of users.",
+        "x-original-description": "Response message for listing users."
+      },
+      "user.v1.User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier (UUID) of the user.",
+            "readOnly": true
+          },
+          "email": {
+            "type": "string",
+            "description": "The email address of the user."
+          },
+          "display_name": {
+            "type": "string",
+            "description": "The display name of the user."
+          },
+          "state": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/user.v1.User.State"
+              }
+            ],
+            "description": "The current state of the user. Omitted when the user is neither active nor suspended, for example while pending confirmation or in account recovery."
+          },
+          "create_time": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time the user was created, in RFC 3339 format.",
+            "readOnly": true
+          },
+          "path": {
+            "type": "string",
+            "description": "The resource path of the user.\nFormat: `accounts/{account}/users/{user}`",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "A user within a 1Password account.",
+        "x-aep-resource": {
+          "singular": "user"
+        }
+      },
+      "user.v1.User.State": {
+        "type": "string",
+        "enum": [
+          "STATE_UNSPECIFIED",
+          "ACTIVE",
+          "SUSPENDED"
+        ],
+        "description": "The state of a user. `STATE_UNSPECIFIED` corresponds to users in any other state, such as pending confirmation; in responses the `state` field is omitted for these users. Additional states may be added in the future."
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ]
+}

@@ -16,7 +16,7 @@ You can integrate a Connect server into your infrastructure and communicate with
 >
 > **Not sure if Connect servers are for you?**
 >
-> See the [Secrets Automation comparison table](/secrets-automation/#comparison).
+> See the [Secrets Automation comparison table](/secrets-automation.md#comparison).
 
 ![The Connect server is part of your environment, and communicates to Your Apps using access tokens and a REST API.](https://mintcdn.com/ab-634991b8/P8nNS8jHoY1I7R9r/static/img/connect-diagram.png?fit=max\&auto=format\&n=P8nNS8jHoY1I7R9r\&q=85\&s=70b961d4ea5fa816b3da9b73907f09eb)
 
@@ -40,7 +40,7 @@ Use a Connect server to automatically access your secrets in continuous integrat
 
 You can use a Connect server to use 1Password items in your CI/CD pipeline for testing and deploying code. Doing so maintains security and avoids using sensitive information with a personal account.
 
-[Learn more](/ci-cd/)
+[Learn more](/ci-cd.md)
 
 Web services
 
@@ -64,7 +64,7 @@ Use a Connect server to automate scripts to manage secrets.
 
 Using a Connect server helps you implement the principle of least privilege and avoid the limitations of personal accounts (for example, SSO and MFA requirements).
 
-[Learn more](/connect/manage-connect)
+[Learn more](/connect/manage-connect.md)
 
 Development workflows
 
@@ -78,7 +78,7 @@ Integration
 
 Use a Connect server to access and sync 1Password secrets in a Kubernetes environment.
 
-[Learn more](/k8s/integrations)
+[Learn more](/k8s/integrations.md)
 
 ## Get started
 

@@ -1,0 +1,652 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "1Password OAuth API",
+    "version": "v1",
+    "description": "The 1Password OAuth API issues, inspects, and revokes the OAuth 2.0 access\ntokens used to authorize requests to the 1Password Users API.\n\nIntegrations authenticate with the client ID and client secret of an OAuth\napplication in a 1Password account, using the OAuth 2.0 client credentials\ngrant (RFC 6749 §4.4). Access tokens are opaque bearer tokens that expire\nafter 15 minutes and carry the scopes configured for the OAuth application.\nTokens can be revoked before they expire (RFC 7009) and checked with token\nintrospection (RFC 7662). Refresh tokens aren't issued for the client\ncredentials grant; request a new access token when the current one expires.\n\nAll requests use `Content-Type: application/x-www-form-urlencoded`. Responses\nthat return a body are JSON and include `Cache-Control: no-store` and\n`Pragma: no-cache`, so tokens are never cached. A successful revocation\nreturns an empty `200 OK` response.",
+    "contact": {
+      "name": "1Password",
+      "url": "https://1password.com/contact-us"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.1password.com",
+      "description": "1Password.com (United States)"
+    },
+    {
+      "url": "https://api.1password.ca",
+      "description": "1Password.ca (Canada)"
+    },
+    {
+      "url": "https://api.1password.eu",
+      "description": "1Password.eu (Europe)"
+    },
+    {
+      "url": "https://api.ent.1password.com",
+      "description": "ent.1password.com"
+    }
+  ],
+  "tags": [
+    {
+      "name": "OAuth tokens",
+      "description": "Request, introspect, and revoke OAuth 2.0 access tokens for the Users API.",
+      "x-group": "OAuth tokens"
+    }
+  ],
+  "paths": {
+    "/v1/oauth/token": {
+      "post": {
+        "tags": [
+          "OAuth tokens"
+        ],
+        "summary": "Request an access token",
+        "description": "Exchange the client credentials of an OAuth application for a short-lived access token,\nusing the OAuth 2.0 client credentials grant.\n\nAuthenticate with the OAuth application's client ID and client secret in one of two ways:\nsend them in the `Authorization` header using HTTP Basic authentication (recommended), or\nsend them as the `client_id` and `client_secret` form fields. Use only one method per\nrequest; a request that uses both is rejected.\n\nA successful response returns an opaque bearer token that expires after 15 minutes\n(`expires_in` is reported in seconds) and lists the scopes granted to the token, which are\nthe scopes configured for the OAuth application. Include the token in the `Authorization`\nheader of requests to the Users API as `Bearer <access_token>`.\n\nRequests to this endpoint are rate limited per OAuth application and per 1Password account,\nwith limits shared across the token, introspection, and revocation endpoints.",
+        "operationId": "requestAccessToken",
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenRequest"
+              },
+              "example": {
+                "grant_type": "client_credentials"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An access token for the OAuth application.",
+            "headers": {
+              "Cache-Control": {
+                "$ref": "#/components/headers/CacheControl"
+              },
+              "Pragma": {
+                "$ref": "#/components/headers/Pragma"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                },
+                "example": {
+                  "access_token": "op_o_c_H3WVOKGN4B7JXQYCQ6DJFAW5ZU_Q2s4ZmVnaGprbG1ub3BxcnN0dXZ3eHl6MDEyMzQ1Njc4OWFi",
+                  "token_type": "Bearer",
+                  "expires_in": 900,
+                  "scope": "users.view users.suspend users.reactivate"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request is malformed or uses an unsupported grant type, or the OAuth application isn't allowed to use the client credentials grant.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                },
+                "examples": {
+                  "missing_credentials": {
+                    "summary": "Missing client credentials",
+                    "value": {
+                      "error": "invalid_request",
+                      "error_description": "missing client credentials"
+                    }
+                  },
+                  "multiple_auth_methods": {
+                    "summary": "Credentials sent in both the header and the body",
+                    "value": {
+                      "error": "invalid_request",
+                      "error_description": "multiple client authentication methods are not allowed"
+                    }
+                  },
+                  "unsupported_grant_type": {
+                    "summary": "Unsupported grant type",
+                    "value": {
+                      "error": "unsupported_grant_type",
+                      "error_description": "unsupported grant_type"
+                    }
+                  },
+                  "unauthorized_client": {
+                    "summary": "Grant type not enabled for the OAuth application",
+                    "value": {
+                      "error": "unauthorized_client",
+                      "error_description": "client is not authorized to use this grant type"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - The client ID or client secret is invalid, the OAuth application has been deleted, or the Basic authentication header is malformed.",
+            "headers": {
+              "WWW-Authenticate": {
+                "description": "Returned when the request used Basic authentication.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Basic realm=\"token\""
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                },
+                "examples": {
+                  "invalid_client": {
+                    "summary": "Client authentication failed",
+                    "value": {
+                      "error": "invalid_client",
+                      "error_description": "client authentication failed"
+                    }
+                  },
+                  "malformed_basic_auth": {
+                    "summary": "Malformed Basic authentication header",
+                    "value": {
+                      "error": "unauthorized",
+                      "error_description": "malformed authentication provided"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/Internal"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/oauth/introspect": {
+      "post": {
+        "tags": [
+          "OAuth tokens"
+        ],
+        "summary": "Introspect an access token",
+        "description": "Check whether an access token is active and retrieve its metadata, following RFC 7662.\nAuthenticate with the client credentials of the OAuth application that the token was issued\nto, using HTTP Basic authentication or the `client_id` and `client_secret` form fields.\n\nThe response always returns `200 OK`. An active token returns `\"active\": true` with its\nscopes, client ID, and issue and expiry times. A token that is expired, revoked, unknown, or\nissued to a different OAuth application returns `\"active\": false` with no other fields.\n\nRequests to this endpoint share the token endpoint's rate limits.",
+        "operationId": "introspectAccessToken",
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/IntrospectRequest"
+              },
+              "example": {
+                "token": "op_o_c_H3WVOKGN4B7JXQYCQ6DJFAW5ZU_Q2s4ZmVnaGprbG1ub3BxcnN0dXZ3eHl6MDEyMzQ1Njc4OWFi"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The token's introspection result.",
+            "headers": {
+              "Cache-Control": {
+                "$ref": "#/components/headers/CacheControl"
+              },
+              "Pragma": {
+                "$ref": "#/components/headers/Pragma"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntrospectionResponse"
+                },
+                "examples": {
+                  "active": {
+                    "summary": "Active token",
+                    "value": {
+                      "active": true,
+                      "scope": "users.view users.suspend users.reactivate",
+                      "client_id": "H3WVOKGN4B7JXQYCQ6DJFAW5ZU",
+                      "sub": "H3WVOKGN4B7JXQYCQ6DJFAW5ZU",
+                      "token_type": "Bearer",
+                      "exp": 1760000900,
+                      "iat": 1760000000
+                    }
+                  },
+                  "inactive": {
+                    "summary": "Expired, revoked, unknown, or another application's token",
+                    "value": {
+                      "active": false
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The `token` parameter is missing.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                },
+                "example": {
+                  "error": "invalid_request",
+                  "error_description": "missing required parameter: token"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Client credentials are missing or invalid.",
+            "headers": {
+              "WWW-Authenticate": {
+                "description": "Returned when the request used Basic authentication.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Basic realm=\"introspect\""
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                },
+                "example": {
+                  "error": "invalid_client",
+                  "error_description": "client authentication failed"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/Internal"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/oauth/revoke": {
+      "post": {
+        "tags": [
+          "OAuth tokens"
+        ],
+        "summary": "Revoke an access token",
+        "description": "Revoke an access token before it expires, following RFC 7009. Authenticate with the client\ncredentials of the OAuth application that the token was issued to, using HTTP Basic\nauthentication or the `client_id` and `client_secret` form fields, and send the token as\nthe `token` form field.\n\nA successful request returns `200 OK` with an empty body. The endpoint also returns\n`200 OK` if the token is already expired, revoked, unknown, or was issued to a different\nOAuth application, so revocation requests are safe to retry.\n\nRequests to this endpoint share the token endpoint's rate limits.",
+        "operationId": "revokeAccessToken",
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/RevokeRequest"
+              },
+              "example": {
+                "token": "op_o_c_H3WVOKGN4B7JXQYCQ6DJFAW5ZU_Q2s4ZmVnaGprbG1ub3BxcnN0dXZ3eHl6MDEyMzQ1Njc4OWFi"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The token was revoked, or was already invalid. The response has no body."
+          },
+          "400": {
+            "description": "Bad Request - The `token` parameter is missing, or the client ID isn't in a valid format.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                },
+                "examples": {
+                  "missing_token": {
+                    "summary": "Missing token",
+                    "value": {
+                      "error": "invalid_request",
+                      "error_description": "missing required parameter: token"
+                    }
+                  },
+                  "invalid_client_id": {
+                    "summary": "Invalid client ID format",
+                    "value": {
+                      "error": "invalid_request",
+                      "error_description": "invalid client_id format"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Client credentials are missing or invalid.",
+            "headers": {
+              "WWW-Authenticate": {
+                "description": "Returned when the request used Basic authentication.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Basic realm=\"revoke\""
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                },
+                "example": {
+                  "error": "invalid_client",
+                  "error_description": "client authentication failed"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/Internal"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BasicAuth": {
+        "type": "http",
+        "scheme": "basic",
+        "description": "HTTP Basic authentication with the OAuth application's client credentials: the client ID as the username and the client secret as the password, joined with a colon and base64-encoded (`Authorization: Basic <base64(client_id:client_secret)>`). Tools such as curl encode the credentials for you when you pass them with `--user \"<client_id>:<client_secret>\"`. Alternatively, send the credentials as the `client_id` and `client_secret` form fields in the request body. Don't use both methods in the same request."
+      }
+    },
+    "headers": {
+      "CacheControl": {
+        "description": "Always `no-store`. Responses that carry tokens must not be cached.",
+        "schema": {
+          "type": "string"
+        },
+        "example": "no-store"
+      },
+      "Pragma": {
+        "description": "Always `no-cache`.",
+        "schema": {
+          "type": "string"
+        },
+        "example": "no-cache"
+      }
+    },
+    "responses": {
+      "RateLimited": {
+        "description": "Too Many Requests - The rate limit for the OAuth application or the 1Password account was exceeded. Limits are shared across the token, introspection, and revocation endpoints.",
+        "headers": {
+          "Retry-After": {
+            "description": "How long to wait before retrying, in seconds.",
+            "schema": {
+              "type": "integer"
+            },
+            "example": 42
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/OAuthError"
+            },
+            "example": {
+              "error": "slow_down",
+              "error_description": "rate limit exceeded"
+            }
+          }
+        }
+      },
+      "Internal": {
+        "description": "Internal Server Error - An unexpected error occurred. Retry the request later.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/OAuthError"
+            },
+            "example": {
+              "error": "server_error",
+              "error_description": "internal server error"
+            }
+          }
+        }
+      },
+      "Unavailable": {
+        "description": "Service Unavailable - The service is temporarily unable to process the request. Retry the request later.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/OAuthError"
+            },
+            "example": {
+              "error": "server_error",
+              "error_description": "rate limiter unavailable"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "ClientCredentialsFields": {
+        "type": "object",
+        "properties": {
+          "client_id": {
+            "type": "string",
+            "description": "The client ID of the OAuth application. Use together with `client_secret` as an alternative to HTTP Basic authentication.",
+            "example": "H3WVOKGN4B7JXQYCQ6DJFAW5ZU"
+          },
+          "client_secret": {
+            "type": "string",
+            "description": "The client secret of the OAuth application. Use together with `client_id` as an alternative to HTTP Basic authentication."
+          }
+        }
+      },
+      "TokenRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ClientCredentialsFields"
+          },
+          {
+            "type": "object",
+            "required": [
+              "grant_type"
+            ],
+            "properties": {
+              "grant_type": {
+                "type": "string",
+                "enum": [
+                  "client_credentials"
+                ],
+                "description": "The OAuth 2.0 grant type. Must be `client_credentials`."
+              }
+            }
+          }
+        ]
+      },
+      "TokenResponse": {
+        "type": "object",
+        "required": [
+          "access_token",
+          "token_type",
+          "expires_in"
+        ],
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "description": "The opaque access token. Include it in the `Authorization` header of Users API requests as `Bearer <access_token>`. Access tokens begin with `op_o_c_`."
+          },
+          "token_type": {
+            "type": "string",
+            "description": "The token type. Always `Bearer`.",
+            "example": "Bearer"
+          },
+          "expires_in": {
+            "type": "integer",
+            "description": "The lifetime of the access token in seconds. Access tokens expire after 15 minutes (900 seconds).",
+            "example": 900
+          },
+          "scope": {
+            "type": "string",
+            "description": "The scopes granted to the access token, separated by spaces. These are the scopes configured for the OAuth application, for example `users.view`, `users.suspend`, and `users.reactivate`.",
+            "example": "users.view users.suspend users.reactivate"
+          }
+        },
+        "additionalProperties": false
+      },
+      "IntrospectRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ClientCredentialsFields"
+          },
+          {
+            "type": "object",
+            "required": [
+              "token"
+            ],
+            "properties": {
+              "token": {
+                "type": "string",
+                "description": "The access token to introspect."
+              },
+              "token_type_hint": {
+                "type": "string",
+                "enum": [
+                  "access_token"
+                ],
+                "description": "A hint about the type of token. Optional; only access tokens are issued."
+              }
+            }
+          }
+        ]
+      },
+      "IntrospectionResponse": {
+        "type": "object",
+        "required": [
+          "active"
+        ],
+        "properties": {
+          "active": {
+            "type": "boolean",
+            "description": "Whether the token is currently active. `false` for tokens that are expired, revoked, unknown, or issued to a different OAuth application; the remaining fields are omitted in that case."
+          },
+          "scope": {
+            "type": "string",
+            "description": "The scopes granted to the token, separated by spaces.",
+            "example": "users.view users.suspend users.reactivate"
+          },
+          "client_id": {
+            "type": "string",
+            "description": "The client ID of the OAuth application the token was issued to.",
+            "example": "H3WVOKGN4B7JXQYCQ6DJFAW5ZU"
+          },
+          "sub": {
+            "type": "string",
+            "description": "The subject of the token. For client credentials tokens, this is the client ID.",
+            "example": "H3WVOKGN4B7JXQYCQ6DJFAW5ZU"
+          },
+          "token_type": {
+            "type": "string",
+            "description": "The token type. Always `Bearer` for active tokens.",
+            "example": "Bearer"
+          },
+          "exp": {
+            "type": "integer",
+            "format": "int64",
+            "description": "When the token expires, as a Unix timestamp in seconds.",
+            "example": 1760000900
+          },
+          "iat": {
+            "type": "integer",
+            "format": "int64",
+            "description": "When the token was issued, as a Unix timestamp in seconds.",
+            "example": 1760000000
+          }
+        },
+        "additionalProperties": false
+      },
+      "RevokeRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ClientCredentialsFields"
+          },
+          {
+            "type": "object",
+            "required": [
+              "token"
+            ],
+            "properties": {
+              "token": {
+                "type": "string",
+                "description": "The access token to revoke."
+              },
+              "token_type_hint": {
+                "type": "string",
+                "enum": [
+                  "access_token"
+                ],
+                "description": "A hint about the type of token being revoked. Optional; only access tokens are issued."
+              }
+            }
+          }
+        ]
+      },
+      "OAuthError": {
+        "type": "object",
+        "description": "An OAuth 2.0 error response (RFC 6749 §5.2).",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "string",
+            "enum": [
+              "invalid_request",
+              "invalid_client",
+              "unauthorized_client",
+              "unsupported_grant_type",
+              "unauthorized",
+              "slow_down",
+              "server_error"
+            ],
+            "description": "A machine-readable error code."
+          },
+          "error_description": {
+            "type": "string",
+            "description": "A human-readable description of the error."
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}
