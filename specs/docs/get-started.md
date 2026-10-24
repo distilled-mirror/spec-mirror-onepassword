@@ -4,7 +4,7 @@
 
 # Get started with a 1Password Connect server
 
-1Password Connect servers are a type of [Secrets Automation workflow](/secrets-automation.md) that allows you to securely access your 1Password items and vaults in your company's apps and cloud infrastructure.
+1Password Connect servers are a type of [Secrets Automation workflow](https://www.1password.dev/secrets-automation.md) that allows you to securely access your 1Password items and vaults in your company's apps and cloud infrastructure.
 
 [Getting Started with 1Password Connect](https://www.youtube.com/embed/PMwxZxZT2Pc)
 
@@ -16,17 +16,17 @@ Before you can create a 1Password Secrets Automation workflow as a Connect serve
 
 * [Sign up for a 1Password account](https://1password.com/pricing/password-manager).
 * [Create a vault](https://support.1password.com/create-share-vaults/) for the Connect server to access. Connect servers can't access your built-in [Personal](https://support.1password.com/1password-glossary/#personal-vault), [Private](https://support.1password.com/1password-glossary/#private-vault), or [Employee](https://support.1password.com/1password-glossary/#employee-vault) vault, or your default [Shared](https://support.1password.com/1password-glossary/#shared-vault) vault.
-* Make sure you belong to [a group with permission to manage Secrets Automation](/connect/manage-connect.md).
+* Make sure you belong to [a group with permission to manage Secrets Automation](https://www.1password.dev/connect/manage-connect.md).
 * Make sure you have a deployment environment for Docker. You can use a cloud service provider or your local machine.
 
 **Kubernetes**
 
 * [Sign up for a 1Password account](https://1password.com/pricing/password-manager).
 * [Create a vault](https://support.1password.com/create-share-vaults/) for the Connect server to access. Connect servers can't access your built-in [Personal](https://support.1password.com/1password-glossary/#personal-vault), [Private](https://support.1password.com/1password-glossary/#private-vault), or [Employee](https://support.1password.com/1password-glossary/#employee-vault) vault, or your default [Shared](https://support.1password.com/1password-glossary/#shared-vault) vault.
-* Make sure you belong to [a group with permission to manage Secrets Automation](/connect/manage-connect.md).
+* Make sure you belong to [a group with permission to manage Secrets Automation](https://www.1password.dev/connect/manage-connect.md).
 * Make sure you have a deployment environment for Kubernetes with [kubectl ](https://kubernetes.io/docs/tasks/tools/install-kubectl/), and [Helm ](https://helm.sh/) installed. You can use a cloud service provider or your local machine.
 
-> **[New to 1Password developer tools?](/get-started/developer-quickstart.md)**
+> **[New to 1Password developer tools?](https://www.1password.dev/get-started/developer-quickstart.md)**
 >
 > Follow the developer quickstart to set up the CLI, secure your secrets, and add biometric SSH signing in one guide.
 
@@ -39,7 +39,7 @@ Use the following instructions to deploy a 1Password Connect Server.
 You can create a Connect server Secrets Automation workflow through the 1Password.com dashboard or 1Password CLI. Following these instructions creates:
 
 * A `1password-credentials.json` file. It contains the credentials necessary to deploy 1Password Connect Server.
-* An access token. Use this in your applications or services to authenticate with the [Connect REST API](/connect/api-reference.md). You can [issue additional tokens later](/connect/manage-connect.md#create-a-token).
+* An access token. Use this in your applications or services to authenticate with the [Connect REST API](https://www.1password.dev/connect/api-reference.md). You can [issue additional tokens later](https://www.1password.dev/connect/manage-connect.md#create-a-token).
 
 **1Password.com**
 
@@ -52,15 +52,15 @@ You can find your new Secrets Automation workflow under "Connect servers" on the
 
 **1Password CLI**
 
-You can use the [1Password CLI](https://1password.com/downloads/command-line) [`op connect` command](/cli/reference/management-commands/connect/) to set up a Secrets Automation workflow with a Connect server.
+You can use the [1Password CLI](https://1password.com/downloads/command-line) [`op connect` command](https://www.1password.dev/cli/reference/management-commands/connect/) to set up a Secrets Automation workflow with a Connect server.
 
-1. Make sure you have the latest version of [1Password CLI](/cli/get-started.md) on your machine.
+1. Make sure you have the latest version of [1Password CLI](https://www.1password.dev/cli/get-started.md) on your machine.
 
 2. Switch to the directory where you want to create the `1password-credentials.json`.
 
    Creating a Connect server automatically generates the `1password-credentials.json` file in the current directory. This file contains the credentials you'll need to deploy the Connect server. If a `1password-credentials.json` file already exists in the current directory, 1Password CLI will ask if you want to overwrite it.
 
-3. Create a Connect server and grant it access to a shared vault using the [`op connect server create` command](/cli/reference/management-commands/connect/#connect-server-create).
+3. Create a Connect server and grant it access to a shared vault using the [`op connect server create` command](https://www.1password.dev/cli/reference/management-commands/connect/#connect-server-create).
 
    ```shell theme={null}
    op connect server create <serverName> --vaults <vaultName>
@@ -68,7 +68,7 @@ You can use the [1Password CLI](https://1password.com/downloads/command-line) [`
 
 > [!TIP]
 >
-> Omit the `--vaults` flag to create a Connect server without granting it access to a vault. You can grant the Connect server access to shared vaults later using the [`op connect vault grant` command](/cli/reference/management-commands/connect/#connect-vault-grant).
+> Omit the `--vaults` flag to create a Connect server without granting it access to a vault. You can grant the Connect server access to shared vaults later using the [`op connect vault grant` command](https://www.1password.dev/cli/reference/management-commands/connect/#connect-vault-grant).
 
 If the Connect server or vault name contains one or more spaces, enclose the name in quotation marks (for example, `“My Server Name”`). You don't need to enclose strings in quotation marks if they don't contain spaces (for example, `myServerName`).
 
@@ -76,7 +76,7 @@ If the Connect server or vault name contains one or more spaces, enclose the nam
 op connect server create "My Server Name" --vault "My Vault Name"
 ```
 
-4. Create a token for the Connect server using the [`op connect token create` command](/cli/reference/management-commands/connect/#connect-token).
+4. Create a token for the Connect server using the [`op connect token create` command](https://www.1password.dev/cli/reference/management-commands/connect/#connect-token).
 
    ```shell theme={null}
    op connect token create <tokenName> --server <serverName|serverID> --vault <vaultName|vaultID>
@@ -84,19 +84,19 @@ op connect server create "My Server Name" --vault "My Vault Name"
 
 > [!TIP]
 >
-> Looking up a Connect server by its ID is more efficient than using the Connect server's name. See [Unique identifiers (IDs)](/cli/reference.md#unique-identifiers-ids).
+> Looking up a Connect server by its ID is more efficient than using the Connect server's name. See [Unique identifiers (IDs)](https://www.1password.dev/cli/reference.md#unique-identifiers-ids).
 >
-> You can find the ID of a Connect server by running [`op connect server list`](/cli/reference/management-commands/connect/#connect-server-list).
+> You can find the ID of a Connect server by running [`op connect server list`](https://www.1password.dev/cli/reference/management-commands/connect/#connect-server-list).
 
-If successful, 1Password CLI returns a token string that you can use in your applications or services to authenticate with the [Connect server REST API](/connect/api-reference.md). You can [issue additional tokens later.](/connect/manage-connect.md#create-a-token)
+If successful, 1Password CLI returns a token string that you can use in your applications or services to authenticate with the [Connect server REST API](https://www.1password.dev/connect/api-reference.md). You can [issue additional tokens later.](https://www.1password.dev/connect/manage-connect.md#create-a-token)
 
 5. Save the token in 1Password so you don't lose it.
 
-   You can have multiple tokens for the same Connect server but each Connect server has its own distinct set of tokens. See the [`op connect token` command reference](/cli/reference/management-commands/connect/#connect-token).
+   You can have multiple tokens for the same Connect server but each Connect server has its own distinct set of tokens. See the [`op connect token` command reference](https://www.1password.dev/cli/reference/management-commands/connect/#connect-token).
 
 > [!TIP]
 >
-> Export your Connect server access token as an environment variable. Doing so might prove useful if you decide to configure another tool like the [Kubernetes Injector](/k8s/injector.md), [Kubernetes Operator](/k8s/operator.md), or other integrations. However, keep in mind that the recommended way to use the Connect server token with Kubernetes is as a Kubernetes Secret.
+> Export your Connect server access token as an environment variable. Doing so might prove useful if you decide to configure another tool like the [Kubernetes Injector](https://www.1password.dev/k8s/injector.md), [Kubernetes Operator](https://www.1password.dev/k8s/operator.md), or other integrations. However, keep in mind that the recommended way to use the Connect server token with Kubernetes is as a Kubernetes Secret.
 >
 > ```shell theme={null}
 > export OP_CONNECT_TOKEN=<token>
@@ -123,7 +123,7 @@ To deploy a Connect server using a Docker Compose file, you'll need to start two
 
    > [!TIP]
    >
-   > You can set any of the [Connect server environment variables](/connect/server-configuration.md) in the `docker-compose.yaml` file by adding an environment attribute to each container. Doing so lets you specify things like the `1password-credentials.json` file location, the log level, and the HTTP port. Refer to the [Docker environment attribute documentation ](https://docs.docker.com/compose/environment-variables/set-environment-variables/) for more information.
+   > You can set any of the [Connect server environment variables](https://www.1password.dev/connect/server-configuration.md) in the `docker-compose.yaml` file by adding an environment attribute to each container. Doing so lets you specify things like the `1password-credentials.json` file location, the log level, and the HTTP port. Refer to the [Docker environment attribute documentation ](https://docs.docker.com/compose/environment-variables/set-environment-variables/) for more information.
 
 3. Make sure Docker is running. You can [check if the Docker daemon is running ](https://docs.docker.com/config/daemon/troubleshoot/#check-whether-docker-is-running) with the `docker info` command in a terminal application.
 
@@ -137,17 +137,17 @@ To deploy a Connect server using a Docker Compose file, you'll need to start two
    >
    > You can run the containers in the background using the `-detach` flag or the `-d` flag. Refer to the [`docker compose up` reference ](https://docs.docker.com/engine/reference/commandline/compose_up/) for more information.
 
-   By default, you can access the Connect REST API through port `8080` on the local host. Refer to the [1Password Connect server API reference](/connect/api-reference.md) for more information.
+   By default, you can access the Connect REST API through port `8080` on the local host. Refer to the [1Password Connect server API reference](https://www.1password.dev/connect/api-reference.md) for more information.
 
 #### Test the Connect server REST API
 
-You can make sure the [Connect server REST API](/connect/api-reference.md) is accessible using a [`curl` ](https://curl.se/docs/manpage.html) command, one of the 1Password Connect server API endpoints, and the token you created.
+You can make sure the [Connect server REST API](https://www.1password.dev/connect/api-reference.md) is accessible using a [`curl` ](https://curl.se/docs/manpage.html) command, one of the 1Password Connect server API endpoints, and the token you created.
 
 1. Export the Connect server access token as an environment variable. This is the same token you created in [Step 1](#step-1). Alternatively, you can replace `$OP_API_TOKEN` with the token string in the `curl` request.
 
    > [!TIP]
    >
-   > If you forgot your token, you can create another one with the [`op connect token create` command](/cli/reference/management-commands/connect/#connect-token-create).
+   > If you forgot your token, you can create another one with the [`op connect token create` command](https://www.1password.dev/cli/reference/management-commands/connect/#connect-token-create).
 
    ```shell theme={null}
    export OP_API_TOKEN="<token>"
@@ -166,7 +166,7 @@ To stop the Docker containers, run `docker compose down`.
 
 **Kubernetes**
 
-You can deploy a Connect server with Kubernetes. The easiest way to do this is with the [1Password Connect and Operator Helm chart](/k8s/helm.md).
+You can deploy a Connect server with Kubernetes. The easiest way to do this is with the [1Password Connect and Operator Helm chart](https://www.1password.dev/k8s/helm.md).
 
 > [!WARNING]
 >
@@ -178,7 +178,7 @@ You can deploy a Connect server with Kubernetes. The easiest way to do this is w
 
 3. Add the 1Password Helm chart repository.
 
-   The following command adds the [1Password Helm chart repository](/k8s/helm.md) to your local instance of Helm. This allows you to download and install all the charts from 1Password's GitHub repository.
+   The following command adds the [1Password Helm chart repository](https://www.1password.dev/k8s/helm.md) to your local instance of Helm. This allows you to download and install all the charts from 1Password's GitHub repository.
 
    ```shell theme={null}
    helm repo add 1password https://1password.github.io/connect-helm-charts/
@@ -206,11 +206,11 @@ You can deploy a Connect server on a Kubernetes cluster without using Helm chart
 
 ##### Deploy alongside the Kubernetes Operator
 
-The 1Password Connect Kubernetes Operator integrates [Kubernetes Secrets ](https://kubernetes.io/docs/concepts/configuration/secret/) with 1Password. It also auto-restarts deployments when 1Password items are updated. [Learn more about the Kubernetes Operator](/k8s/operator.md).
+The 1Password Connect Kubernetes Operator integrates [Kubernetes Secrets ](https://kubernetes.io/docs/concepts/configuration/secret/) with 1Password. It also auto-restarts deployments when 1Password items are updated. [Learn more about the Kubernetes Operator](https://www.1password.dev/k8s/operator.md).
 
 ### Step 3: Set up applications and services to get information from 1Password
 
-Applications and services get information from 1Password through REST API requests to a Connect server. The requests are authenticated with an access token. [Create a new token](/connect/manage-connect.md#create-a-token) for each application or service you use.
+Applications and services get information from 1Password through REST API requests to a Connect server. The requests are authenticated with an access token. [Create a new token](https://www.1password.dev/connect/manage-connect.md#create-a-token) for each application or service you use.
 
 #### Languages
 
@@ -224,25 +224,25 @@ Applications and services get information from 1Password through REST API reques
 
 [Terraform provider](https://github.com/1Password/terraform-provider-onepassword)
 
-[Kubernetes integrations](/k8s/integrations.md)
+[Kubernetes integrations](https://www.1password.dev/k8s/integrations.md)
 
 [Hashicorp Vault backend](https://github.com/1Password/vault-plugin-secrets-onepassword)
 
-[Ansible collection](/connect/ansible-collection.md)
+[Ansible collection](https://www.1password.dev/connect/ansible-collection.md)
 
-If your language or platform isn't listed, you can [build your own client using the 1Password Connect Server REST API](/connect/api-reference.md).
+If your language or platform isn't listed, you can [build your own client using the 1Password Connect Server REST API](https://www.1password.dev/connect/api-reference.md).
 
-You can also [use 1Password CLI](/connect/cli.md) with your Connect server to provision secrets and retrieve item information on the command line.
+You can also [use 1Password CLI](https://www.1password.dev/connect/cli.md) with your Connect server to provision secrets and retrieve item information on the command line.
 
 ## Get help
 
-To change the vaults a token has access to, [issue a new token](/connect/manage-connect.md#create-a-token).
+To change the vaults a token has access to, [issue a new token](https://www.1password.dev/connect/manage-connect.md#create-a-token).
 
 To get help and share feedback, join the discussion with the [1Password Support Community](https://1password.community/categories/secrets-automation/).
 
 
 ## Related topics
 
-- [Use CI/CD integrations with a 1Password Connect server](/connect/ci-cd.md)
-- [Use 1Password CLI with a Connect server](/connect/cli.md)
-- [1Password Connect Server API reference](/connect/api-reference.md)
+- [Use CI/CD integrations with a 1Password Connect server](https://www.1password.dev/connect/ci-cd.md)
+- [Use 1Password CLI with a Connect server](https://www.1password.dev/connect/cli.md)
+- [1Password Connect Server API reference](https://www.1password.dev/connect/api-reference.md)

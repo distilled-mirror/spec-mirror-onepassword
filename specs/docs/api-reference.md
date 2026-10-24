@@ -6,7 +6,7 @@
 
 > [!NOTE]
 >
-> If you're new to 1Password Secrets Automation and 1Password Connect Server, [learn how to get started with a Secrets Automation workflow](/connect/get-started.md).
+> If you're new to 1Password Secrets Automation and 1Password Connect Server, [learn how to get started with a Secrets Automation workflow](https://www.1password.dev/connect/get-started.md).
 
 You can use the Connect API to work with the vaults and items in your account, and to list API activity on a Connect server:
 
@@ -30,12 +30,12 @@ To view the API in another tool, download the [1Password Connect API specificati
 Before you can use the 1Password Connect Server API, you'll need to:
 
 * [Sign up for 1Password.](https://1password.com/pricing/password-manager)
-* [Set up a Secrets Automation workflow.](/connect/get-started.md#step-1).
-* [Deploy 1Password Connect](/connect/get-started.md#step-2-deploy-1password-connect-server) in your infrastructure.
+* [Set up a Secrets Automation workflow.](https://www.1password.dev/connect/get-started.md#step-1).
+* [Deploy 1Password Connect](https://www.1password.dev/connect/get-started.md#step-2-deploy-1password-connect-server) in your infrastructure.
 
 ## Request headers
 
-Each request to the API has to be authenticated with an [access token](/connect/manage-connect.md#manage-access-tokens). Provide it and specify the content type:
+Each request to the API has to be authenticated with an [access token](https://www.1password.dev/connect/manage-connect.md#manage-access-tokens). Provide it and specify the content type:
 
 ```
 Authorization: Bearer <access_token>
@@ -1808,6 +1808,6 @@ The recipe is used in conjunction with the "generate" property to set the charac
 
 ## Related topics
 
-- [Get started with a 1Password Connect server](/connect/get-started.md)
-- [About 1Password Connect Server security](/connect/security.md)
-- [1Password Partnership API reference](/partnership-api/reference.md)
+- [Get started with a 1Password Connect server](https://www.1password.dev/connect/get-started.md)
+- [About 1Password Connect Server security](https://www.1password.dev/connect/security.md)
+- [1Password Partnership API reference](https://www.1password.dev/partnership-api/reference.md)

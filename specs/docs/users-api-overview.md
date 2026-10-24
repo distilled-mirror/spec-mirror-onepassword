@@ -25,30 +25,30 @@ The Users API requires you to have:
 
 ## Quickstart
 
-[Start here](/users-api/get-started.md) to set up an OAuth integration and send your first authentication request to the Users API.
+[Start here](https://www.1password.dev/users-api/get-started.md) to set up an OAuth integration and send your first authentication request to the Users API.
 
 ## Guides
 
-* [Authorize your integrations using OAuth 2.0](/users-api/authorization.md)
-* Read the [API conventions](/users-api/conventions.md) to learn how to authenticate, structure requests, and interpret responses and errors.
+* [Authorize your integrations using OAuth 2.0](https://www.1password.dev/users-api/authorization.md)
+* Read the [API conventions](https://www.1password.dev/users-api/conventions.md) to learn how to authenticate, structure requests, and interpret responses and errors.
 * [Get started with 1Password Security Automation](https://support.1password.com/security-automation/) to see integrations built by 1Password partners.
 
 ## Reference
 
-Use the [API reference](/users-api/reference.md) to learn more about each endpoint.
+Use the [API reference](https://www.1password.dev/users-api/reference.md) to learn more about each endpoint.
 
 ### OAuth tokens
 
-* [Request an access token](/users-api/request-access-token.md)
-* [Introspect an access token](/users-api/introspect-access-token.md)
-* [Revoke an access token](/users-api/revoke-access-token.md)
+* [Request an access token](https://www.1password.dev/users-api/request-access-token.md)
+* [Introspect an access token](https://www.1password.dev/users-api/introspect-access-token.md)
+* [Revoke an access token](https://www.1password.dev/users-api/revoke-access-token.md)
 
 ### Users
 
-* [List users](/users-api/list-users.md)
-* [Get a user](/users-api/get-user.md)
-* [Suspend a user](/users-api/suspend-user.md)
-* [Reactivate a user](/users-api/reactivate-user.md)
+* [List users](https://www.1password.dev/users-api/list-users.md)
+* [Get a user](https://www.1password.dev/users-api/get-user.md)
+* [Suspend a user](https://www.1password.dev/users-api/suspend-user.md)
+* [Reactivate a user](https://www.1password.dev/users-api/reactivate-user.md)
 
 ## Provide feedback
 
@@ -57,6 +57,6 @@ To provide feedback, or if you're interested in partnering with 1Password as an 
 
 ## Related topics
 
-- [Get data and analytics for your 1Password account](/get-started/get-data-and-analytics.md)
-- [Programmatically manage your 1Password organization](/get-started/manage-organization.md)
-- [1Password Users API reference](/users-api/reference.md)
+- [Get data and analytics for your 1Password account](https://www.1password.dev/get-started/get-data-and-analytics.md)
+- [Programmatically manage your 1Password organization](https://www.1password.dev/get-started/manage-organization.md)
+- [1Password Users API reference](https://www.1password.dev/users-api/reference.md)

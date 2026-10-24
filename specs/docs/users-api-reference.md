@@ -8,7 +8,7 @@
 
 This reference documents every endpoint in the 1Password Users API (v1), along with the OAuth API endpoints used to authorize requests. Each Users API endpoint page includes the parameters, response schemas, and an interactive playground you can use to send test requests.
 
-For more information about authorization and how the Users API works, review the [API conventions](/users-api/conventions.md).
+For more information about authorization and how the Users API works, review the [API conventions](https://www.1password.dev/users-api/conventions.md).
 
 > [!WARNING]
 >
@@ -18,27 +18,27 @@ For more information about authorization and how the Users API works, review the
 
 ### OAuth tokens
 
-* [Request an access token](/users-api/request-access-token.md)
-* [Introspect an access token](/users-api/introspect-access-token.md)
-* [Revoke an access token](/users-api/revoke-access-token.md)
+* [Request an access token](https://www.1password.dev/users-api/request-access-token.md)
+* [Introspect an access token](https://www.1password.dev/users-api/introspect-access-token.md)
+* [Revoke an access token](https://www.1password.dev/users-api/revoke-access-token.md)
 
 ### Users
 
-* [List users](/users-api/list-users.md)
-* [Get a user](/users-api/get-user.md)
-* [Suspend a user](/users-api/suspend-user.md)
-* [Reactivate a user](/users-api/reactivate-user.md)
+* [List users](https://www.1password.dev/users-api/list-users.md)
+* [Get a user](https://www.1password.dev/users-api/get-user.md)
+* [Suspend a user](https://www.1password.dev/users-api/suspend-user.md)
+* [Reactivate a user](https://www.1password.dev/users-api/reactivate-user.md)
 
 ## OpenAPI specifications
 
 The Users API and OAuth API follow the [OpenAPI 3.1.0 specification ](https://spec.openapis.org/oas/v3.1.0.html). To work with the APIs in another tool, download the specifications:
 
-* [1Password Users API (v1) specification ](/static/files/users-api/1password-users-api_v1_2026-10-05.yaml)
-* [1Password OAuth API (v1) specification ](/static/files/users-api/1password-oauth-api_v1_2026-10-05.yaml)
+* [1Password Users API (v1) specification ](https://www.1password.dev/static/files/users-api/1password-users-api_v1_2026-10-05.yaml)
+* [1Password OAuth API (v1) specification ](https://www.1password.dev/static/files/users-api/1password-oauth-api_v1_2026-10-05.yaml)
 
 
 ## Related topics
 
-- [1Password Users API](/users-api.md)
-- [1Password Events API reference](/events-api/reference.md)
-- [Get started with the 1Password Users API](/users-api/get-started.md)
+- [1Password Users API](https://www.1password.dev/users-api.md)
+- [1Password Events API reference](https://www.1password.dev/events-api/reference.md)
+- [Get started with the 1Password Users API](https://www.1password.dev/users-api/get-started.md)

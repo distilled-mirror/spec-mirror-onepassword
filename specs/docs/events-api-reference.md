@@ -4,15 +4,15 @@
 
 # 1Password Events API reference
 
-This API reference documents the latest version of the [1Password Events API specifications (1.4.1)](https://i.1password.com/media/1password-events-reporting/1password-events-api_1.4.1.yaml). Learn more about [API versions](/events-api/endpoints.md#endpoint-versions).
+This API reference documents the latest version of the [1Password Events API specifications (1.4.1)](https://i.1password.com/media/1password-events-reporting/1password-events-api_1.4.1.yaml). Learn more about [API versions](https://www.1password.dev/events-api/endpoints.md#endpoint-versions).
 
 > [!NOTE]
 >
 > **About pagination**
 >
-> All POST endpoints in this API use cursor-based pagination. Your request body must include either a [`ResetCursor`](/events-api/pagination#reset-cursor) object (for your first request) or the `cursor` value from a previous response (for all subsequent requests).
+> All POST endpoints in this API use cursor-based pagination. Your request body must include either a [`ResetCursor`](https://www.1password.dev/events-api/pagination#reset-cursor) object (for your first request) or the `cursor` value from a previous response (for all subsequent requests).
 >
-> The cursor is a persistent checkpoint that marks your exact position in the event stream and remains valid across API sessions. You should store the cursor you receive in each response so you can always resume from where you left off without missing any events. Learn more about [how cursors work](/events-api/pagination.md).
+> The cursor is a persistent checkpoint that marks your exact position in the event stream and remains valid across API sessions. You should store the cursor you receive in each response so you can always resume from where you left off without missing any events. Learn more about [how cursors work](https://www.1password.dev/events-api/pagination.md).
 
 ## GET /api/v2/auth/introspect
 
@@ -28,7 +28,7 @@ No parameters.
 
 ### Requests
 
-Use the full URL of the `introspect` endpoint with your [bearer token](/events-api/authorization.md) and the required [request headers](/events-api/request-headers.md). A GET request doesn't include a body, so the content type header isn't needed.
+Use the full URL of the `introspect` endpoint with your [bearer token](https://www.1password.dev/events-api/authorization.md) and the required [request headers](https://www.1password.dev/events-api/request-headers.md). A GET request doesn't include a body, so the content type header isn't needed.
 
 For example:
 
@@ -121,9 +121,9 @@ A successful `200` response returns an `Introspection` object with information a
 base_url/api/v2/auditevents
 ```
 
-A POST call to this endpoint returns information about actions performed by team members within a 1Password account. Events include when an action was performed and by whom, along with details about the type and object of the action and any other information about the activity. MSP accounts include additional information about the actor's account and type. Learn more about [audit events](/events-api/audit-events.md).
+A POST call to this endpoint returns information about actions performed by team members within a 1Password account. Events include when an action was performed and by whom, along with details about the type and object of the action and any other information about the activity. MSP accounts include additional information about the actor's account and type. Learn more about [audit events](https://www.1password.dev/events-api/audit-events.md).
 
-This endpoint requires a [bearer token](/events-api/authorization.md) with the `auditevents` feature. You can make an [introspection call](#get-%2Fapi%2Fv2%2Fauth%2Fintrospect) to the API to verify if your token is authorized to access audit events.
+This endpoint requires a [bearer token](https://www.1password.dev/events-api/authorization.md) with the `auditevents` feature. You can make an [introspection call](#get-%2Fapi%2Fv2%2Fauth%2Fintrospect) to the API to verify if your token is authorized to access audit events.
 
 ### Parameters
 
@@ -131,7 +131,7 @@ No parameters.
 
 ### Requests
 
-Use the full URL of the `auditevents` endpoint with your [bearer token](/events-api/authorization.md) and the required [request headers](/events-api/request-headers.md). You must include a [ResetCursor](/events-api/pagination.md#reset-cursor) object or the [cursor](/events-api/pagination.md#cursor) from a previous response in the request body.
+Use the full URL of the `auditevents` endpoint with your [bearer token](https://www.1password.dev/events-api/authorization.md) and the required [request headers](https://www.1password.dev/events-api/request-headers.md). You must include a [ResetCursor](https://www.1password.dev/events-api/pagination.md#reset-cursor) object or the [cursor](https://www.1password.dev/events-api/pagination.md#cursor) from a previous response in the request body.
 
 **Example audit events request with a reset cursor**
 
@@ -162,7 +162,7 @@ curl --request POST \
 
 A successful `200` response returns an `AuditEventItemsV2` object wrapping cursor properties and an array of `AuditEventV2` objects.
 
-The included cursor is a persistent checkpoint that marks your current position in the event stream. Save this value and include it in the request body of your next call to this endpoint. Learn more about [how cursors work](/events-api/pagination.md).
+The included cursor is a persistent checkpoint that marks your current position in the event stream. Save this value and include it in the request body of your next call to this endpoint. Learn more about [how cursors work](https://www.1password.dev/events-api/pagination.md).
 
 <dl>
   <dt>200</dt>
@@ -407,7 +407,7 @@ The included cursor is a persistent checkpoint that marks your current position 
           <li>`"vrfydmn"`</li>
         </ul>
 
-        [Learn about audit event actions](/events-api/audit-events.md).
+        [Learn about audit event actions](https://www.1password.dev/events-api/audit-events.md).
       </td>
     </tr>
 
@@ -451,7 +451,7 @@ The included cursor is a persistent checkpoint that marks your current position 
           <li>`"vaultkey"`</li>
         </ul>
 
-        [Learn about audit event objects](/events-api/audit-events.md).
+        [Learn about audit event objects](https://www.1password.dev/events-api/audit-events.md).
       </td>
     </tr>
 
@@ -711,9 +711,9 @@ The included cursor is a persistent checkpoint that marks your current position 
 base_url/api/v2/itemusages
 ```
 
-A POST call to this endpoint returns information about items in shared vaults that have been modified, accessed, or used. Events include the name and IP address of the user who accessed the item, when the item was accessed, and the vault where the item is stored. Learn more about [item usage actions](/events-api/item-usage-actions.md).
+A POST call to this endpoint returns information about items in shared vaults that have been modified, accessed, or used. Events include the name and IP address of the user who accessed the item, when the item was accessed, and the vault where the item is stored. Learn more about [item usage actions](https://www.1password.dev/events-api/item-usage-actions.md).
 
-This endpoint requires a [bearer token](/events-api/authorization.md) with the `itemusages` feature. You can make an [introspection call](#get-%2Fapi%2Fv2%2Fauth%2Fintrospect) to the API to verify if your token is authorized to access sign-in events.
+This endpoint requires a [bearer token](https://www.1password.dev/events-api/authorization.md) with the `itemusages` feature. You can make an [introspection call](#get-%2Fapi%2Fv2%2Fauth%2Fintrospect) to the API to verify if your token is authorized to access sign-in events.
 
 ### Parameters
 
@@ -721,7 +721,7 @@ No parameters.
 
 ### Requests
 
-Use the full URL of the `itemusages` endpoint with your [bearer token](/events-api/authorization.md) and the required [request headers](/events-api/request-headers.md). You must include a [ResetCursor](/events-api/pagination.md#reset-cursor) object or the [cursor](/events-api/pagination.md#cursor) from a previous response in the request body.
+Use the full URL of the `itemusages` endpoint with your [bearer token](https://www.1password.dev/events-api/authorization.md) and the required [request headers](https://www.1password.dev/events-api/request-headers.md). You must include a [ResetCursor](https://www.1password.dev/events-api/pagination.md#reset-cursor) object or the [cursor](https://www.1password.dev/events-api/pagination.md#cursor) from a previous response in the request body.
 
 **Example item usage request with a reset cursor**
 
@@ -763,7 +763,7 @@ curl --request POST \
 
 A successful `200` response returns an `ItemUsageItemsV2` object wrapping cursor properties and an array of `ItemUsageV2` objects.
 
-The included cursor is a persistent checkpoint that marks your current position in the event stream. Save this value and include it in the request body of your next call to this endpoint. Learn more about [how cursors work](/events-api/pagination.md).
+The included cursor is a persistent checkpoint that marks your current position in the event stream. Save this value and include it in the request body of your next call to this endpoint. Learn more about [how cursors work](https://www.1password.dev/events-api/pagination.md).
 
 **Example item usage response**
 
@@ -902,7 +902,7 @@ The included cursor is a persistent checkpoint that marks your current position 
           <li>`"share"`</li>
         </ul>
 
-        [Learn about item usage actions](/events-api/item-usage-actions.md).
+        [Learn about item usage actions](https://www.1password.dev/events-api/item-usage-actions.md).
       </td>
     </tr>
 
@@ -1095,7 +1095,7 @@ base_url/api/v2/signinattempts
 
 A POST call to this endpoint returns information about sign-in attempts. Events include the name and IP address of the user who attempted to sign in to the account, when the attempt was made, and – for failed attempts – the cause of the failure. For MSP accounts, events also include additional information about the user's account and type.
 
-This endpoint requires a [bearer token](/events-api/authorization.md) with the `signinattempts` feature. You can make an [introspection call](#get-%2Fapi%2Fv2%2Fauth%2Fintrospect) to the API to verify if your token is authorized to access sign-in events.
+This endpoint requires a [bearer token](https://www.1password.dev/events-api/authorization.md) with the `signinattempts` feature. You can make an [introspection call](#get-%2Fapi%2Fv2%2Fauth%2Fintrospect) to the API to verify if your token is authorized to access sign-in events.
 
 ### Parameters
 
@@ -1103,7 +1103,7 @@ No parameters.
 
 ### Requests
 
-Use the full URL of the `signinattempts` endpoint with your [bearer token](/events-api/authorization.md) and the required [request headers](/events-api/request-headers.md). You must include a [ResetCursor](/events-api/pagination.md#reset-cursor) object or the [cursor](/events-api/pagination.md#cursor) from a previous response in the request body.
+Use the full URL of the `signinattempts` endpoint with your [bearer token](https://www.1password.dev/events-api/authorization.md) and the required [request headers](https://www.1password.dev/events-api/request-headers.md). You must include a [ResetCursor](https://www.1password.dev/events-api/pagination.md#reset-cursor) object or the [cursor](https://www.1password.dev/events-api/pagination.md#cursor) from a previous response in the request body.
 
 **Example request with a reset cursor**
 
@@ -1145,7 +1145,7 @@ curl --request POST \
 
 A successful `200` response returns a `SignInAttemptItemsV2` object wrapping cursor properties and an array of `SignInAttemptV2` objects.
 
-The included cursor is a persistent checkpoint that marks your current position in the event stream. Save this value and include it in the request body of your next call to this endpoint. Learn more about [how cursors work](/events-api/pagination.md).
+The included cursor is a persistent checkpoint that marks your current position in the event stream. Save this value and include it in the request body of your next call to this endpoint. Learn more about [how cursors work](https://www.1password.dev/events-api/pagination.md).
 
 **Example sign-in attempt response**
 
@@ -1569,6 +1569,6 @@ The included cursor is a persistent checkpoint that marks your current position 
 
 ## Related topics
 
-- [1Password Events API](/events-api.md)
-- [Get started with the 1Password Events API](/events-api/get-started.md)
-- [1Password Events API changelog](/events-api/changelog.md)
+- [1Password Events API](https://www.1password.dev/events-api.md)
+- [Get started with the 1Password Events API](https://www.1password.dev/events-api/get-started.md)
+- [1Password Events API changelog](https://www.1password.dev/events-api/changelog.md)
