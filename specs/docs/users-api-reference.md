@@ -31,7 +31,7 @@ For more information about authorization and how the Users API works, review the
 
 ## OpenAPI specifications
 
-The Users API and OAuth API follow the [OpenAPI 3.1.0 specification ](https://spec.openapis.org/oas/v3.1.0.html). To work with the APIs in another tool, download the specifications:
+The Users API and OAuth API follow the [OpenAPI 3.1.0 specification.](https://spec.openapis.org/oas/v3.1.0.html) To work with the APIs in another tool, download the specifications:
 
 * [1Password Users API (v1) specification ](https://www.1password.dev/static/files/users-api/1password-users-api_v1_2026-10-05.yaml)
 * [1Password OAuth API (v1) specification ](https://www.1password.dev/static/files/users-api/1password-oauth-api_v1_2026-10-05.yaml)

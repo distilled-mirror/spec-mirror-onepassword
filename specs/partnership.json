@@ -625,7 +625,7 @@
           },
           "activation_token": {
             "type": "string",
-            "description": "The activation token is a coupon code to link a new or existing 1Password account to a partnership promotion. For example, it can be used for 1Password account creation at https://start.{{1password_domain}}/partnership/redeem?t={{account_type}}&c={{activation_token}} during end-user signup."
+            "description": "The activation token is a coupon code to link a new or existing 1Password account to a partnership promotion. For example, it can be used for 1Password account creation at `https://start.{{1password_domain}}/partnership/redeem?t={{account_type}}&c={{activation_token}}` during end-user signup."
           },
           "domain": {
             "type": "string",

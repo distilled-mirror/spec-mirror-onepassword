@@ -89,7 +89,7 @@ A successful `200` response returns an `Introspection` object with information a
     <tr>
       <td>`issued_at`</td>
       <td>string</td>
-      <td>The date and time the token was issued. Uses the [RFC 3339 standard](https://datatracker.ietf.org/doc/html/rfc3339).</td>
+      <td>The date and time the token was issued. Uses the [RFC 3339 standard.](https://datatracker.ietf.org/doc/html/rfc3339)</td>
     </tr>
 
     <tr>
@@ -275,7 +275,7 @@ The included cursor is a persistent checkpoint that marks your current position 
     <tr>
       <td>`timestamp`</td>
       <td>string</td>
-      <td>The date and time when the action was performed. Uses the [RFC 3339 standard](https://datatracker.ietf.org/doc/html/rfc3339).</td>
+      <td>The date and time when the action was performed. Uses the [RFC 3339 standard.](https://datatracker.ietf.org/doc/html/rfc3339)</td>
     </tr>
 
     <tr>
@@ -644,7 +644,7 @@ The included cursor is a persistent checkpoint that marks your current position 
     <tr>
       <td>`login_time`</td>
       <td>string</td>
-      <td>The date and time the client signed in and started the session. Uses the [RFC 3339 standard](https://datatracker.ietf.org/doc/html/rfc3339).</td>
+      <td>The date and time the client signed in and started the session. Uses the [RFC 3339 standard.](https://datatracker.ietf.org/doc/html/rfc3339)</td>
     </tr>
 
     <tr>
@@ -860,7 +860,7 @@ The included cursor is a persistent checkpoint that marks your current position 
     <tr>
       <td>`timestamp`</td>
       <td>string</td>
-      <td>The date and time of the event. [RFC 3339 standard](https://datatracker.ietf.org/doc/html/rfc3339).</td>
+      <td>The date and time of the event. [RFC 3339 standard.](https://datatracker.ietf.org/doc/html/rfc3339)</td>
     </tr>
 
     <tr>
@@ -1251,7 +1251,7 @@ The included cursor is a persistent checkpoint that marks your current position 
     <tr>
       <td>`timestamp`</td>
       <td>string</td>
-      <td>The date and time of the sign-in attempt. Uses the [RFC 3339 standard](https://datatracker.ietf.org/doc/html/rfc3339).</td>
+      <td>The date and time of the sign-in attempt. Uses the [RFC 3339 standard.](https://datatracker.ietf.org/doc/html/rfc3339)</td>
     </tr>
 
     <tr>
@@ -1319,7 +1319,7 @@ The included cursor is a persistent checkpoint that marks your current position 
     <tr>
       <td>`country`</td>
       <td>string</td>
-      <td>The country code of the event. Uses the [ ISO 3166 standard](https://www.iso.org/iso-3166-country-codes.html).</td>
+      <td>The country code of the event. Uses the [ ISO 3166 standard.](https://www.iso.org/iso-3166-country-codes.html)</td>
     </tr>
 
     <tr>

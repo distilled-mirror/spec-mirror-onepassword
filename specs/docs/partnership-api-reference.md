@@ -18,7 +18,7 @@ To learn more about our partnership opportunities, visit the [1Password Partner 
 
 ## Information about the API
 
-The 1Password Partnership API is a REST-style API that follows the [OpenAPI 3.0 specifications](https://spec.openapis.org/oas/v3.0.3). All communication between clients and servers is over HTTPS.
+The 1Password Partnership API is a REST-style API that follows the [OpenAPI 3.0 specifications.](https://spec.openapis.org/oas/v3.0.3) All communication between clients and servers is over HTTPS.
 
 You can use your preferred programming language and tools for testing and implementing the Partnership API. This reference uses [curl](https://curl.se/) on the command line to demonstrate example requests. You can replace the values in any request with your own to receive information about your customers' billing accounts.
 
@@ -91,7 +91,7 @@ Request bodies (also called request payloads) contain the JSON-formatted data cl
 * **The unique identifier (UID) for the customer's billing account.** The UID is supplied by the partner. It can be up to 200 characters long with any combination of alphanumeric characters (`A-Z`, `a-z`, `0-9`), hyphens (`-`), and periods/dots (`.`) .
 * **The 1Password account type.** Options are individual (`I`) or family (`F`). Team and business accounts aren't supported.
 * **The domain the customer can use for their new or existing 1Password account.** For the test server, options are: `b5test.com`, `b5test.ca`, or `b5test.eu`. For the production server, options are: `1password.com`, `1password.ca`, or `1password.eu`.
-* **The date and time the customer's billing account is scheduled to be removed.** The date cannot be in the past. Format the date, time, and optional timezone in the [ISO 8601 standard](https://www.iso.org/iso-8601-date-and-time-format.html).
+* **The date and time the customer's billing account is scheduled to be removed.** The date cannot be in the past. Format the date, time, and optional timezone in the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html)
 
 GET and DELETE calls don't contain request bodies.
 
@@ -380,20 +380,20 @@ A `201` response returns an Account object containing the unique [activation tok
     <tr>
       <th>`created_at`</th>
       <td>string</td>
-      <td>The date and time the customer's billing account was created. Uses the [ISO 8601 standard](https://www.iso.org/iso-8601-date-and-time-format.html).</td>
+      <td>The date and time the customer's billing account was created. Uses the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html)</td>
     </tr>
 
     <tr>
       <th>`updated_at`</th>
       <td>string</td>
-      <td>The date and time the billing account was last updated. Uses the [ISO 8601 standard](https://www.iso.org/iso-8601-date-and-time-format.html). This field is updated when there are account status changes. \
+      <td>The date and time the billing account was last updated. Uses the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html) This field is updated when there are account status changes. \
       The expected value returned for a POST request is the same as the value of the `created_at` property.</td>
     </tr>
 
     <tr>
       <th>`ends_at`</th>
       <td>string</td>
-      <td>The date and time the customer's billing account is scheduled to be removed from the partner billing service. Uses the [ISO 8601 standard](https://www.iso.org/iso-8601-date-and-time-format.html). If a date and time haven't been specified, the expected value is `null`.</td>
+      <td>The date and time the customer's billing account is scheduled to be removed from the partner billing service. Uses the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html) If a date and time haven't been specified, the expected value is `null`.</td>
     </tr>
   </tbody>
 </table>
@@ -689,19 +689,19 @@ A `200` response returns an Account object that provides information about the c
     <tr>
       <th>`created_at`</th>
       <td>string</td>
-      <td>The date and time the customer's billing account was created. Uses the [ISO 8601 standard](https://www.iso.org/iso-8601-date-and-time-format.html).</td>
+      <td>The date and time the customer's billing account was created. Uses the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html)</td>
     </tr>
 
     <tr>
       <th>`updated_at`</th>
       <td>string</td>
-      <td>The date and time the customer's billing account was last updated. Uses the [ISO 8601 standard](https://www.iso.org/iso-8601-date-and-time-format.html). This field updates when there are account status changes.</td>
+      <td>The date and time the customer's billing account was last updated. Uses the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html) This field updates when there are account status changes.</td>
     </tr>
 
     <tr>
       <th>`ends_at`</th>
       <td>string</td>
-      <td>The date and time the customer's billing account is scheduled to be removed from the partner billing service. Uses the [ISO 8601 standard](https://www.iso.org/iso-8601-date-and-time-format.html). If a date and time haven't been specified, the expected value is `null`.</td>
+      <td>The date and time the customer's billing account is scheduled to be removed from the partner billing service. Uses the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html) If a date and time haven't been specified, the expected value is `null`.</td>
     </tr>
   </tbody>
 </table>
@@ -1198,19 +1198,19 @@ A `200` response returns an Account object that provides information about the c
     <tr>
       <th>`created_at`</th>
       <td>string</td>
-      <td>The date and time the customer's billing account was created. Uses the [ISO 8601 standard](https://www.iso.org/iso-8601-date-and-time-format.html).</td>
+      <td>The date and time the customer's billing account was created. Uses the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html)</td>
     </tr>
 
     <tr>
       <th>`updated_at`</th>
       <td>string</td>
-      <td>The date and time the customer's billing account was last updated. Uses the [ISO 8601 standard](https://www.iso.org/iso-8601-date-and-time-format.html). This field updates when there are account status changes.</td>
+      <td>The date and time the customer's billing account was last updated. Uses the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html) This field updates when there are account status changes.</td>
     </tr>
 
     <tr>
       <th>`ends_at`</th>
       <td>string</td>
-      <td>The date and time the customer's billing account is scheduled to be removed from the partner billing service. Uses the [ISO 8601 standard](https://www.iso.org/iso-8601-date-and-time-format.html). If a date and time haven't been specified, the expected value is `null`.</td>
+      <td>The date and time the customer's billing account is scheduled to be removed from the partner billing service. Uses the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html) If a date and time haven't been specified, the expected value is `null`.</td>
     </tr>
   </tbody>
 </table>

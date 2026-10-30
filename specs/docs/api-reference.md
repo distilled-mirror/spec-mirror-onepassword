@@ -69,7 +69,7 @@ No path parameters
       <td>string</td>
 
       <td>
-        Filter the vault collection using [SCIM-style filters](https://bookstack.soffid.com/books/scim/page/scim-query-syntax). Vaults can only be filtered by `name`. *Optional.*
+        Filter the vault collection using [SCIM-style filters.](https://bookstack.soffid.com/books/scim/page/scim-query-syntax) Vaults can only be filtered by `name`. *Optional.*
 
         For example: `name eq "Demo Vault"`
       </td>
@@ -172,7 +172,7 @@ GET /v1/vaults/{vaultUUID}/items
       <td>string</td>
 
       <td>
-        Filter the item collection using [SCIM-style filters ](https://bookstack.soffid.com/books/scim/page/scim-query-syntax). Items can only be filtered by `title` or `tag`. *Optional.*
+        Filter the item collection using [SCIM-style filters.](https://bookstack.soffid.com/books/scim/page/scim-query-syntax) Items can only be filtered by `title` or `tag`. *Optional.*
 
         For example: `title eq "Example Item"` or `tag eq "banking"`
       </td>
