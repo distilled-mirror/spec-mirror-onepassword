@@ -140,7 +140,7 @@ If you're not sure which link(s) you need to create, [contact the 1Password Part
 
 #### Alternate partner billing link options
 
-> **Learn more about alternate link options.**
+> [accordion] Learn more about alternate link options.
 >
 > The Partnership API also supports some alternate options for partner billing links. Depending on the details of your partnership, you might prefer to create links for:
 >
@@ -196,7 +196,7 @@ If you're not sure which link(s) you need to create, [contact the 1Password Part
 
 #### Language code parameters
 
-> **Learn more about optional language code parameters.**
+> [accordion] Learn more about optional language code parameters.
 >
 > Language codes are an optional parameter that can be added to a [partner billing link](#create-a-link-for-customers) to take the customer to the appropriate landing page for that language. Customers will be directed to the default landing page (English) if no language parameter is included.
 >
@@ -241,332 +241,340 @@ Use the endpoint URL with your [bearer token](#authorization) and the required [
 * The domain the customer can use for their new or existing 1Password account.
 * (Optional) The date and time you want to remove the customer's account from the partner billing service. This value cannot be in the past. You can also update this field with [a PATCH request](#update-a-billing-account-end-date).
 
-**Example request**
+> [tab] Example request
+>
+> ```shell highlight={7,8,9,10} theme={null}
+> curl --request POST \
+>     --url https://billing.1password.com/api/v1/partners/accounts \
+>     --header 'Authorization: Bearer YOUR_BEARER_TOKEN' \
+>     --header 'Content-Type: application/json' \
+>     --header 'Accept: application/json' \
+>     --data '{
+>         "customer_account_uid": "4266474b-6385-56d4-7b75-648096593064",
+>         "account_type": "F",
+>         "domain": "1password.com",
+>         "ends_at": "2024-08-31T13:00:00-05:00"
+>     }'
+> ```
 
-```shell highlight={7,8,9,10} theme={null}
-curl --request POST \
-    --url https://billing.1password.com/api/v1/partners/accounts \
-    --header 'Authorization: Bearer YOUR_BEARER_TOKEN' \
-    --header 'Content-Type: application/json' \
-    --header 'Accept: application/json' \
-    --data '{
-        "customer_account_uid": "4266474b-6385-56d4-7b75-648096593064",
-        "account_type": "F",
-        "domain": "1password.com",
-        "ends_at": "2024-08-31T13:00:00-05:00"
-    }'
-```
-
-**Request object schema**
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`customer_account_uid`\
-      Required</th>
-      <td>string</td>
-      <td>The unique identifier (UID) for the customer's billing account. The UID can be up to 80 characters long with any combination of alphanumeric characters and hyphens.</td>
-    </tr>
-
-    <tr>
-      <th>`account_type`\
-      Required</th>
-      <td>string</td>
-      <td>The type of 1Password account you want to provision for the customer: `I` for individual account or `F` for family account. Team and business accounts aren't supported.</td>
-    </tr>
-
-    <tr>
-      <th>`domain`\
-      Required</th>
-      <td>string</td>
-      <td> The domain for the new or existing 1Password account the customer can use with the partner billing service. For the test server: `b5test.com`, `b5test.ca`, or `b5test.eu`. For the production server: `1password.com`, `1password.ca`, or `1password.eu`.</td>
-    </tr>
-
-    <tr>
-      <th>`ends_at`</th>
-      <td>string</td>
-      <td>The date and time the customer's billing account is scheduled to be removed from the partner billing service. Uses the format defined by RFC 3339.</td>
-    </tr>
-  </tbody>
-</table>
+> [tab] Request object schema
+>
+> <table>
+>   <thead>
+>     <tr>
+>       <th>Name</th>
+>       <th>Type</th>
+>       <th>Description</th>
+>     </tr>
+>   </thead>
+>
+>   <tbody>
+>     <tr>
+>       <th>`customer_account_uid`\
+>       Required</th>
+>       <td>string</td>
+>       <td>The unique identifier (UID) for the customer's billing account. The UID can be up to 80 characters long with any combination of alphanumeric characters and hyphens.</td>
+>     </tr>
+>
+>     <tr>
+>       <th>`account_type`\
+>       Required</th>
+>       <td>string</td>
+>       <td>The type of 1Password account you want to provision for the customer: `I` for individual account or `F` for family account. Team and business accounts aren't supported.</td>
+>     </tr>
+>
+>     <tr>
+>       <th>`domain`\
+>       Required</th>
+>       <td>string</td>
+>       <td> The domain for the new or existing 1Password account the customer can use with the partner billing service. For the test server: `b5test.com`, `b5test.ca`, or `b5test.eu`. For the production server: `1password.com`, `1password.ca`, or `1password.eu`.</td>
+>     </tr>
+>
+>     <tr>
+>       <th>`ends_at`</th>
+>       <td>string</td>
+>       <td>The date and time the customer's billing account is scheduled to be removed from the partner billing service. Uses the format defined by RFC 3339.</td>
+>     </tr>
+>   </tbody>
+> </table>
 
 ### Success response
 
 A `201` response returns an Account object containing the unique [activation token](#activation-tokens) that's used to link the customer's 1Password account with their partner billing account.
 
-**Example response**
+> [tab] Example response
+>
+> ```json highlight={4} theme={null}
+> {
+> 	"customer_account_uid": "4266474b-6385-56d4-7b75-648096593064",
+> 	"account_type": "F",
+> 	"activation_token": "PNS-D5A75BT2",
+> 	"domain": "1password.com",
+> 	"status": "entitled",
+> 	"deployed_members": 0,
+> 	"created_at": "2023-08-24T04:19:44Z",
+> 	"updated_at": "2023-09-15T15:58:22Z",
+> 	"ends_at": "2024-08-31T18:00:00Z"
+> }
+> ```
 
-```json highlight={4} theme={null}
-{
-	"customer_account_uid": "4266474b-6385-56d4-7b75-648096593064",
-	"account_type": "F",
-	"activation_token": "PNS-D5A75BT2",
-	"domain": "1password.com",
-	"status": "entitled",
-	"deployed_members": 0,
-	"created_at": "2023-08-24T04:19:44Z",
-	"updated_at": "2023-09-15T15:58:22Z",
-	"ends_at": "2024-08-31T18:00:00Z"
-}
-```
-
-**Response object schema**
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`customer_account_uid`</th>
-      <td>string</td>
-      <td>The unique identifier (UID) for the customer's billing account. The UID can be up to 80 characters long with any combination of alphanumeric characters and hyphens.</td>
-    </tr>
-
-    <tr>
-      <th>`account_type`</th>
-      <td>string</td>
-      <td>The type of 1Password account you provisioned for the customer: `I` for individual account or `F` for family account.</td>
-    </tr>
-
-    <tr>
-      <th>`activation_token`</th>
-      <td>string</td>
-      <td>The [activation token](#activation-tokens) you'll use to create a link that connects the customer's new or existing 1Password account to their partner billing account (for example, `https://start.[1password_domain]/partnership/redeem?t=[account_type]&c=[activation_token]&l=[language_code]`). Tokens can only be used with a 1Password individual or family account. Team and business accounts aren't supported.</td>
-    </tr>
-
-    <tr>
-      <th>`domain`</th>
-      <td>string</td>
-      <td>The domain for the new or existing 1Password account the customer can use with the partner billing service. For the test server: `b5test.com`, `b5test.ca`, or `b5test.eu`. For the production server: `1password.com`, `1password.ca`, or `1password.eu`.</td>
-    </tr>
-
-    <tr>
-      <th>`status`</th>
-      <td>string</td>
-
-      <td>
-        The status of the customer billing account that was provisioned. Possible values are one of:
-
-        <ul>
-          <li>`entitled` Provisioning has been initiated, but the customer hasn't used their partner billing link with a new or existing 1Password account.</li>
-          <li>`provisioned` The customer has used their partner billing link with a new or existing 1Password account, and their third-party billing account has been provisioned.</li>
-        </ul>
-
-        The expected value for the POST request is `entitled`.
-      </td>
-    </tr>
-
-    <tr>
-      <th>`deployed_members`</th>
-      <td>integer</td>
-      <td>The number of provisioned users in the 1Password account. \
-      The expected value returned for a POST request is `0`.</td>
-    </tr>
-
-    <tr>
-      <th>`created_at`</th>
-      <td>string</td>
-      <td>The date and time the customer's billing account was created. Uses the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html)</td>
-    </tr>
-
-    <tr>
-      <th>`updated_at`</th>
-      <td>string</td>
-      <td>The date and time the billing account was last updated. Uses the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html) This field is updated when there are account status changes. \
-      The expected value returned for a POST request is the same as the value of the `created_at` property.</td>
-    </tr>
-
-    <tr>
-      <th>`ends_at`</th>
-      <td>string</td>
-      <td>The date and time the customer's billing account is scheduled to be removed from the partner billing service. Uses the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html) If a date and time haven't been specified, the expected value is `null`.</td>
-    </tr>
-  </tbody>
-</table>
+> [tab] Response object schema
+>
+> <table>
+>   <thead>
+>     <tr>
+>       <th>Name</th>
+>       <th>Type</th>
+>       <th>Description</th>
+>     </tr>
+>   </thead>
+>
+>   <tbody>
+>     <tr>
+>       <th>`customer_account_uid`</th>
+>       <td>string</td>
+>       <td>The unique identifier (UID) for the customer's billing account. The UID can be up to 80 characters long with any combination of alphanumeric characters and hyphens.</td>
+>     </tr>
+>
+>     <tr>
+>       <th>`account_type`</th>
+>       <td>string</td>
+>       <td>The type of 1Password account you provisioned for the customer: `I` for individual account or `F` for family account.</td>
+>     </tr>
+>
+>     <tr>
+>       <th>`activation_token`</th>
+>       <td>string</td>
+>       <td>The [activation token](#activation-tokens) you'll use to create a link that connects the customer's new or existing 1Password account to their partner billing account (for example, `https://start.[1password_domain]/partnership/redeem?t=[account_type]&c=[activation_token]&l=[language_code]`). Tokens can only be used with a 1Password individual or family account. Team and business accounts aren't supported.</td>
+>     </tr>
+>
+>     <tr>
+>       <th>`domain`</th>
+>       <td>string</td>
+>       <td>The domain for the new or existing 1Password account the customer can use with the partner billing service. For the test server: `b5test.com`, `b5test.ca`, or `b5test.eu`. For the production server: `1password.com`, `1password.ca`, or `1password.eu`.</td>
+>     </tr>
+>
+>     <tr>
+>       <th>`status`</th>
+>       <td>string</td>
+>
+>       <td>
+>         The status of the customer billing account that was provisioned. Possible values are one of:
+>
+>         <ul>
+>           <li>`entitled` Provisioning has been initiated, but the customer hasn't used their partner billing link with a new or existing 1Password account.</li>
+>           <li>`provisioned` The customer has used their partner billing link with a new or existing 1Password account, and their third-party billing account has been provisioned.</li>
+>         </ul>
+>
+>         The expected value for the POST request is `entitled`.
+>       </td>
+>     </tr>
+>
+>     <tr>
+>       <th>`deployed_members`</th>
+>       <td>integer</td>
+>       <td>The number of provisioned users in the 1Password account. \
+>       The expected value returned for a POST request is `0`.</td>
+>     </tr>
+>
+>     <tr>
+>       <th>`created_at`</th>
+>       <td>string</td>
+>       <td>The date and time the customer's billing account was created. Uses the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html)</td>
+>     </tr>
+>
+>     <tr>
+>       <th>`updated_at`</th>
+>       <td>string</td>
+>       <td>The date and time the billing account was last updated. Uses the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html) This field is updated when there are account status changes. \
+>       The expected value returned for a POST request is the same as the value of the `created_at` property.</td>
+>     </tr>
+>
+>     <tr>
+>       <th>`ends_at`</th>
+>       <td>string</td>
+>       <td>The date and time the customer's billing account is scheduled to be removed from the partner billing service. Uses the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html) If a date and time haven't been specified, the expected value is `null`.</td>
+>     </tr>
+>   </tbody>
+> </table>
 
 ### Error responses
 
-> **Example error**
+> [accordion] `400` Returned on bad requests.
 >
-> ```json theme={null}
-> {
->   "code": 400,
->   "error": "bad_request",
->   "description": "Account type B is not supported."
-> }
-> ```
+> > [tab] Example error
+> >
+> > ```json theme={null}
+> > {
+> >   "code": 400,
+> >   "error": "bad_request",
+> >   "description": "Account type B is not supported."
+> > }
+> > ```
 >
-> **Error object schema**
->
-> <table>
->   <thead>
->     <tr>
->       <th>Parameter</th>
->       <th>Type</th>
->       <th>Description</th>
->     </tr>
->   </thead>
->
->   <tbody>
->     <tr>
->       <th>`code`</th>
->       <td>integer</td>
->       <td>The HTTP response code of the error.</td>
->     </tr>
->
->     <tr>
->       <th>`error`</th>
->       <td>string</td>
->       <td>A machine-parsable string that represents the code.</td>
->     </tr>
->
->     <tr>
->       <th>`description`</th>
->       <td>string</td>
->       <td>A description of the error.</td>
->     </tr>
->   </tbody>
-> </table>
+> > [tab] Error object schema
+> >
+> > <table>
+> >   <thead>
+> >     <tr>
+> >       <th>Parameter</th>
+> >       <th>Type</th>
+> >       <th>Description</th>
+> >     </tr>
+> >   </thead>
+> >
+> >   <tbody>
+> >     <tr>
+> >       <th>`code`</th>
+> >       <td>integer</td>
+> >       <td>The HTTP response code of the error.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`error`</th>
+> >       <td>string</td>
+> >       <td>A machine-parsable string that represents the code.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`description`</th>
+> >       <td>string</td>
+> >       <td>A description of the error.</td>
+> >     </tr>
+> >   </tbody>
+> > </table>
 
-> **Example error**
+> [accordion] `403` Returned when the authorization header is missing from the request body or an invalid token is specified.
 >
-> ```json theme={null}
-> {
->   "code": 403,
->   "error": "forbidden",
->   "description": "Invalid auth token."
-> }
-> ```
+> > [tab] Example error
+> >
+> > ```json theme={null}
+> > {
+> >   "code": 403,
+> >   "error": "forbidden",
+> >   "description": "Invalid auth token."
+> > }
+> > ```
 >
-> **Error object schema**
->
-> <table>
->   <thead>
->     <tr>
->       <th>Parameter</th>
->       <th>Type</th>
->       <th>Description</th>
->     </tr>
->   </thead>
->
->   <tbody>
->     <tr>
->       <th>`code`</th>
->       <td>integer</td>
->       <td>The HTTP response code of the error.</td>
->     </tr>
->
->     <tr>
->       <th>`error`</th>
->       <td>string</td>
->       <td>A machine-parsable string that represents the code.</td>
->     </tr>
->
->     <tr>
->       <th>`description`</th>
->       <td>string</td>
->       <td>A description of the error.</td>
->     </tr>
->   </tbody>
-> </table>
+> > [tab] Error object schema
+> >
+> > <table>
+> >   <thead>
+> >     <tr>
+> >       <th>Parameter</th>
+> >       <th>Type</th>
+> >       <th>Description</th>
+> >     </tr>
+> >   </thead>
+> >
+> >   <tbody>
+> >     <tr>
+> >       <th>`code`</th>
+> >       <td>integer</td>
+> >       <td>The HTTP response code of the error.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`error`</th>
+> >       <td>string</td>
+> >       <td>A machine-parsable string that represents the code.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`description`</th>
+> >       <td>string</td>
+> >       <td>A description of the error.</td>
+> >     </tr>
+> >   </tbody>
+> > </table>
 
-> **Example error**
+> [accordion] `404` Returned when a resource or dependency of a resource isn't found.
 >
-> ```json theme={null}
-> {
->   "code": 404,
->   "error": "not_found",
->   "description": "Domain not found."
-> }
-> ```
+> > [tab] Example error
+> >
+> > ```json theme={null}
+> > {
+> >   "code": 404,
+> >   "error": "not_found",
+> >   "description": "Domain not found."
+> > }
+> > ```
 >
-> **Error object schema**
->
-> <table>
->   <thead>
->     <tr>
->       <th>Parameter</th>
->       <th>Type</th>
->       <th>Description</th>
->     </tr>
->   </thead>
->
->   <tbody>
->     <tr>
->       <th>`code`</th>
->       <td>integer</td>
->       <td>The HTTP response code of the error.</td>
->     </tr>
->
->     <tr>
->       <th>`error`</th>
->       <td>string</td>
->       <td>A machine-parsable string that represents the code.</td>
->     </tr>
->
->     <tr>
->       <th>`description`</th>
->       <td>string</td>
->       <td>A description of the error.</td>
->     </tr>
->   </tbody>
-> </table>
+> > [tab] Error object schema
+> >
+> > <table>
+> >   <thead>
+> >     <tr>
+> >       <th>Parameter</th>
+> >       <th>Type</th>
+> >       <th>Description</th>
+> >     </tr>
+> >   </thead>
+> >
+> >   <tbody>
+> >     <tr>
+> >       <th>`code`</th>
+> >       <td>integer</td>
+> >       <td>The HTTP response code of the error.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`error`</th>
+> >       <td>string</td>
+> >       <td>A machine-parsable string that represents the code.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`description`</th>
+> >       <td>string</td>
+> >       <td>A description of the error.</td>
+> >     </tr>
+> >   </tbody>
+> > </table>
 
-> **Example error**
+> [accordion] `500` Returned on unexpected errors.
 >
-> ```json theme={null}
-> {
->   "code": 500,
->   "error": "internal_server_error",
->   "description": "Internal server error"
-> }
-> ```
+> > [tab] Example error
+> >
+> > ```json theme={null}
+> > {
+> >   "code": 500,
+> >   "error": "internal_server_error",
+> >   "description": "Internal server error"
+> > }
+> > ```
 >
-> **Error object schema**
->
-> <table>
->   <thead>
->     <tr>
->       <th>Parameter</th>
->       <th>Type</th>
->       <th>Description</th>
->     </tr>
->   </thead>
->
->   <tbody>
->     <tr>
->       <th>`code`</th>
->       <td>integer</td>
->       <td>The HTTP response code of the error.</td>
->     </tr>
->
->     <tr>
->       <th>`error`</th>
->       <td>string</td>
->       <td>A machine parsable string that represents the code.</td>
->     </tr>
->
->     <tr>
->       <th>`description`</th>
->       <td>string</td>
->       <td>A description of the error.</td>
->     </tr>
->   </tbody>
-> </table>
+> > [tab] Error object schema
+> >
+> > <table>
+> >   <thead>
+> >     <tr>
+> >       <th>Parameter</th>
+> >       <th>Type</th>
+> >       <th>Description</th>
+> >     </tr>
+> >   </thead>
+> >
+> >   <tbody>
+> >     <tr>
+> >       <th>`code`</th>
+> >       <td>integer</td>
+> >       <td>The HTTP response code of the error.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`error`</th>
+> >       <td>string</td>
+> >       <td>A machine parsable string that represents the code.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`description`</th>
+> >       <td>string</td>
+> >       <td>A description of the error.</td>
+> >     </tr>
+> >   </tbody>
+> > </table>
 
 ## Get billing account information
 
@@ -601,280 +609,288 @@ A GET call retrieves information about a customer's billing account. Make sure t
 
 Use the endpoint URL with your [bearer token](#authorization) and the required [request headers](#request-headers) to request a customer's billing account information. The GET request doesn't include a body, so the `Content-type` header isn't used.
 
-**Example request**
-
-```shell theme={null}
-curl --request GET \
-    --url https://billing.1password.com/api/v1/partners/accounts/{customer_account_uid} \
-    --header 'Authorization: Bearer YOUR_BEARER_TOKEN' \
-    --header 'Accept: application/json'
-```
+> [tab] Example request
+>
+> ```shell theme={null}
+> curl --request GET \
+>     --url https://billing.1password.com/api/v1/partners/accounts/{customer_account_uid} \
+>     --header 'Authorization: Bearer YOUR_BEARER_TOKEN' \
+>     --header 'Accept: application/json'
+> ```
 
 ### Success response
 
 A `200` response returns an Account object that provides information about the customer's third-party billing account.
 
-**Example response**
+> [tab] Example response
+>
+> ```json theme={null}
+> {
+> 	"customer_account_uid": "4266474b-6385-56d4-7b75-648096593064",
+> 	"account_type": "F",
+> 	"activation_token": "PNS-D5A75BT2",
+> 	"domain": "1password.com",
+> 	"status": "provisioned",
+> 	"deployed_members": 1,
+> 	"created_at": "2023-08-24T04:19:44Z",
+> 	"updated_at": "2023-09-15T15:58:22Z",
+> 	"ends_at": "2024-08-31T18:00:00Z"
+> }
+> ```
 
-```json theme={null}
-{
-	"customer_account_uid": "4266474b-6385-56d4-7b75-648096593064",
-	"account_type": "F",
-	"activation_token": "PNS-D5A75BT2",
-	"domain": "1password.com",
-	"status": "provisioned",
-	"deployed_members": 1,
-	"created_at": "2023-08-24T04:19:44Z",
-	"updated_at": "2023-09-15T15:58:22Z",
-	"ends_at": "2024-08-31T18:00:00Z"
-}
-```
-
-**Response object schema**
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`customer_account_uid`</th>
-      <td>string</td>
-      <td>The unique identifier (UID) for the customer's billing account. The UID can be up to 80 characters long with any combination of alphanumeric characters and hyphens.</td>
-    </tr>
-
-    <tr>
-      <th>`account_type`</th>
-      <td>string</td>
-      <td>The type of 1Password account you provisioned for the customer: `I` for individual account or `F` for family account.</td>
-    </tr>
-
-    <tr>
-      <th>`activation_token`</th>
-      <td>string</td>
-      <td>The [activation token](#activation-tokens) you'll use to create a link that connects the customer's new or existing 1Password account to their partner billing account (for example, `https://start.[1password_domain]/partnership/redeem?t=[account_type]&c=[activation_token]&l=[language_code]`). Tokens can only be used with a 1Password individual or family account. Team and business accounts aren't supported.</td>
-    </tr>
-
-    <tr>
-      <th>`domain`</th>
-      <td>string</td>
-      <td>The domain for the new or existing 1Password account the customer can use with the partner billing service. For the test server: `b5test.com`, `b5test.ca`, or `b5test.eu`. For the production server: `1password.com`, `1password.ca`, or `1password.eu`.</td>
-    </tr>
-
-    <tr>
-      <th>`status`</th>
-      <td>string</td>
-
-      <td>
-        The status of the customer billing account that was provisioned. Possible values are one of:
-
-        <ul>
-          <li>`entitled` Provisioning has been initiated, but the customer hasn't used their partner billing link with a new or existing 1Password account.</li>
-          <li>`provisioned` The customer has used their partner billing link with a new or existing 1Password account, and their third-party billing account has been provisioned.</li>
-        </ul>
-      </td>
-    </tr>
-
-    <tr>
-      <th>`deployed_members`</th>
-      <td>integer</td>
-      <td>The number of provisioned users in the 1Password account.</td>
-    </tr>
-
-    <tr>
-      <th>`created_at`</th>
-      <td>string</td>
-      <td>The date and time the customer's billing account was created. Uses the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html)</td>
-    </tr>
-
-    <tr>
-      <th>`updated_at`</th>
-      <td>string</td>
-      <td>The date and time the customer's billing account was last updated. Uses the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html) This field updates when there are account status changes.</td>
-    </tr>
-
-    <tr>
-      <th>`ends_at`</th>
-      <td>string</td>
-      <td>The date and time the customer's billing account is scheduled to be removed from the partner billing service. Uses the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html) If a date and time haven't been specified, the expected value is `null`.</td>
-    </tr>
-  </tbody>
-</table>
+> [tab] Response object schema
+>
+> <table>
+>   <thead>
+>     <tr>
+>       <th>Name</th>
+>       <th>Type</th>
+>       <th>Description</th>
+>     </tr>
+>   </thead>
+>
+>   <tbody>
+>     <tr>
+>       <th>`customer_account_uid`</th>
+>       <td>string</td>
+>       <td>The unique identifier (UID) for the customer's billing account. The UID can be up to 80 characters long with any combination of alphanumeric characters and hyphens.</td>
+>     </tr>
+>
+>     <tr>
+>       <th>`account_type`</th>
+>       <td>string</td>
+>       <td>The type of 1Password account you provisioned for the customer: `I` for individual account or `F` for family account.</td>
+>     </tr>
+>
+>     <tr>
+>       <th>`activation_token`</th>
+>       <td>string</td>
+>       <td>The [activation token](#activation-tokens) you'll use to create a link that connects the customer's new or existing 1Password account to their partner billing account (for example, `https://start.[1password_domain]/partnership/redeem?t=[account_type]&c=[activation_token]&l=[language_code]`). Tokens can only be used with a 1Password individual or family account. Team and business accounts aren't supported.</td>
+>     </tr>
+>
+>     <tr>
+>       <th>`domain`</th>
+>       <td>string</td>
+>       <td>The domain for the new or existing 1Password account the customer can use with the partner billing service. For the test server: `b5test.com`, `b5test.ca`, or `b5test.eu`. For the production server: `1password.com`, `1password.ca`, or `1password.eu`.</td>
+>     </tr>
+>
+>     <tr>
+>       <th>`status`</th>
+>       <td>string</td>
+>
+>       <td>
+>         The status of the customer billing account that was provisioned. Possible values are one of:
+>
+>         <ul>
+>           <li>`entitled` Provisioning has been initiated, but the customer hasn't used their partner billing link with a new or existing 1Password account.</li>
+>           <li>`provisioned` The customer has used their partner billing link with a new or existing 1Password account, and their third-party billing account has been provisioned.</li>
+>         </ul>
+>       </td>
+>     </tr>
+>
+>     <tr>
+>       <th>`deployed_members`</th>
+>       <td>integer</td>
+>       <td>The number of provisioned users in the 1Password account.</td>
+>     </tr>
+>
+>     <tr>
+>       <th>`created_at`</th>
+>       <td>string</td>
+>       <td>The date and time the customer's billing account was created. Uses the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html)</td>
+>     </tr>
+>
+>     <tr>
+>       <th>`updated_at`</th>
+>       <td>string</td>
+>       <td>The date and time the customer's billing account was last updated. Uses the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html) This field updates when there are account status changes.</td>
+>     </tr>
+>
+>     <tr>
+>       <th>`ends_at`</th>
+>       <td>string</td>
+>       <td>The date and time the customer's billing account is scheduled to be removed from the partner billing service. Uses the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html) If a date and time haven't been specified, the expected value is `null`.</td>
+>     </tr>
+>   </tbody>
+> </table>
 
 ### Error responses
 
-> **Example error**
+> [accordion] `403` Returned when the authorization header is missing or an invalid token is specified.
 >
-> ```json theme={null}
-> {
->   "code": 403,
->   "error": "forbidden",
->   "description": "Invalid auth token."
-> }
-> ```
+> > [tab] Example error
+> >
+> > ```json theme={null}
+> > {
+> >   "code": 403,
+> >   "error": "forbidden",
+> >   "description": "Invalid auth token."
+> > }
+> > ```
 >
-> **Error object schema**
->
-> <table>
->   <thead>
->     <tr>
->       <th>Parameter</th>
->       <th>Type</th>
->       <th>Description</th>
->     </tr>
->   </thead>
->
->   <tbody>
->     <tr>
->       <th>`code`</th>
->       <td>integer</td>
->       <td>The HTTP response code of the error.</td>
->     </tr>
->
->     <tr>
->       <th>`error`</th>
->       <td>string</td>
->       <td>A machine parsable string that represents the code.</td>
->     </tr>
->
->     <tr>
->       <th>`description`</th>
->       <td>string</td>
->       <td>A description of the error.</td>
->     </tr>
->   </tbody>
-> </table>
+> > [tab] Error object schema
+> >
+> > <table>
+> >   <thead>
+> >     <tr>
+> >       <th>Parameter</th>
+> >       <th>Type</th>
+> >       <th>Description</th>
+> >     </tr>
+> >   </thead>
+> >
+> >   <tbody>
+> >     <tr>
+> >       <th>`code`</th>
+> >       <td>integer</td>
+> >       <td>The HTTP response code of the error.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`error`</th>
+> >       <td>string</td>
+> >       <td>A machine parsable string that represents the code.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`description`</th>
+> >       <td>string</td>
+> >       <td>A description of the error.</td>
+> >     </tr>
+> >   </tbody>
+> > </table>
 
-> **Example error**
+> [accordion] `404` Returned when a resource or dependency of a resource isn't found.
 >
-> ```json theme={null}
-> {
->   "code": 404,
->   "error": "not_found",
->   "description": "Failed to find the requested account."
-> }
-> ```
+> > [tab] Example error
+> >
+> > ```json theme={null}
+> > {
+> >   "code": 404,
+> >   "error": "not_found",
+> >   "description": "Failed to find the requested account."
+> > }
+> > ```
 >
-> **Error object schema**
->
-> <table>
->   <thead>
->     <tr>
->       <th>Parameter</th>
->       <th>Type</th>
->       <th>Description</th>
->     </tr>
->   </thead>
->
->   <tbody>
->     <tr>
->       <th>`code`</th>
->       <td>integer</td>
->       <td>The HTTP response code of the error.</td>
->     </tr>
->
->     <tr>
->       <th>`error`</th>
->       <td>string</td>
->       <td>A machine parsable string that represents the code.</td>
->     </tr>
->
->     <tr>
->       <th>`description`</th>
->       <td>string</td>
->       <td>A description of the error.</td>
->     </tr>
->   </tbody>
-> </table>
+> > [tab] Error object schema
+> >
+> > <table>
+> >   <thead>
+> >     <tr>
+> >       <th>Parameter</th>
+> >       <th>Type</th>
+> >       <th>Description</th>
+> >     </tr>
+> >   </thead>
+> >
+> >   <tbody>
+> >     <tr>
+> >       <th>`code`</th>
+> >       <td>integer</td>
+> >       <td>The HTTP response code of the error.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`error`</th>
+> >       <td>string</td>
+> >       <td>A machine parsable string that represents the code.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`description`</th>
+> >       <td>string</td>
+> >       <td>A description of the error.</td>
+> >     </tr>
+> >   </tbody>
+> > </table>
 
-> **Example error**
+> [accordion] `410` Returned when a resource has been removed.
 >
-> ```json theme={null}
-> {
->   "code": 410,
->   "error": "gone",
->   "description": "The requested account is gone."
-> }
-> ```
+> > [tab] Example error
+> >
+> > ```json theme={null}
+> > {
+> >   "code": 410,
+> >   "error": "gone",
+> >   "description": "The requested account is gone."
+> > }
+> > ```
 >
-> **Error object schema**
->
-> <table>
->   <thead>
->     <tr>
->       <th>Parameter</th>
->       <th>Type</th>
->       <th>Description</th>
->     </tr>
->   </thead>
->
->   <tbody>
->     <tr>
->       <th>`code`</th>
->       <td>integer</td>
->       <td>The HTTP response code of the error.</td>
->     </tr>
->
->     <tr>
->       <th>`error`</th>
->       <td>string</td>
->       <td>A machine parsable string that represents the code.</td>
->     </tr>
->
->     <tr>
->       <th>`description`</th>
->       <td>string</td>
->       <td>A description of the error.</td>
->     </tr>
->   </tbody>
-> </table>
+> > [tab] Error object schema
+> >
+> > <table>
+> >   <thead>
+> >     <tr>
+> >       <th>Parameter</th>
+> >       <th>Type</th>
+> >       <th>Description</th>
+> >     </tr>
+> >   </thead>
+> >
+> >   <tbody>
+> >     <tr>
+> >       <th>`code`</th>
+> >       <td>integer</td>
+> >       <td>The HTTP response code of the error.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`error`</th>
+> >       <td>string</td>
+> >       <td>A machine parsable string that represents the code.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`description`</th>
+> >       <td>string</td>
+> >       <td>A description of the error.</td>
+> >     </tr>
+> >   </tbody>
+> > </table>
 
-> **Example error**
+> [accordion] `500` Returned on unexpected errors.
 >
-> ```json theme={null}
-> {
->   "code": 500,
->   "error": "internal_server_error",
->   "description": "Internal server error"
-> }
-> ```
+> > [tab] Example error
+> >
+> > ```json theme={null}
+> > {
+> >   "code": 500,
+> >   "error": "internal_server_error",
+> >   "description": "Internal server error"
+> > }
+> > ```
 >
-> **Error object schema**
->
-> <table>
->   <thead>
->     <tr>
->       <th>Parameter</th>
->       <th>Type</th>
->       <th>Description</th>
->     </tr>
->   </thead>
->
->   <tbody>
->     <tr>
->       <th>`code`</th>
->       <td>integer</td>
->       <td>The HTTP response code of the error.</td>
->     </tr>
->
->     <tr>
->       <th>`error`</th>
->       <td>string</td>
->       <td>A machine parsable string that represents the code.</td>
->     </tr>
->
->     <tr>
->       <th>`description`</th>
->       <td>string</td>
->       <td>A description of the error.</td>
->     </tr>
->   </tbody>
-> </table>
+> > [tab] Error object schema
+> >
+> > <table>
+> >   <thead>
+> >     <tr>
+> >       <th>Parameter</th>
+> >       <th>Type</th>
+> >       <th>Description</th>
+> >     </tr>
+> >   </thead>
+> >
+> >   <tbody>
+> >     <tr>
+> >       <th>`code`</th>
+> >       <td>integer</td>
+> >       <td>The HTTP response code of the error.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`error`</th>
+> >       <td>string</td>
+> >       <td>A machine parsable string that represents the code.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`description`</th>
+> >       <td>string</td>
+> >       <td>A description of the error.</td>
+> >     </tr>
+> >   </tbody>
+> > </table>
 
 ## Delete a billing account
 
@@ -909,13 +925,13 @@ A DELETE call removes a customer's third-party billing account from the partner 
 
 Use the endpoint URL with your [bearer token](#authorization) for the required [request header](#request-headers) to remove a customer's billing account. The DELETE request and subsequent response don't include a body, so the `Content-type` and `Accept` headers aren't used.
 
-**Example request**
-
-```shell theme={null}
-curl --request DELETE \
-    --url https://billing.1password.com/api/v1/partners/accounts/{customer_account_uid} \
-    --header 'Authorization: Bearer YOUR_BEARER_TOKEN' \
-```
+> [tab] Example request
+>
+> ```shell theme={null}
+> curl --request DELETE \
+>     --url https://billing.1password.com/api/v1/partners/accounts/{customer_account_uid} \
+>     --header 'Authorization: Bearer YOUR_BEARER_TOKEN' \
+> ```
 
 ### Success response
 
@@ -923,131 +939,137 @@ A `204` response is returned on successful deactivation and removal of a custome
 
 ### Error responses
 
-> **Example error**
+> [accordion] `403` Returned when the authorization header is missing or an invalid token is specified.
 >
-> ```json theme={null}
-> {
->   "code": 403,
->   "error": "forbidden",
->   "description": "Invalid auth token."
-> }
-> ```
+> > [tab] Example error
+> >
+> > ```json theme={null}
+> > {
+> >   "code": 403,
+> >   "error": "forbidden",
+> >   "description": "Invalid auth token."
+> > }
+> > ```
 >
-> **Error object schema**
->
-> <table>
->   <thead>
->     <tr>
->       <th>Parameter</th>
->       <th>Type</th>
->       <th>Description</th>
->     </tr>
->   </thead>
->
->   <tbody>
->     <tr>
->       <th>`code`</th>
->       <td>integer</td>
->       <td>The HTTP response code of the error.</td>
->     </tr>
->
->     <tr>
->       <th>`error`</th>
->       <td>string</td>
->       <td>A machine parsable string that represents the code.</td>
->     </tr>
->
->     <tr>
->       <th>`description`</th>
->       <td>string</td>
->       <td>A description of the error.</td>
->     </tr>
->   </tbody>
-> </table>
+> > [tab] Error object schema
+> >
+> > <table>
+> >   <thead>
+> >     <tr>
+> >       <th>Parameter</th>
+> >       <th>Type</th>
+> >       <th>Description</th>
+> >     </tr>
+> >   </thead>
+> >
+> >   <tbody>
+> >     <tr>
+> >       <th>`code`</th>
+> >       <td>integer</td>
+> >       <td>The HTTP response code of the error.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`error`</th>
+> >       <td>string</td>
+> >       <td>A machine parsable string that represents the code.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`description`</th>
+> >       <td>string</td>
+> >       <td>A description of the error.</td>
+> >     </tr>
+> >   </tbody>
+> > </table>
 
-> **Example value**
+> [accordion] `404` Returned when a resource or dependency of a resource isn't found.
 >
-> ```json theme={null}
-> {
->   "code": 404,
->   "error": "not_found",
->   "description": "Failed to find the requested account."
-> }
-> ```
+> > [tab] Example value
+> >
+> > ```json theme={null}
+> > {
+> >   "code": 404,
+> >   "error": "not_found",
+> >   "description": "Failed to find the requested account."
+> > }
+> > ```
 >
-> **Error object schema**
->
-> <table>
->   <thead>
->     <tr>
->       <th>Parameter</th>
->       <th>Type</th>
->       <th>Description</th>
->     </tr>
->   </thead>
->
->   <tbody>
->     <tr>
->       <th>`code`</th>
->       <td>integer</td>
->       <td>The HTTP response code of the error.</td>
->     </tr>
->
->     <tr>
->       <th>`error`</th>
->       <td>string</td>
->       <td>A machine parsable string that represents the code.</td>
->     </tr>
->
->     <tr>
->       <th>`description`</th>
->       <td>string</td>
->       <td>A description of the error.</td>
->     </tr>
->   </tbody>
-> </table>
+> > [tab] Error object schema
+> >
+> > <table>
+> >   <thead>
+> >     <tr>
+> >       <th>Parameter</th>
+> >       <th>Type</th>
+> >       <th>Description</th>
+> >     </tr>
+> >   </thead>
+> >
+> >   <tbody>
+> >     <tr>
+> >       <th>`code`</th>
+> >       <td>integer</td>
+> >       <td>The HTTP response code of the error.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`error`</th>
+> >       <td>string</td>
+> >       <td>A machine parsable string that represents the code.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`description`</th>
+> >       <td>string</td>
+> >       <td>A description of the error.</td>
+> >     </tr>
+> >   </tbody>
+> > </table>
 
-> **Example error**
+> [accordion] `500` Returned on unexpected errors.
 >
-> ```json theme={null}
-> {
->   "code": 500,
->   "error": "internal_server_error",
->   "description": "Internal server error"
-> }
-> ```
+> > [tab] Example error
+> >
+> > ```json theme={null}
+> > {
+> >   "code": 500,
+> >   "error": "internal_server_error",
+> >   "description": "Internal server error"
+> > }
+> > ```
 >
-> **Error object schema**
->
-> <table>
->   <thead>
->     <tr>
->       <th>Parameter</th>
->       <th>Type</th>
->       <th>Description</th>
->     </tr>
->   </thead>
->
->   <tbody>
->     <tr>
->       <th>`code`</th>
->       <td>integer</td>
->       <td>The HTTP response code of the error.</td>
->     </tr>
->
->     <tr>
->       <th>`error`</th>
->       <td>string</td>
->       <td>A machine parsable string that represents the code.</td>
->     </tr>
->
->     <tr>
->       <th>`description`</th>
->       <td>string</td>
->       <td>A description of the error.</td>
->     </tr>
->   </tbody>
-> </table>
+> > [tab] Error object schema
+> >
+> > <table>
+> >   <thead>
+> >     <tr>
+> >       <th>Parameter</th>
+> >       <th>Type</th>
+> >       <th>Description</th>
+> >     </tr>
+> >   </thead>
+> >
+> >   <tbody>
+> >     <tr>
+> >       <th>`code`</th>
+> >       <td>integer</td>
+> >       <td>The HTTP response code of the error.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`error`</th>
+> >       <td>string</td>
+> >       <td>A machine parsable string that represents the code.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`description`</th>
+> >       <td>string</td>
+> >       <td>A description of the error.</td>
+> >     </tr>
+> >   </tbody>
+> > </table>
 
 ## Update a billing account end date
 
@@ -1086,304 +1108,312 @@ To add or update the date and time a customer's billing account is scheduled to 
 
 To remove the end date and time from a customer's billing account, use an empty string (`""`) or `null` as the value.
 
-**Example request**
+> [tab] Example request
+>
+> ```shell highlight={6} theme={null}
+> curl --request PATCH \
+>     --url https://billing.1password.com/api/v1/partners/accounts/{customer_account_uid} \
+>     --header 'Authorization: Bearer YOUR_BEARER_TOKEN' \
+>     --header 'Accept: application/json' \
+>     --data '{
+>         "ends_at": "2024-08-31T13:00:00-05:00"
+>     }'
+> ```
 
-```shell highlight={6} theme={null}
-curl --request PATCH \
-    --url https://billing.1password.com/api/v1/partners/accounts/{customer_account_uid} \
-    --header 'Authorization: Bearer YOUR_BEARER_TOKEN' \
-    --header 'Accept: application/json' \
-    --data '{
-        "ends_at": "2024-08-31T13:00:00-05:00"
-    }'
-```
-
-**Request object schema**
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`ends_at`\
-      Required</th>
-      <td>string</td>
-      <td> The date and time the customer's billing account is scheduled to be removed from the partner billing service. Uses the format defined by RFC 3339. If you want to remove the end date from an account, use an empty string (`""`) or `null` as the value.</td>
-    </tr>
-  </tbody>
-</table>
+> [tab] Request object schema
+>
+> <table>
+>   <thead>
+>     <tr>
+>       <th>Name</th>
+>       <th>Type</th>
+>       <th>Description</th>
+>     </tr>
+>   </thead>
+>
+>   <tbody>
+>     <tr>
+>       <th>`ends_at`\
+>       Required</th>
+>       <td>string</td>
+>       <td> The date and time the customer's billing account is scheduled to be removed from the partner billing service. Uses the format defined by RFC 3339. If you want to remove the end date from an account, use an empty string (`""`) or `null` as the value.</td>
+>     </tr>
+>   </tbody>
+> </table>
 
 ### Success response
 
 A `200` response returns an Account object that provides information about the customer's third-party billing account, including the end date that has been added, edited, or removed from the billing account.
 
-**Example response**
+> [tab] Example response
+>
+> ```json highlight={10} theme={null}
+> {
+> 	"customer_account_uid": "4266474b-6385-56d4-7b75-648096593064",
+> 	"account_type": "F",
+> 	"activation_token": "PNS-D5A75BT2",
+> 	"domain": "1password.com",
+> 	"status": "provisioned",
+> 	"deployed_members": 1,
+> 	"created_at": "2023-08-24T04:19:44Z",
+> 	"updated_at": "2023-09-15T15:58:22Z",
+> 	"ends_at": "2024-08-31T18:00:00Z"
+> }
+> ```
 
-```json highlight={10} theme={null}
-{
-	"customer_account_uid": "4266474b-6385-56d4-7b75-648096593064",
-	"account_type": "F",
-	"activation_token": "PNS-D5A75BT2",
-	"domain": "1password.com",
-	"status": "provisioned",
-	"deployed_members": 1,
-	"created_at": "2023-08-24T04:19:44Z",
-	"updated_at": "2023-09-15T15:58:22Z",
-	"ends_at": "2024-08-31T18:00:00Z"
-}
-```
-
-**Response object schema**
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`customer_account_uid`</th>
-      <td>string</td>
-      <td>TThe unique identifier (UID) for the customer's billing account. The UID can be up to 80 characters long with any combination of alphanumeric characters and hyphens.</td>
-    </tr>
-
-    <tr>
-      <th>`account_type`</th>
-      <td>string</td>
-      <td>The type of 1Password account you provisioned for the customer: `I` for individual account or `F` for family account.</td>
-    </tr>
-
-    <tr>
-      <th>`activation_token`</th>
-      <td>string</td>
-      <td>The [activation token](#activation-tokens) you'll use to create a link that connects the customer's new or existing 1Password account to their partner billing account (for example, `https://start.[1password_domain]/partnership/redeem?t=[account_type]&c=[activation_token]&l=[language_code]`). Tokens can only be used with a 1Password individual or family account. Team and business accounts aren't supported.</td>
-    </tr>
-
-    <tr>
-      <th>`domain`</th>
-      <td>string</td>
-      <td>The domain for the new or existing 1Password account the customer can use with the partner billing service. For the test server: `b5test.com`, `b5test.ca`, or `b5test.eu`. For the production server: `1password.com`, `1password.ca`, or `1password.eu`.</td>
-    </tr>
-
-    <tr>
-      <th>`status`</th>
-      <td>string</td>
-
-      <td>
-        The status of the customer's billing account. Possible values are one of:
-
-        <ul>
-          <li>`entitled` Provisioning has been initiated, but the customer hasn't used their partner billing link with a new or existing 1Password account.</li>
-          <li>`provisioned` The customer has used their partner billing link with a new or existing 1Password account, and their third-party billing account has been provisioned.</li>
-        </ul>
-      </td>
-    </tr>
-
-    <tr>
-      <th>`deployed_members`</th>
-      <td>integer</td>
-      <td>The number of provisioned users in the 1Password account.</td>
-    </tr>
-
-    <tr>
-      <th>`created_at`</th>
-      <td>string</td>
-      <td>The date and time the customer's billing account was created. Uses the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html)</td>
-    </tr>
-
-    <tr>
-      <th>`updated_at`</th>
-      <td>string</td>
-      <td>The date and time the customer's billing account was last updated. Uses the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html) This field updates when there are account status changes.</td>
-    </tr>
-
-    <tr>
-      <th>`ends_at`</th>
-      <td>string</td>
-      <td>The date and time the customer's billing account is scheduled to be removed from the partner billing service. Uses the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html) If a date and time haven't been specified, the expected value is `null`.</td>
-    </tr>
-  </tbody>
-</table>
+> [tab] Response object schema
+>
+> <table>
+>   <thead>
+>     <tr>
+>       <th>Name</th>
+>       <th>Type</th>
+>       <th>Description</th>
+>     </tr>
+>   </thead>
+>
+>   <tbody>
+>     <tr>
+>       <th>`customer_account_uid`</th>
+>       <td>string</td>
+>       <td>TThe unique identifier (UID) for the customer's billing account. The UID can be up to 80 characters long with any combination of alphanumeric characters and hyphens.</td>
+>     </tr>
+>
+>     <tr>
+>       <th>`account_type`</th>
+>       <td>string</td>
+>       <td>The type of 1Password account you provisioned for the customer: `I` for individual account or `F` for family account.</td>
+>     </tr>
+>
+>     <tr>
+>       <th>`activation_token`</th>
+>       <td>string</td>
+>       <td>The [activation token](#activation-tokens) you'll use to create a link that connects the customer's new or existing 1Password account to their partner billing account (for example, `https://start.[1password_domain]/partnership/redeem?t=[account_type]&c=[activation_token]&l=[language_code]`). Tokens can only be used with a 1Password individual or family account. Team and business accounts aren't supported.</td>
+>     </tr>
+>
+>     <tr>
+>       <th>`domain`</th>
+>       <td>string</td>
+>       <td>The domain for the new or existing 1Password account the customer can use with the partner billing service. For the test server: `b5test.com`, `b5test.ca`, or `b5test.eu`. For the production server: `1password.com`, `1password.ca`, or `1password.eu`.</td>
+>     </tr>
+>
+>     <tr>
+>       <th>`status`</th>
+>       <td>string</td>
+>
+>       <td>
+>         The status of the customer's billing account. Possible values are one of:
+>
+>         <ul>
+>           <li>`entitled` Provisioning has been initiated, but the customer hasn't used their partner billing link with a new or existing 1Password account.</li>
+>           <li>`provisioned` The customer has used their partner billing link with a new or existing 1Password account, and their third-party billing account has been provisioned.</li>
+>         </ul>
+>       </td>
+>     </tr>
+>
+>     <tr>
+>       <th>`deployed_members`</th>
+>       <td>integer</td>
+>       <td>The number of provisioned users in the 1Password account.</td>
+>     </tr>
+>
+>     <tr>
+>       <th>`created_at`</th>
+>       <td>string</td>
+>       <td>The date and time the customer's billing account was created. Uses the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html)</td>
+>     </tr>
+>
+>     <tr>
+>       <th>`updated_at`</th>
+>       <td>string</td>
+>       <td>The date and time the customer's billing account was last updated. Uses the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html) This field updates when there are account status changes.</td>
+>     </tr>
+>
+>     <tr>
+>       <th>`ends_at`</th>
+>       <td>string</td>
+>       <td>The date and time the customer's billing account is scheduled to be removed from the partner billing service. Uses the [ISO 8601 standard.](https://www.iso.org/iso-8601-date-and-time-format.html) If a date and time haven't been specified, the expected value is `null`.</td>
+>     </tr>
+>   </tbody>
+> </table>
 
 ### Error responses
 
-> **Example error**
+> [accordion] `403` Returned when the authorization header is missing or an invalid token is specified.
 >
-> ```json theme={null}
-> {
->   "code": 403,
->   "error": "forbidden",
->   "description": "Invalid auth token."
-> }
-> ```
+> > [tab] Example error
+> >
+> > ```json theme={null}
+> > {
+> >   "code": 403,
+> >   "error": "forbidden",
+> >   "description": "Invalid auth token."
+> > }
+> > ```
 >
-> **Error object schema**
->
-> <table>
->   <thead>
->     <tr>
->       <th>Parameter</th>
->       <th>Type</th>
->       <th>Description</th>
->     </tr>
->   </thead>
->
->   <tbody>
->     <tr>
->       <th>`code`</th>
->       <td>integer</td>
->       <td>The HTTP response code of the error.</td>
->     </tr>
->
->     <tr>
->       <th>`error`</th>
->       <td>string</td>
->       <td>A machine parsable string that represents the code.</td>
->     </tr>
->
->     <tr>
->       <th>`description`</th>
->       <td>string</td>
->       <td>A description of the error.</td>
->     </tr>
->   </tbody>
-> </table>
+> > [tab] Error object schema
+> >
+> > <table>
+> >   <thead>
+> >     <tr>
+> >       <th>Parameter</th>
+> >       <th>Type</th>
+> >       <th>Description</th>
+> >     </tr>
+> >   </thead>
+> >
+> >   <tbody>
+> >     <tr>
+> >       <th>`code`</th>
+> >       <td>integer</td>
+> >       <td>The HTTP response code of the error.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`error`</th>
+> >       <td>string</td>
+> >       <td>A machine parsable string that represents the code.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`description`</th>
+> >       <td>string</td>
+> >       <td>A description of the error.</td>
+> >     </tr>
+> >   </tbody>
+> > </table>
 
-> **Example error**
+> [accordion] `404` Returned when a resource or dependency of a resource isn't found.
 >
-> ```json theme={null}
-> {
->   "code": 404,
->   "error": "not_found",
->   "description": "Failed to find the requested account."
-> }
-> ```
+> > [tab] Example error
+> >
+> > ```json theme={null}
+> > {
+> >   "code": 404,
+> >   "error": "not_found",
+> >   "description": "Failed to find the requested account."
+> > }
+> > ```
 >
-> **Error object schema**
->
-> <table>
->   <thead>
->     <tr>
->       <th>Parameter</th>
->       <th>Type</th>
->       <th>Description</th>
->     </tr>
->   </thead>
->
->   <tbody>
->     <tr>
->       <th>`code`</th>
->       <td>integer</td>
->       <td>The HTTP response code of the error.</td>
->     </tr>
->
->     <tr>
->       <th>`error`</th>
->       <td>string</td>
->       <td>A machine parsable string that represents the code.</td>
->     </tr>
->
->     <tr>
->       <th>`description`</th>
->       <td>string</td>
->       <td>A description of the error.</td>
->     </tr>
->   </tbody>
-> </table>
+> > [tab] Error object schema
+> >
+> > <table>
+> >   <thead>
+> >     <tr>
+> >       <th>Parameter</th>
+> >       <th>Type</th>
+> >       <th>Description</th>
+> >     </tr>
+> >   </thead>
+> >
+> >   <tbody>
+> >     <tr>
+> >       <th>`code`</th>
+> >       <td>integer</td>
+> >       <td>The HTTP response code of the error.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`error`</th>
+> >       <td>string</td>
+> >       <td>A machine parsable string that represents the code.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`description`</th>
+> >       <td>string</td>
+> >       <td>A description of the error.</td>
+> >     </tr>
+> >   </tbody>
+> > </table>
 
-> **Example error**
+> [accordion] `410` Returned when a resource has been removed.
 >
-> ```json theme={null}
-> {
->   "code": 410,
->   "error": "gone",
->   "description": "The requested account is gone."
-> }
-> ```
+> > [tab] Example error
+> >
+> > ```json theme={null}
+> > {
+> >   "code": 410,
+> >   "error": "gone",
+> >   "description": "The requested account is gone."
+> > }
+> > ```
 >
-> **Error object schema**
->
-> <table>
->   <thead>
->     <tr>
->       <th>Parameter</th>
->       <th>Type</th>
->       <th>Description</th>
->     </tr>
->   </thead>
->
->   <tbody>
->     <tr>
->       <th>`code`</th>
->       <td>integer</td>
->       <td>The HTTP response code of the error.</td>
->     </tr>
->
->     <tr>
->       <th>`error`</th>
->       <td>string</td>
->       <td>A machine parsable string that represents the code.</td>
->     </tr>
->
->     <tr>
->       <th>`description`</th>
->       <td>string</td>
->       <td>A description of the error.</td>
->     </tr>
->   </tbody>
-> </table>
+> > [tab] Error object schema
+> >
+> > <table>
+> >   <thead>
+> >     <tr>
+> >       <th>Parameter</th>
+> >       <th>Type</th>
+> >       <th>Description</th>
+> >     </tr>
+> >   </thead>
+> >
+> >   <tbody>
+> >     <tr>
+> >       <th>`code`</th>
+> >       <td>integer</td>
+> >       <td>The HTTP response code of the error.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`error`</th>
+> >       <td>string</td>
+> >       <td>A machine parsable string that represents the code.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`description`</th>
+> >       <td>string</td>
+> >       <td>A description of the error.</td>
+> >     </tr>
+> >   </tbody>
+> > </table>
 
-> **Example error**
+> [accordion] `500` Returned on unexpected errors.
 >
-> ```json theme={null}
-> {
->   "code": 500,
->   "error": "internal_server_error",
->   "description": "Internal server error"
-> }
-> ```
+> > [tab] Example error
+> >
+> > ```json theme={null}
+> > {
+> >   "code": 500,
+> >   "error": "internal_server_error",
+> >   "description": "Internal server error"
+> > }
+> > ```
 >
-> **Error object schema**
->
-> <table>
->   <thead>
->     <tr>
->       <th>Parameter</th>
->       <th>Type</th>
->       <th>Description</th>
->     </tr>
->   </thead>
->
->   <tbody>
->     <tr>
->       <th>`code`</th>
->       <td>integer</td>
->       <td>The HTTP response code of the error.</td>
->     </tr>
->
->     <tr>
->       <th>`error`</th>
->       <td>string</td>
->       <td>A machine parsable string that represents the code.</td>
->     </tr>
->
->     <tr>
->       <th>`description`</th>
->       <td>string</td>
->       <td>A description of the error.</td>
->     </tr>
->   </tbody>
-> </table>
+> > [tab] Error object schema
+> >
+> > <table>
+> >   <thead>
+> >     <tr>
+> >       <th>Parameter</th>
+> >       <th>Type</th>
+> >       <th>Description</th>
+> >     </tr>
+> >   </thead>
+> >
+> >   <tbody>
+> >     <tr>
+> >       <th>`code`</th>
+> >       <td>integer</td>
+> >       <td>The HTTP response code of the error.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`error`</th>
+> >       <td>string</td>
+> >       <td>A machine parsable string that represents the code.</td>
+> >     </tr>
+> >
+> >     <tr>
+> >       <th>`description`</th>
+> >       <td>string</td>
+> >       <td>A description of the error.</td>
+> >     </tr>
+> >   </tbody>
+> > </table>
 
 
 ## Related topics
