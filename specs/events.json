@@ -59,9 +59,13 @@
     "/api/v2/auth/introspect": {
       "get": {
         "x-mint": {
-          "href": "/events-api/reference/introspect"
+          "href": "/events-api/reference/introspect",
+          "metadata": {
+            "sidebarTitle": "Introspect (v2)",
+            "description": "Performs introspection of the provided Bearer JWT token"
+          }
         },
-        "summary": "Performs introspection of the provided Bearer JWT token",
+        "summary": "Introspect bearer token (v2)",
         "tags": [
           "auth"
         ],
@@ -125,9 +129,13 @@
     "/api/v2/signinattempts": {
       "post": {
         "x-mint": {
-          "href": "/events-api/reference/sign-in-attempt"
+          "href": "/events-api/reference/sign-in-attempt",
+          "metadata": {
+            "sidebarTitle": "Sign-in attempts (v2)",
+            "description": "Retrieves events for both successful and failed attempts to sign into a 1Password account"
+          }
         },
-        "summary": "Retrieves events for both successful and failed attempts to sign into a 1Password account",
+        "summary": "Retrieve sign-in attempts (v2)",
         "description": "This endpoint requires your JSON Web Token to have the *signinattempts* feature.",
         "tags": [
           "api-v2"
@@ -195,9 +203,13 @@
     "/api/v2/itemusages": {
       "post": {
         "x-mint": {
-          "href": "/events-api/reference/items-usage"
+          "href": "/events-api/reference/items-usage",
+          "metadata": {
+            "sidebarTitle": "Item usages (v2)",
+            "description": "Retrieves events for each usage of an item stored in a shared vault within a 1Password account"
+          }
         },
-        "summary": "Retrieves events for each usage of an item stored in a shared vault within a 1Password account",
+        "summary": "Retrieve item usages (v2)",
         "description": "This endpoint requires your JSON Web Token to have the *itemusages* feature.",
         "tags": [
           "api-v2"
@@ -265,9 +277,13 @@
     "/api/v2/auditevents": {
       "post": {
         "x-mint": {
-          "href": "/events-api/reference/audit-events"
+          "href": "/events-api/reference/audit-events",
+          "metadata": {
+            "sidebarTitle": "Audit events (v2)",
+            "description": "Retrieves audit events for actions performed by team members within a 1Password account"
+          }
         },
-        "summary": "Retrieves audit events for actions performed by team members within a 1Password account",
+        "summary": "Retrieve audit events (v2)",
         "description": "This endpoint requires your JSON Web Token to have the *auditevents* feature.",
         "tags": [
           "api-v2"

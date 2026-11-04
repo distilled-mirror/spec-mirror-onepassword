@@ -1571,4 +1571,4 @@ The included cursor is a persistent checkpoint that marks your current position 
 
 - [1Password Events API](https://www.1password.dev/events-api.md)
 - [Get started with the 1Password Events API](https://www.1password.dev/events-api/get-started.md)
-- [1Password Events API changelog](https://www.1password.dev/events-api/changelog.md)
+- [Item usage actions](https://www.1password.dev/events-api/item-usage-actions.md)
