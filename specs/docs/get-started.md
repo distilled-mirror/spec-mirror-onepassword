@@ -244,6 +244,6 @@ To get help and share feedback, join the discussion with the [1Password Support 
 
 ## Related topics
 
-- [Use CI/CD integrations with a 1Password Connect server](https://www.1password.dev/connect/ci-cd.md)
-- [Use 1Password CLI with a Connect server](https://www.1password.dev/connect/cli.md)
 - [1Password Connect Server API reference](https://www.1password.dev/connect/api-reference.md)
+- [Use 1Password CLI with a Connect server](https://www.1password.dev/connect/cli.md)
+- [Use CI/CD integrations with a 1Password Connect server](https://www.1password.dev/connect/ci-cd.md)

@@ -1418,6 +1418,6 @@ A `200` response returns an Account object that provides information about the c
 
 ## Related topics
 
-- [1Password Accounts API for Partners](https://www.1password.dev/accounts-api.md)
-- [1Password Events API reference](https://www.1password.dev/events-api/reference.md)
 - [1Password Users API reference](https://www.1password.dev/users-api/reference.md)
+- [1Password Events API reference](https://www.1password.dev/events-api/reference.md)
+- [1Password Connect Server API reference](https://www.1password.dev/connect/api-reference.md)

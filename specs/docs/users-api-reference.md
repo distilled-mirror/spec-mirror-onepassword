@@ -41,4 +41,4 @@ The Users API and OAuth API follow the [OpenAPI 3.1.0 specification.](https://sp
 
 - [1Password Users API](https://www.1password.dev/users-api.md)
 - [1Password Events API reference](https://www.1password.dev/events-api/reference.md)
-- [Get started with the 1Password Users API](https://www.1password.dev/users-api/get-started.md)
+- [1Password Connect Server API reference](https://www.1password.dev/connect/api-reference.md)

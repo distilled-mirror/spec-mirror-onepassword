@@ -57,6 +57,6 @@ To provide feedback, or if you're interested in partnering with 1Password as an 
 
 ## Related topics
 
-- [Get data and analytics for your 1Password account](https://www.1password.dev/get-started/get-data-and-analytics.md)
 - [Programmatically manage your 1Password organization](https://www.1password.dev/get-started/manage-organization.md)
+- [Get data and analytics for your 1Password account](https://www.1password.dev/get-started/get-data-and-analytics.md)
 - [1Password Users API reference](https://www.1password.dev/users-api/reference.md)

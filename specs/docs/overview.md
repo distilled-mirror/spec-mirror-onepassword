@@ -90,5 +90,5 @@ Get started
 ## Related topics
 
 - [connect](https://www.1password.dev/cli/reference/management-commands/connect.md)
-- [Connect concepts](https://www.1password.dev/connect/concepts.md)
-- [Manage Connect servers](https://www.1password.dev/connect/manage-connect.md)
+- [Use 1Password CLI with Connect](https://www.1password.dev/cli/connect.md)
+- [Use the 1Password Terraform provider with Connect](https://www.1password.dev/connect/terraform.md)
