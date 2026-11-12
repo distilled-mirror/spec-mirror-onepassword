@@ -6,11 +6,15 @@
 
 > Connect your 1Password account to a security automation platform with the 1Password Users API.
 
-The 1Password Users API is an enterprise-grade REST-style API built on the OAuth 2.0 framework. Use the API to create security automation integrations between [1Password Enterprise Password Manager](https://1password.com/product/enterprise-password-manager) and your preferred solution, and set up security automation workflows to:
+Use the 1Password Users API to list, look up, suspend, and reactivate people in your 1Password account from your own security tools. It's a REST API that uses OAuth 2.0 for authorization. Teams use it to:
 
-* Automate enforcement of 1Password account access controls.
-* Trigger access remediation in response to events reporting or SIEM-detected events, such as suspending or reactivating a user.
-* Reduce investigation response time, manual processes, and risks during security incidents.
+* Enforce 1Password access rules automatically.
+* Suspend or reactivate a user when your SIEM or the [Events API](https://www.1password.dev/events-api.md) flags something.
+* Respond to security incidents faster, with fewer manual steps.
+
+> [card] [Try the API in your browser](https://www.1password.dev/users-api/list-users.md)
+>
+> Paste your token and send a real request from the docs. No code needed.
 
 ## Requirements
 
@@ -26,6 +30,30 @@ The Users API requires you to have:
 ## Quickstart
 
 [Start here](https://www.1password.dev/users-api/get-started.md) to set up an OAuth integration and send your first authentication request to the Users API.
+
+## Try it in the docs
+
+Every endpoint in the [API reference](https://www.1password.dev/users-api/reference.md) has a **Try it** panel. Paste an access token and send a real request from your browser. No code needed.
+
+**1. Get an access token**
+
+Follow [Get started](https://www.1password.dev/users-api/get-started.md) to set up the Users API, then use [Request an access token](https://www.1password.dev/users-api/request-access-token.md) to get a token.
+
+**2. Start with a read-only call**
+
+Open [List users](https://www.1password.dev/users-api/list-users.md). It reads the people in your account without changing anything.
+
+**3. Paste your token**
+
+Select **Try it**, then paste your access token in the **Authorization** field.
+
+**4. Send it, then copy the code**
+
+Select **Send** to see the live response. The example panel turns the same request into cURL, Python, JavaScript, Go, and more.
+
+> [!WARNING]
+>
+> Suspend and reactivate calls change real accounts. Try them on a test user first.
 
 ## Guides
 
@@ -57,6 +85,6 @@ To provide feedback, or if you're interested in partnering with 1Password as an 
 
 ## Related topics
 
-- [Programmatically manage your 1Password organization](https://www.1password.dev/get-started/manage-organization.md)
-- [Get data and analytics for your 1Password account](https://www.1password.dev/get-started/get-data-and-analytics.md)
+- [Get started with the 1Password Users API](https://www.1password.dev/users-api/get-started.md)
+- [Authorize your integrations using OAuth 2.0](https://www.1password.dev/users-api/authorization.md)
 - [1Password Users API reference](https://www.1password.dev/users-api/reference.md)

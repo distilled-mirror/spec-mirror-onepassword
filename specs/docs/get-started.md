@@ -26,10 +26,6 @@ Before you can create a 1Password Secrets Automation workflow as a Connect serve
 > * Make sure you belong to [a group with permission to manage Secrets Automation](https://www.1password.dev/connect/manage-connect.md).
 > * Make sure you have a deployment environment for Kubernetes with [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/), and [Helm](https://helm.sh/) installed. You can use a cloud service provider or your local machine.
 
-> [card] [New to 1Password developer tools?](https://www.1password.dev/get-started/developer-quickstart.md)
->
-> Follow the developer quickstart to set up the CLI, secure your secrets, and add biometric SSH signing in one guide.
-
 ## Deployment
 
 Use the following instructions to deploy a 1Password Connect Server.
@@ -246,4 +242,4 @@ To get help and share feedback, join the discussion with the [1Password Support 
 
 - [1Password Connect Server API reference](https://www.1password.dev/connect/api-reference.md)
 - [Use 1Password CLI with a Connect server](https://www.1password.dev/connect/cli.md)
-- [Use CI/CD integrations with a 1Password Connect server](https://www.1password.dev/connect/ci-cd.md)
+- [Configure your Connect server](https://www.1password.dev/connect/server-configuration.md)

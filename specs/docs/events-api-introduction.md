@@ -21,6 +21,6 @@ Before you can use the 1Password Events API, you'll need to:
 
 ## Related topics
 
-- [1Password Events API](https://www.1password.dev/events-api.md)
-- [1Password Events API v3 (beta)](https://www.1password.dev/events-api/beta.md)
 - [Get started with the 1Password Events API](https://www.1password.dev/events-api/get-started.md)
+- [Authorization](https://www.1password.dev/events-api/authorization.md)
+- [1Password Events API v3 (beta)](https://www.1password.dev/events-api/beta.md)

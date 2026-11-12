@@ -4,24 +4,29 @@
 
 # 1Password Connect Server API reference
 
-> [!NOTE]
+Use the Connect API to read and manage the vaults and items your Connect server can access, and to check the server's health and activity. You need a running [Connect server](https://www.1password.dev/connect/get-started.md) and an [access token](https://www.1password.dev/connect/manage-connect.md#manage-access-tokens).
+
+> [card] [Try the API in your browser](https://www.1password.dev/connect/api-reference/get-vaults.md)
 >
-> If you're new to 1Password Secrets Automation and 1Password Connect Server, [learn how to get started with a Secrets Automation workflow](https://www.1password.dev/connect/get-started.md).
+> Paste your token, enter your Connect server address, and send a real request from the docs.
 
-You can use the Connect API to work with the vaults and items in your account, and to list API activity on a Connect server:
+## Endpoints
 
-* [List vaults](#list-vaults)
-* [Get vault details](#get-vault-details)
-* [List items](#list-items)
-* [Add an item](#add-an-item)
-* [Get item details](#get-item-details)
-* [Replace an item](#replace-an-item)
-* [Delete an item](#delete-an-item)
-* [Update a subset of item attributes](#update-a-subset-of-item-attributes)
-* [List files](#list-files)
-* [Get file details](#get-file-details)
-* [Get file content](#get-file-content)
-* [List API activity](#list-api-activity)
+* [List vaults](https://www.1password.dev/connect/api-reference/get-vaults.md)
+* [Get vault details](https://www.1password.dev/connect/api-reference/get-vault-by-id.md)
+* [List items](https://www.1password.dev/connect/api-reference/get-vault-items.md)
+* [Add an item](https://www.1password.dev/connect/api-reference/create-vault-item.md)
+* [Get item details](https://www.1password.dev/connect/api-reference/get-vault-item-by-id.md)
+* [Replace an item](https://www.1password.dev/connect/api-reference/update-vault-item.md)
+* [Delete an item](https://www.1password.dev/connect/api-reference/delete-vault-item.md)
+* [Update a subset of item attributes](https://www.1password.dev/connect/api-reference/patch-vault-item.md)
+* [List files](https://www.1password.dev/connect/api-reference/get-item-files.md)
+* [Get file details](https://www.1password.dev/connect/api-reference/get-item-file-by-id.md)
+* [Get file content](https://www.1password.dev/connect/api-reference/download-item-file-by-id.md)
+* [List API activity](https://www.1password.dev/connect/api-reference/get-api-activity.md)
+* [Check the server heartbeat](https://www.1password.dev/connect/api-reference/get-heartbeat.md)
+* [Check server health](https://www.1password.dev/connect/api-reference/get-server-health.md)
+* [Get Prometheus metrics](https://www.1password.dev/connect/api-reference/get-prometheus-metrics.md)
 
 To view the API in another tool, download the [1Password Connect API specification file (1.8.1)](https://i.1password.com/media/1password-connect/1password-connect-api_1.8.1.yaml).
 
@@ -37,1036 +42,66 @@ Before you can use the 1Password Connect Server API, you'll need to:
 
 Each request to the API has to be authenticated with an [access token](https://www.1password.dev/connect/manage-connect.md#manage-access-tokens). Provide it and specify the content type:
 
-```
+```text theme={null}
 Authorization: Bearer <access_token>
 Content-type: application/json
 ```
 
-## List vaults
+## Try it in the docs
 
-```
-GET /v1/vaults
-```
+Every endpoint has a **Try it** panel with its parameters, example requests and responses.
 
-### Path parameters
+**1. Get an access token**
 
-No path parameters
+Create a token for your Connect server. See [Manage access tokens](https://www.1password.dev/connect/manage-connect.md#manage-access-tokens).
 
-### Query parameters
+**2. Start with a read-only call**
 
-<table>
-  <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
+Open [Get heartbeat](https://www.1password.dev/connect/api-reference/get-heartbeat.md) to check the server is up, then [List vaults](https://www.1password.dev/connect/api-reference/get-vaults.md) to see which vaults your token can read.
 
-  <tbody>
-    <tr>
-      <th>`filter`</th>
-      <td>string</td>
+**3. Point it at your server and paste your token**
 
-      <td>
-        Filter the vault collection using [SCIM-style filters.](https://bookstack.soffid.com/books/scim/page/scim-query-syntax) Vaults can only be filtered by `name`. *Optional.*
+Select **Try it**, enter your Connect server's address, and paste your token in the **Authorization** field.
 
-        For example: `name eq "Demo Vault"`
-      </td>
-    </tr>
-  </tbody>
-</table>
+**4. Send it, or copy the code**
 
-### Responses
+Select **Send** to see the live response, or copy the request as cURL, Python, JavaScript, Go, and more.
 
-<dl>
-  <dt>200</dt>
-  <dd>Returns an array of vault names and IDs</dd>
-  <dt>401</dt>
-  <dd>Invalid or missing token</dd>
-</dl>
-
-## Get vault details
-
-```
-GET /v1/vaults/{vaultUUID}
-```
-
-### Path parameters
-
-<table>
-  <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`vaultUUID`</th>
-      <td>string</td>
-      <td>The UUID of the vault to retrieve items from.</td>
-    </tr>
-  </tbody>
-</table>
-
-### Query parameters
-
-No query parameters.
-
-### Responses
-
-<dl>
-  <dt>200</dt>
-  <dd>Returns a [Vault object](#vault-object)</dd>
-  <dt>401</dt>
-  <dd>Invalid or missing token</dd>
-  <dt>403</dt>
-  <dd>Unauthorized access</dd>
-  <dt>404</dt>
-  <dd>Vault not found</dd>
-</dl>
-
-## List items
-
-```
-GET /v1/vaults/{vaultUUID}/items
-```
-
-### Path parameters
-
-<table>
-  <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`vaultUUID`</th>
-      <td>string</td>
-      <td>The UUID of the vault to get the details of.</td>
-    </tr>
-  </tbody>
-</table>
-
-### Query parameters
-
-<table>
-  <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`filter`</th>
-      <td>string</td>
-
-      <td>
-        Filter the item collection using [SCIM-style filters.](https://bookstack.soffid.com/books/scim/page/scim-query-syntax) Items can only be filtered by `title` or `tag`. *Optional.*
-
-        For example: `title eq "Example Item"` or `tag eq "banking"`
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-### Responses
-
-<dl>
-  <dt>200</dt>
-  <dd>Returns an array of [Item objects](#item-object) that don't include sections and fields</dd>
-  <dt>401</dt>
-  <dd>Invalid or missing token</dd>
-  <dt>404</dt>
-  <dd>Vault not found</dd>
-</dl>
-
-## Add an item
-
-```
-POST /v1/vaults/{vaultUUID}/items
-```
-
-The request must include a FullItem object, containing the information to create the item. For example:
-
-```json theme={null}
-{
-	"vault": {
-	"id": "ftz4pm2xxwmwrsd7rjqn7grzfz"
-	},
-	"title": "Secrets Automation Item",
-	"category": "LOGIN",
-	"tags": [
-	"connect",
-	"\ud83d\udc27"
-	],
-	"sections": [
-	{
-		"label": "Security Questions",
-		"id": "95cdbc3b-7742-47ec-9056-44d6af82d562"
-	}
-	],
-	"fields": [
-	{
-		"value": "wendy",
-		"purpose": "USERNAME"
-	},
-	{
-		"purpose": "PASSWORD",
-		"generate": true,
-		"recipe":
-		{
-			"length": 55,
-			"characterSets": [
-			"LETTERS",
-			"DIGITS"
-			]
-		}
-	},
-	{
-		"section": {
-		"id": "95cdbc3b-7742-47ec-9056-44d6af82d562"
-		},
-		"type": "CONCEALED",
-		"generate": true,
-		"label": "Recovery Key"
-	},
-	{
-		"section": {
-		"id": "95cdbc3b-7742-47ec-9056-44d6af82d562"
-		},
-		"type": "STRING",
-		"generate": true,
-		"label": "Random Text"
-	},
-	{
-		"type": "URL",
-		"label": "Example",
-		"value": "https://example.com"
-	}
-	]
-}
-```
-
-<table>
-  <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`title`</th>
-      <td>string</td>
-      <td>The title of the item.</td>
-    </tr>
-
-    <tr>
-      <th>`vault`</th>
-      <td>object</td>
-      <td>An object containing an `id` property whose value is the UUID of the vault the item is in.</td>
-    </tr>
-
-    <tr>
-      <th>`category`</th>
-      <td>string</td>
-
-      <td>
-        The category of the item. One of:
-
-        <ul>
-          <li>`"LOGIN"`</li>
-          <li>`"PASSWORD"`</li>
-          <li>`"API_CREDENTIAL"`</li>
-          <li>`"SERVER"`</li>
-          <li>`"DATABASE"`</li>
-          <li>`"CREDIT_CARD"`</li>
-          <li>`"MEMBERSHIP"`</li>
-          <li>`"PASSPORT"`</li>
-          <li>`"SOFTWARE_LICENSE"`</li>
-          <li>`"OUTDOOR_LICENSE"`</li>
-          <li>`"SECURE_NOTE"`</li>
-          <li>`"WIRELESS_ROUTER"`</li>
-          <li>`"BANK_ACCOUNT"`</li>
-          <li>`"DRIVER_LICENSE"`</li>
-          <li>`"IDENTITY"`</li>
-          <li>`"REWARD_PROGRAM"`</li>
-          <li>`"EMAIL_ACCOUNT"`</li>
-          <li>`"SOCIAL_SECURITY_NUMBER"`</li>
-          <li>`"MEDICAL_RECORD"`</li>
-          <li>`"SSH_KEY"`</li>
-        </ul>
-
-        You can't create items using the "CUSTOM" or "DOCUMENT" categories.
-      </td>
-    </tr>
-
-    <tr>
-      <th>`urls`</th>
-      <td>array</td>
-      <td>Array of [URL objects](#item-url-object) containing URLs for the item.</td>
-    </tr>
-
-    <tr>
-      <th>`favorite`</th>
-      <td>boolean</td>
-      <td>Mark the item as a favorite.</td>
-    </tr>
-
-    <tr>
-      <th>`tags`</th>
-      <td>string</td>
-      <td>An array of strings of the tags assigned to the item.</td>
-    </tr>
-
-    <tr>
-      <th>`fields`</th>
-      <td>array</td>
-      <td>An array of [Field objects](#item-field-object) of the fields to include with the item.</td>
-    </tr>
-
-    <tr>
-      <th>`sections`</th>
-      <td>array</td>
-      <td>An array of [Section objects](#item-section-object) of the sections to include with the item.</td>
-    </tr>
-  </tbody>
-</table>
-
-### Path parameters
-
-<table>
-  <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`vaultUUID`</th>
-      <td>string</td>
-      <td>The UUID of the vault to create an item in.</td>
-    </tr>
-  </tbody>
-</table>
-
-### Query parameters
-
-No query parameters.
-
-### Responses
-
-<dl>
-  <dt>200</dt>
-  <dd>Returns [Item object](#item-object) containing the new item</dd>
-  <dt>400</dt>
-  <dd>Unable to create item due to invalid input</dd>
-  <dt>401</dt>
-  <dd>Invalid or missing token</dd>
-  <dt>403</dt>
-  <dd>Unauthorized access</dd>
-  <dt>404</dt>
-  <dd>Item not found</dd>
-</dl>
-
-## Get item details
-
-```
-GET /v1/vaults/{vaultUUID}/items/{itemUUID}
-```
-
-### Path parameters
-
-<table>
-  <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`vaultUUID`</th>
-      <td>string</td>
-      <td>The UUID of the vault to retrieve the item from.</td>
-    </tr>
-
-    <tr>
-      <th>`itemUUID`</th>
-      <td>string</td>
-      <td>The UUID of the item to retrieve.</td>
-    </tr>
-  </tbody>
-</table>
-
-### Query parameters
-
-No query parameters.
-
-### Responses
-
-<dl>
-  <dt>200</dt>
-  <dd>Returns an [Item object](#item-object)</dd>
-  <dt>401</dt>
-  <dd>Invalid or missing token</dd>
-  <dt>403</dt>
-  <dd>Unauthorized access</dd>
-  <dt>404</dt>
-  <dd>Item not found</dd>
-</dl>
-
-## Replace an item
-
-```
-PUT /v1/vaults/{vaultUUID}/items/{itemUUID}
-```
-
-### Path parameters
-
-<table>
-  <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`vaultUUID`</th>
-      <td>string</td>
-      <td>The UUID of the vault to retrieve the item from.</td>
-    </tr>
-
-    <tr>
-      <th>`itemUUID`</th>
-      <td>string</td>
-      <td>The UUID of the item to replace.</td>
-    </tr>
-  </tbody>
-</table>
-
-### Query parameters
-
-No query parameters.
-
-### Responses
-
-<dl>
-  <dt>200</dt>
-  <dd>Returns an [Item object](#item-object)</dd>
-  <dt>400</dt>
-  <dd>Unable to create item due to invalid input</dd>
-  <dt>401</dt>
-  <dd>Invalid or missing token</dd>
-  <dt>403</dt>
-  <dd>Unauthorized access</dd>
-  <dt>404</dt>
-  <dd>Item not found</dd>
-</dl>
-
-## Delete an item
-
-```
-DELETE /v1/vaults/{vaultUUID}/items/{itemUUID}
-```
-
-### Path parameters
-
-<table>
-  <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`vaultUUID`</th>
-      <td>string</td>
-      <td>The UUID of the vault to retrieve the item from.</td>
-    </tr>
-
-    <tr>
-      <th>`itemUUID`</th>
-      <td>string</td>
-      <td>The UUID of the item to delete.</td>
-    </tr>
-  </tbody>
-</table>
-
-### Query parameters
-
-No query parameters.
-
-### Responses
-
-<dl>
-  <dt>204</dt>
-  <dd>Successfully deleted an item</dd>
-  <dt>401</dt>
-  <dd>Invalid or missing token</dd>
-  <dt>403</dt>
-  <dd>Unauthorized access</dd>
-  <dt>404</dt>
-  <dd>Item not found</dd>
-</dl>
-
-## Update a subset of item attributes
-
-```
-PATCH /v1/vaults/{vaultUUID}/items/{itemUUID}
-```
-
-Applies an `add`, `remove`, or `replace` operation on an item or the fields of an item. Uses the [RFC6902 JSON Patch](https://tools.ietf.org/html/rfc6902) document standard.
-
-<table>
-  <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`op`</th>
-      <td>string</td>
-
-      <td>
-        The kind of operation to perform. One of:
-
-        <ul>
-          <li>`add`</li>
-          <li>`remove`</li>
-          <li>`replace`</li>
-        </ul>
-      </td>
-    </tr>
-
-    <tr>
-      <th>`path`</th>
-      <td>string</td>
-      <td>An RFC6901 JSON Pointer to the item, an item attribute, an item field by field ID, or an item field attribute. For example: `"/fields/vy09gd8EXAMPLE/label"`</td>
-    </tr>
-
-    <tr>
-      <th>`value`</th>
-      <td>any</td>
-      <td>The new value to apply at the path.</td>
-    </tr>
-  </tbody>
-</table>
-
-### Path parameters
-
-<table>
-  <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`vaultUUID`</th>
-      <td>string</td>
-      <td>The UUID of the vault the item is in.</td>
-    </tr>
-
-    <tr>
-      <th>`itemUUID`</th>
-      <td>string</td>
-      <td>The UUID of the item to update.</td>
-    </tr>
-  </tbody>
-</table>
-
-### Query parameters
-
-No query parameters.
-
-### Responses
-
-<dl>
-  <dt>200</dt>
-  <dd>Returns an [Item object](#item-object) of the updated item.</dd>
-  <dt>401</dt>
-  <dd>Invalid or missing token</dd>
-  <dt>403</dt>
-  <dd>Unauthorized access</dd>
-  <dt>404</dt>
-  <dd>Item not found</dd>
-</dl>
-
-## List files
-
-```
-GET /v1/vaults/{vaultUUID}/items/{itemUUID}/files
-```
-
-### Path parameters
-
-<table>
-  <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`vaultUUID`</th>
-      <td>string</td>
-      <td>The UUID of the vault to get the details of.</td>
-    </tr>
-
-    <tr>
-      <th>`itemUUID`</th>
-      <td>string</td>
-      <td>The UUID of the item to retrieve.</td>
-    </tr>
-  </tbody>
-</table>
-
-### Query parameters
-
-<table>
-  <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`inline_content`</th>
-      <td>boolean</td>
-      <td>Whether to return the Base-64 encoded file content. The file size must be less than `OP_MAX_INLINE_FILE_SIZE_KB`, or 100 kilobytes if the file size isn't defined. *Optional.*</td>
-    </tr>
-  </tbody>
-</table>
-
-### Responses
-
-<dl>
-  <dt>200</dt>
-  <dd>Returns an array of [File objects](#item-file-object)</dd>
-  <dt>401</dt>
-  <dd>Invalid or missing token</dd>
-  <dt>404</dt>
-  <dd>Item not found</dd>
-  <dt>413</dt>
-  <dd>File too large to display inline</dd>
-</dl>
-
-## Get File details
-
-```
-GET /v1/vaults/{vaultUUID}/items/{itemUUID}/files/{fileUUID}
-```
-
-### Path parameters
-
-<table>
-  <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`vaultUUID`</th>
-      <td>string</td>
-      <td>The UUID of the vault to retrieve the item from.</td>
-    </tr>
-
-    <tr>
-      <th>`itemUUID`</th>
-      <td>string</td>
-      <td>The UUID of the item to retrieve the file from.</td>
-    </tr>
-
-    <tr>
-      <th>`fileUUID`</th>
-      <td>string</td>
-      <td>The UUID of the file to retrieve.</td>
-    </tr>
-  </tbody>
-</table>
-
-### Query parameters
-
-<table>
-  <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`inline_content`</th>
-      <td>boolean</td>
-      <td>Whether to return the Base-64 encoded file content. The file size must be less than `OP_MAX_INLINE_FILE_SIZE_KB`, or 100 kilobytes if the file size isn't defined. *Optional.*</td>
-    </tr>
-  </tbody>
-</table>
-
-### Responses
-
-<dl>
-  <dt>200</dt>
-  <dd>Returns a [File object](#item-file-object)</dd>
-  <dt>401</dt>
-  <dd>Invalid or missing token</dd>
-  <dt>403</dt>
-  <dd>Unauthorized access</dd>
-  <dt>404</dt>
-  <dd>File not found</dd>
-  <dt>413</dt>
-  <dd>File too large to display inline</dd>
-</dl>
-
-## Get file content
-
-```
-GET /v1/vaults/{vaultUUID}/items/{itemUUID}/files/{fileUUID}/content
-```
-
-### Path parameters
-
-<table>
-  <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`vaultUUID`</th>
-      <td>string</td>
-      <td>The UUID of the vault to retrieve the item from.</td>
-    </tr>
-
-    <tr>
-      <th>`itemUUID`</th>
-      <td>string</td>
-      <td>The UUID of the item to retrieve the file from.</td>
-    </tr>
-
-    <tr>
-      <th>`fileUUID`</th>
-      <td>string</td>
-      <td>The UUID of the file to retrieve.</td>
-    </tr>
-  </tbody>
-</table>
-
-### Query parameters
-
-No query parameters.
-
-### Responses
-
-<dl>
-  <dt>200</dt>
-  <dd>Returns the content of the file</dd>
-  <dt>401</dt>
-  <dd>Invalid or missing token</dd>
-  <dt>403</dt>
-  <dd>Unauthorized access</dd>
-  <dt>404</dt>
-  <dd>File not found</dd>
-</dl>
-
-## List API activity
-
-```
-GET /v1/activity
-```
-
-Retrieve a list of API Requests that have been made.
-
-### Query parameters
-
-<table>
-  <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`limit`</th>
-      <td>integer</td>
-      <td>How many API Events should be retrieved in a single request. *Optional.*</td>
-    </tr>
-
-    <tr>
-      <th>`offset`</th>
-      <td>integer</td>
-      <td>How far into the collection of API Events should the response start. *Optional.*</td>
-    </tr>
-  </tbody>
-</table>
-
-## Server Heartbeat
-
-```
-GET /heartbeat
-```
-
-Simple "ping" endpoint to check whether server is active.
-
-### Query parameters
-
-No query parameters.
-
-### Responses
-
-<dl>
-  <dt>200</dt>
-  <dd>Returns a `text/plain` response with a single "."</dd>
-</dl>
-
-## Server Health
-
-```
-GET /health
-```
-
-Query the state of the server and its service dependencies.
-
-### Query parameters
-
-No query parameters.
-
-### Responses
-
-<dl>
-  <dt>200</dt>
-  <dd>Returns a [Server Health object](#server-health-object)</dd>
-</dl>
-
-## Metrics
-
-```
-GET /metrics
-```
-
-Returns Prometheus metrics collected by the server.
-
-### Query parameters
-
-No query parameters.
-
-### Responses
-
-<dl>
-  <dt>200</dt>
-  <dd>Returns a plaintext list of Prometheus metrics. See the [Prometheus documentation ](https://prometheus.io/docs/instrumenting/exposition_formats/#text-based-format) for specifics.</dd>
-</dl>
+> [!NOTE]
+>
+> The **Try it** panel sends requests from the docs, so it can't reach a Connect server that only listens on localhost or a private network. In that case, copy the cURL request from the example panel and run it on a machine that can reach your server.
 
 ## Response object models
 
 ### APIRequest object
 
-<table>
-  <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`requestID`</th>
-      <td>string</td>
-      <td>The UUID for the request.</td>
-    </tr>
-
-    <tr>
-      <th>`timestamp`</th>
-      <td>dateTime</td>
-      <td>Date and time of the request.</td>
-    </tr>
-
-    <tr>
-      <th>`action`</th>
-      <td>string</td>
-
-      <td>
-        The action taken. One of:
-
-        <ul>
-          <li>`"READ"`</li>
-          <li>`"CREATE"`</li>
-          <li>`"UPDATE"`</li>
-          <li>`"DELETE"`</li>
-        </ul>
-      </td>
-    </tr>
-
-    <tr>
-      <th>`result`</th>
-      <td>string</td>
-
-      <td>
-        The result of the action. One of:
-
-        <ul>
-          <li>`"SUCCESS"`</li>
-          <li>`"DENY"`</li>
-        </ul>
-      </td>
-    </tr>
-
-    <tr>
-      <th>`actor`</th>
-      <td>object</td>
-      <td>An [Actor object](#apirequest-actor-object).</td>
-    </tr>
-
-    <tr>
-      <th>`resource`</th>
-      <td>object</td>
-      <td>A [Resource object](#apirequest-resource-object).</td>
-    </tr>
-  </tbody>
-</table>
+| Parameter | Type | Description |
+| - | - | - |
+| `requestID` | string | The UUID for the request. |
+| `timestamp` | dateTime | Date and time of the request. |
+| `action` | string | The action taken. One of: |
+| `result` | string | The result of the action. One of: |
+| `actor` | object | An [Actor object](#apirequest-actor-object). |
+| `resource` | object | A [Resource object](#apirequest-resource-object). |
 
 #### APIRequest: Actor object
 
-<table>
-  <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`id`</th>
-      <td>string</td>
-      <td>The UUID of the Connect server that made the request.</td>
-    </tr>
-
-    <tr>
-      <th>`account`</th>
-      <td>string</td>
-      <td>The UUID of the 1Password account the request went to.</td>
-    </tr>
-
-    <tr>
-      <th>`jti`</th>
-      <td>string</td>
-      <td>The UUID of the access token used to authenticate the request.</td>
-    </tr>
-
-    <tr>
-      <th>`userAgent`</th>
-      <td>string</td>
-      <td>The user agent string specified in the request.</td>
-    </tr>
-
-    <tr>
-      <th>`ip`</th>
-      <td>string</td>
-      <td>The IP address the request originated from.</td>
-    </tr>
-  </tbody>
-</table>
+| Parameter | Type | Description |
+| - | - | - |
+| `id` | string | The UUID of the Connect server that made the request. |
+| `account` | string | The UUID of the 1Password account the request went to. |
+| `jti` | string | The UUID of the access token used to authenticate the request. |
+| `userAgent` | string | The user agent string specified in the request. |
+| `ip` | string | The IP address the request originated from. |
 
 #### APIRequest: Resource object
 
-<table>
-  <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`type`</th>
-      <td>string</td>
-
-      <td>
-        The resource requested. One of:
-
-        <ul>
-          <li>`"ITEM"`</li>
-          <li>`"VAULT"`</li>
-        </ul>
-      </td>
-    </tr>
-
-    <tr>
-      <th>`vault`</th>
-      <td>object</td>
-      <td>An object containing an `id` property with the value of the UUID of the vault requested.</td>
-    </tr>
-
-    <tr>
-      <th>`item`</th>
-      <td>object</td>
-      <td>An object containing an `id` property with the value of the UUID of the item requested.</td>
-    </tr>
-
-    <tr>
-      <th>`itemVersion`</th>
-      <td>integer</td>
-      <td>The version of the item.</td>
-    </tr>
-  </tbody>
-</table>
+| Parameter | Type | Description |
+| - | - | - |
+| `type` | string | The resource requested. One of: |
+| `vault` | object | An object containing an `id` property with the value of the UUID of the vault requested. |
+| `item` | object | An object containing an `id` property with the value of the UUID of the item requested. |
+| `itemVersion` | integer | The version of the item. |
 
 ### ErrorResponse object
 
@@ -1077,29 +112,10 @@ No query parameters.
 }
 ```
 
-<table>
-  <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`status`</th>
-      <td>integer</td>
-      <td>The HTTP status code.</td>
-    </tr>
-
-    <tr>
-      <th>`message`</th>
-      <td>string</td>
-      <td>A message detailing the error.</td>
-    </tr>
-  </tbody>
-</table>
+| Parameter | Type | Description |
+| - | - | - |
+| `status` | integer | The HTTP status code. |
+| `message` | string | A message detailing the error. |
 
 ### Vault object
 
@@ -1116,80 +132,17 @@ No query parameters.
 }
 ```
 
-<table>
-  <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`id`</th>
-      <td>string</td>
-      <td>The UUID of the vault.</td>
-    </tr>
-
-    <tr>
-      <th>`name`</th>
-      <td>string</td>
-      <td>The name of the vault.</td>
-    </tr>
-
-    <tr>
-      <th>`description`</th>
-      <td>string</td>
-      <td>The description for the vault.</td>
-    </tr>
-
-    <tr>
-      <th>`attributeVersion`</th>
-      <td>integer</td>
-      <td>The version of the vault metadata.</td>
-    </tr>
-
-    <tr>
-      <th>`contentVersion`</th>
-      <td>integer</td>
-      <td>The version of the vault contents.</td>
-    </tr>
-
-    <tr>
-      <th>`items`</th>
-      <td>integer</td>
-      <td>Number of active items in the vault.</td>
-    </tr>
-
-    <tr>
-      <th>`type`</th>
-      <td>string</td>
-
-      <td>
-        The type of vault. One of:
-
-        <ul>
-          <li>`"EVERYONE"`: The team Shared vault.</li>
-          <li>`"PERSONAL"`: The Private vault for the Connect server.</li>
-          <li>`"USER_CREATED"`: A vault created by a user.</li>
-        </ul>
-      </td>
-    </tr>
-
-    <tr>
-      <th>`createdAt`</th>
-      <td>dateTime</td>
-      <td>Date and time when the vault was created.</td>
-    </tr>
-
-    <tr>
-      <th>`updatedAt`</th>
-      <td>dateTime</td>
-      <td>Date and time when the vault or its contents were last changed.</td>
-    </tr>
-  </tbody>
-</table>
+| Parameter | Type | Description |
+| - | - | - |
+| `id` | string | The UUID of the vault. |
+| `name` | string | The name of the vault. |
+| `description` | string | The description for the vault. |
+| `attributeVersion` | integer | The version of the vault metadata. |
+| `contentVersion` | integer | The version of the vault contents. |
+| `items` | integer | Number of active items in the vault. |
+| `type` | string | The type of vault. One of: |
+| `createdAt` | dateTime | Date and time when the vault was created. |
+| `updatedAt` | dateTime | Date and time when the vault or its contents were last changed. |
 
 ### Item object
 
@@ -1286,112 +239,19 @@ No query parameters.
 }
 ```
 
-<table>
-  <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`id`</th>
-      <td>string</td>
-      <td>The UUID of the item.</td>
-    </tr>
-
-    <tr>
-      <th>`title`</th>
-      <td>string</td>
-      <td>The title of the item.</td>
-    </tr>
-
-    <tr>
-      <th>`vault`</th>
-      <td>object</td>
-      <td>An object containing an `id` property whose value is the UUID of the vault the item is in.</td>
-    </tr>
-
-    <tr>
-      <th>`category`</th>
-      <td>string</td>
-
-      <td>
-        The category of the item. One of:
-
-        <ul>
-          <li>`"LOGIN"`</li>
-          <li>`"PASSWORD"`</li>
-          <li>`"API_CREDENTIAL"`</li>
-          <li>`"SERVER"`</li>
-          <li>`"DATABASE"`</li>
-          <li>`"CREDIT_CARD"`</li>
-          <li>`"MEMBERSHIP"`</li>
-          <li>`"PASSPORT"`</li>
-          <li>`"SOFTWARE_LICENSE"`</li>
-          <li>`"OUTDOOR_LICENSE"`</li>
-          <li>`"SECURE_NOTE"`</li>
-          <li>`"WIRELESS_ROUTER"`</li>
-          <li>`"BANK_ACCOUNT"`</li>
-          <li>`"DRIVER_LICENSE"`</li>
-          <li>`"IDENTITY"`</li>
-          <li>`"REWARD_PROGRAM"`</li>
-          <li>`"DOCUMENT"`</li>
-          <li>`"EMAIL_ACCOUNT"`</li>
-          <li>`"SOCIAL_SECURITY_NUMBER"`</li>
-          <li>`"MEDICAL_RECORD"`</li>
-          <li>`"SSH_KEY"`</li>
-        </ul>
-
-        You can't create items using the "CUSTOM" or "DOCUMENT" categories.
-      </td>
-    </tr>
-
-    <tr>
-      <th>`urls`</th>
-      <td>array</td>
-      <td>Array of [URL objects](#item-url-object) containing URLs for the item.</td>
-    </tr>
-
-    <tr>
-      <th>`favorite`</th>
-      <td>boolean</td>
-      <td>Whether the item is marked as a favorite.</td>
-    </tr>
-
-    <tr>
-      <th>`tags`</th>
-      <td>array</td>
-      <td>An array of strings of the tags assigned to the item.</td>
-    </tr>
-
-    <tr>
-      <th>`version`</th>
-      <td>integer</td>
-      <td>The version of the item.</td>
-    </tr>
-
-    <tr>
-      <th>`createdAt`</th>
-      <td>dateTime</td>
-      <td>Date and time when the item was created.</td>
-    </tr>
-
-    <tr>
-      <th>`updatedAt`</th>
-      <td>dateTime</td>
-      <td>Date and time when the vault or its contents were last changed.</td>
-    </tr>
-
-    <tr>
-      <th>`lastEditedBy`</th>
-      <td>string</td>
-      <td>UUID of the account that last changed the item.</td>
-    </tr>
-  </tbody>
-</table>
+| Parameter | Type | Description |
+| - | - | - |
+| `id` | string | The UUID of the item. |
+| `title` | string | The title of the item. |
+| `vault` | object | An object containing an `id` property whose value is the UUID of the vault the item is in. |
+| `category` | string | |
+| `urls` | array | Array of [URL objects](#item-url-object) containing URLs for the item. |
+| `favorite` | boolean | Whether the item is marked as a favorite. |
+| `tags` | array | An array of strings of the tags assigned to the item. |
+| `version` | integer | The version of the item. |
+| `createdAt` | dateTime | Date and time when the item was created. |
+| `updatedAt` | dateTime | Date and time when the vault or its contents were last changed. |
+| `lastEditedBy` | string | UUID of the account that last changed the item. |
 
 #### Item: Field object
 
@@ -1406,70 +266,13 @@ No query parameters.
 }
 ```
 
-<table>
-  <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`purpose` or `type`</th>
-      <td>string</td>
-
-      <td>
-        Use `purpose` for the username, password, and notes fields. Possible values:
-
-        <ul>
-          <li>`"USERNAME"`</li>
-          <li>`"PASSWORD"`</li>
-          <li>`"NOTES"`</li>
-        </ul>
-
-        Use `type` for all other fields. Possible values are:
-
-        <ul>
-          <li>`"STRING"`</li>
-          <li>`"EMAIL"`</li>
-          <li>`"CONCEALED"`</li>
-          <li>`"URL"`</li>
-          <li>`"OTP"` (format: `otpauth://`)</li>
-          <li>`"DATE"` (format: `YYYY-MM-DD`)</li>
-          <li>`"MONTH_YEAR"` (format: `YYYYMM` or `YYYY/MM`)</li>
-          <li>`"MENU"`</li>
-        </ul>
-      </td>
-    </tr>
-
-    <tr>
-      <th>`value`</th>
-      <td>string</td>
-      <td>The value to save for the field.
-      You can specify a `generate` field instead of `value` to create a password or other random information for the value.</td>
-    </tr>
-
-    <tr>
-      <th>`generate`</th>
-      <td>boolean</td>
-      <td>Generate a password and save in the value for the field. By default, the password is a 32-characters long, made up of letters, numbers, and symbols. To customize the password, include a `recipe` field.</td>
-    </tr>
-
-    <tr>
-      <th>`recipe`</th>
-      <td>object</td>
-      <td>A [GeneratorRecipe object](#item-generatorrecipe-object).</td>
-    </tr>
-
-    <tr>
-      <th>`section`</th>
-      <td>object</td>
-      <td>An object containing the UUID of a section in the item.</td>
-    </tr>
-  </tbody>
-</table>
+| Parameter | Type | Description |
+| - | - | - |
+| `purpose` or `type` | string | |
+| `value` | string | The value to save for the field. You can specify a `generate` field instead of `value` to create a password or other random information for the value. |
+| `generate` | boolean | Generate a password and save in the value for the field. By default, the password is a 32-characters long, made up of letters, numbers, and symbols. To customize the password, include a `recipe` field. |
+| `recipe` | object | A [GeneratorRecipe object](#item-generatorrecipe-object). |
+| `section` | object | An object containing the UUID of a section in the item. |
 
 #### Item: File object
 
@@ -1486,53 +289,14 @@ No query parameters.
 }
 ```
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`id`</th>
-      <td>string</td>
-      <td>The UUID of the file.</td>
-    </tr>
-
-    <tr>
-      <th>`name`</th>
-      <td>string</td>
-      <td>The name of the file.</td>
-    </tr>
-
-    <tr>
-      <th>`size`</th>
-      <td>integer</td>
-      <td>The size of the file in bytes.</td>
-    </tr>
-
-    <tr>
-      <th>`content_path`</th>
-      <td>string</td>
-      <td>The path to download the contents of the file.</td>
-    </tr>
-
-    <tr>
-      <th>`content`</th>
-      <td>string</td>
-      <td>The Base64-encoded contents of the file, if `inline_files` is set to `true`.</td>
-    </tr>
-
-    <tr>
-      <th>`section`</th>
-      <td>object</td>
-      <td>An object containing the UUID of a section in the item.</td>
-    </tr>
-  </tbody>
-</table>
+| Name | Type | Description |
+| - | - | - |
+| `id` | string | The UUID of the file. |
+| `name` | string | The name of the file. |
+| `size` | integer | The size of the file in bytes. |
+| `content_path` | string | The path to download the contents of the file. |
+| `content` | string | The Base64-encoded contents of the file, if `inline_files` is set to `true`. |
+| `section` | object | An object containing the UUID of a section in the item. |
 
 #### Item: GeneratorRecipe object
 
@@ -1548,44 +312,11 @@ The recipe is used in conjunction with the "generate" property to set the charac
 }
 ```
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`length`</th>
-      <td>integer</td>
-      <td>The length of the password to generate. *Optional.*</td>
-    </tr>
-
-    <tr>
-      <th>`characterSets`</th>
-      <td>array</td>
-
-      <td>
-        An array containing of the kinds of characters to include. *Optional.* Possible values:
-
-        <ul>
-          <li>`"LETTERS"`</li>
-          <li>`"DIGITS"`</li>
-          <li>`"SYMBOLS"`</li>
-        </ul>
-      </td>
-    </tr>
-
-    <tr>
-      <th>`excludeCharacters`</th>
-      <td>string</td>
-      <td> A list of all characters that should be excluded from generated passwords. *Optional.*</td>
-    </tr>
-  </tbody>
-</table>
+| Name | Type | Description |
+| - | - | - |
+| `length` | integer | The length of the password to generate. *Optional.* |
+| `characterSets` | array | An array containing of the kinds of characters to include. *Optional.* Possible values: |
+| `excludeCharacters` | string | A list of all characters that should be excluded from generated passwords. *Optional.* |
 
 #### Item: PasswordDetails object
 
@@ -1601,54 +332,12 @@ The recipe is used in conjunction with the "generate" property to set the charac
 }
 ```
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`entropy`</th>
-      <td>integer</td>
-      <td>The unpredictability of the password, measured in bits.</td>
-    </tr>
-
-    <tr>
-      <th>`generated`</th>
-      <td>boolean</td>
-      <td>Whether the password was generated using the password generator.</td>
-    </tr>
-
-    <tr>
-      <th>`strength`</th>
-      <td>string</td>
-
-      <td>
-        The strength of the password. One of:
-
-        <ul>
-          <li>`"TERRIBLE"`</li>
-          <li>`"WEAK"`</li>
-          <li>`"FAIR"`</li>
-          <li>`"GOOD"`</li>
-          <li>`"VERY_GOOD"`</li>
-          <li>`"EXCELLENT"`</li>
-          <li>`"FANTASTIC"`</li>
-        </ul>
-      </td>
-    </tr>
-
-    <tr>
-      <th>`history`</th>
-      <td>array</td>
-      <td>An array of strings containing the previous passwords of the item.</td>
-    </tr>
-  </tbody>
-</table>
+| Name | Type | Description |
+| - | - | - |
+| `entropy` | integer | The unpredictability of the password, measured in bits. |
+| `generated` | boolean | Whether the password was generated using the password generator. |
+| `strength` | string | The strength of the password. One of: |
+| `history` | array | An array of strings containing the previous passwords of the item. |
 
 #### Item: Section object
 
@@ -1659,29 +348,10 @@ The recipe is used in conjunction with the "generate" property to set the charac
 }
 ```
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`id`</th>
-      <td>string</td>
-      <td>A unique identifier for the section.</td>
-    </tr>
-
-    <tr>
-      <th>`label`</th>
-      <td>string</td>
-      <td>The label for the section.</td>
-    </tr>
-  </tbody>
-</table>
+| Name | Type | Description |
+| - | - | - |
+| `id` | string | A unique identifier for the section. |
+| `label` | string | The label for the section. |
 
 #### Item: URL object
 
@@ -1693,35 +363,11 @@ The recipe is used in conjunction with the "generate" property to set the charac
 }
 ```
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`label`</th>
-      <td>string</td>
-      <td>The label for the URL.</td>
-    </tr>
-
-    <tr>
-      <th>`primary`</th>
-      <td>boolean</td>
-      <td>Whether this is the primary URL for the item.</td>
-    </tr>
-
-    <tr>
-      <th>`href`</th>
-      <td>string</td>
-      <td>The address.</td>
-    </tr>
-  </tbody>
-</table>
+| Name | Type | Description |
+| - | - | - |
+| `label` | string | The label for the URL. |
+| `primary` | boolean | Whether this is the primary URL for the item. |
+| `href` | string | The address. |
 
 ### Server Health object
 
@@ -1743,71 +389,23 @@ The recipe is used in conjunction with the "generate" property to set the charac
 }
 ```
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`name`</th>
-      <td>string</td>
-      <td>Name of the server</td>
-    </tr>
-
-    <tr>
-      <th>`version`</th>
-      <td>string</td>
-      <td>Version info of the Connect server</td>
-    </tr>
-
-    <tr>
-      <th>`dependencies`</th>
-      <td>array</td>
-      <td>An array of [Service Dependencies](#server-health-dependency-object).</td>
-    </tr>
-  </tbody>
-</table>
+| Name | Type | Description |
+| - | - | - |
+| `name` | string | Name of the server |
+| `version` | string | Version info of the Connect server |
+| `dependencies` | array | An array of [Service Dependencies](#server-health-dependency-object). |
 
 #### Server Health: Dependency object
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <th>`service`</th>
-      <td>string</td>
-      <td>Name of the dependency</td>
-    </tr>
-
-    <tr>
-      <th>`status`</th>
-      <td>string</td>
-      <td>The service's reported status</td>
-    </tr>
-
-    <tr>
-      <th>`message`</th>
-      <td>string</td>
-      <td>Extra information about the dependency's status. *Optional.*</td>
-    </tr>
-  </tbody>
-</table>
+| Name | Type | Description |
+| - | - | - |
+| `service` | string | Name of the dependency |
+| `status` | string | The service's reported status |
+| `message` | string | Extra information about the dependency's status. *Optional.* |
 
 
 ## Related topics
 
-- [Get started with a 1Password Connect server](https://www.1password.dev/connect/get-started.md)
-- [About 1Password Connect Server security](https://www.1password.dev/connect/security.md)
-- [1Password Partnership API reference](https://www.1password.dev/partnership-api/reference.md)
+- [Get all Vaults](https://www.1password.dev/connect/api-reference/get-vaults.md)
+- [Use 1Password CLI with a Connect server](https://www.1password.dev/connect/cli.md)
+- [1Password integrations](https://www.1password.dev/integrations.md)

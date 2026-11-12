@@ -4,6 +4,8 @@
 
 # 1Password Connect
 
+> 1Password Connect is a self-hosted server that gives your apps and infrastructure access to 1Password items and vaults through a REST API.
+
 1Password Connect Servers allow you to securely access your 1Password items and vaults in your company's apps and cloud infrastructure using a private REST API.
 
 Because Connect servers cache your data in your infrastructure, they allow unlimited re-requests after the server fetches your secrets.
@@ -89,6 +91,6 @@ Get started
 
 ## Related topics
 
-- [connect](https://www.1password.dev/cli/reference/management-commands/connect.md)
-- [Use 1Password CLI with Connect](https://www.1password.dev/cli/connect.md)
-- [Use the 1Password Terraform provider with Connect](https://www.1password.dev/connect/terraform.md)
+- [Get started with a 1Password Connect server](https://www.1password.dev/connect/get-started.md)
+- [Connect concepts](https://www.1password.dev/connect/concepts.md)
+- [About 1Password Connect Server security](https://www.1password.dev/connect/security.md)
